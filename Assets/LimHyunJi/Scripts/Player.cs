@@ -10,7 +10,9 @@ namespace ItTakesTwo
         [field: Header("References")]
         [field: SerializeField] public PlayerSO Data {get; private set;}
         
+        public CharacterController characterController;
         public Rigidbody rigidBody{get; private set;}
+        public Vector3 velocity;
         public LayerMask GroundLayers;
         public Transform mainCameraTransform{get; private set;}
         [HideInInspector]
@@ -21,6 +23,7 @@ namespace ItTakesTwo
 
         private void Awake() 
         {
+            characterController=GetComponent<CharacterController>();
             rigidBody =GetComponent<Rigidbody>();
             Input=GetComponent<PlayerInput>();
             movementStateMachine=new PlayerMovementStateMachine(this);

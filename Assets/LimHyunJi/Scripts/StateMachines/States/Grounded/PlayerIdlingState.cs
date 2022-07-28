@@ -15,7 +15,7 @@ namespace ItTakesTwo
             base.Enter();
             
             stateMachine.ReusableData.SpeedModifier =0f;
-            ResteVelocity();
+            ResetVelocity();
         }
         public override void Update()
         {

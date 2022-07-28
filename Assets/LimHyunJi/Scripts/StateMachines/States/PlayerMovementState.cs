@@ -76,7 +76,8 @@ namespace ItTakesTwo
         }
         private void Move()
         {
-            
+                Debug.Log(stateMachine.Player.characterController.velocity);
+
                 Vector3 movementDirection;
                 
                 if (((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f)))
@@ -91,7 +92,7 @@ namespace ItTakesTwo
                 float movementSpeed = GetMovementSpeed();
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
-                stateMachine.Player.rigidBody.AddForce(targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity, ForceMode.VelocityChange);
+                stateMachine.Player.characterController.Move(targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity+ GetPlayerVerticalVelocity());
         
         }
        
@@ -139,18 +140,19 @@ namespace ItTakesTwo
         }
         protected Vector3 GetPlayerHorizontalVelocity()
         {
-            Vector3 playerHorizontalvelocity = stateMachine.Player.rigidBody.velocity;
+            Vector3 playerHorizontalvelocity = stateMachine.Player.characterController.velocity;
             playerHorizontalvelocity.y=0f;
 
             return playerHorizontalvelocity;
         }
         protected Vector3 GetPlayerVerticalVelocity()
         {
-             return new Vector3(0f, stateMachine.Player.rigidBody.velocity.y, 0f);
+            UseGravity();
+             return new Vector3(0f, stateMachine.Player.characterController.velocity.y, 0f);
         }
         protected void RotateTowardsTargetRotation()
         {
-            float currentYAngle=stateMachine.Player.rigidBody.rotation.eulerAngles.y;
+            float currentYAngle=stateMachine.Player.transform.rotation.eulerAngles.y;
 
             if(currentYAngle ==stateMachine.ReusableData.CurrentTargetRotation.y)
                 return;
@@ -160,7 +162,7 @@ namespace ItTakesTwo
 
             Quaternion targetRotation =Quaternion.Euler(0f, smoothYAngle, 0f);
 
-            stateMachine.Player.rigidBody.MoveRotation(targetRotation);
+            stateMachine.Player.transform.rotation=targetRotation;
         }
         protected float UpdateTargetRotation(Vector3 inputDir, bool shouldConsiderCameraRotation=true)
         {
@@ -181,9 +183,18 @@ namespace ItTakesTwo
             return Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         }
 
-        protected void ResteVelocity()
+        protected void UseGravity()
         {
-            stateMachine.Player.rigidBody.velocity =Vector3.zero;
+            stateMachine.Player.velocity.y += -9.8f * Time.deltaTime;
+            stateMachine.Player.characterController.Move(stateMachine.Player.velocity * Time.deltaTime);
+
+            if (stateMachine.Player.velocity.y < 0)
+                stateMachine.Player.velocity.y = 0f;
+        }
+
+        protected void ResetVelocity()
+        {
+            stateMachine.Player.velocity =Vector3.zero;
         }
 
         protected virtual void AddInputActionsCallBacks()
