@@ -46,7 +46,9 @@ namespace ItTakesTwo
         }
         public virtual void PhysicsUpdate()
         {
+            Debug.Log(GetPlayerVerticalVelocity());
             Move();
+            UseGravity();
         }
         public virtual void OnTriggerEnter(Collider other) 
         {
@@ -76,24 +78,21 @@ namespace ItTakesTwo
         }
         private void Move()
         {
-                Debug.Log(stateMachine.Player.characterController.velocity);
+            Vector3 movementDirection;
+            
+            if (((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f)))
+            {
+                return; //not moving
+            }
 
-                Vector3 movementDirection;
-                
-                if (((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f)))
-                {
-                    return; //not moving
-                }
+            movementDirection = GetMovementInputDirection();
+            float targetRotationYAngle = Rotate(movementDirection);
 
-                movementDirection = GetMovementInputDirection();
-                float targetRotationYAngle = Rotate(movementDirection);
+            Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
+            float movementSpeed = GetMovementSpeed();
+            Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
-                Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
-                float movementSpeed = GetMovementSpeed();
-                Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
-
-                stateMachine.Player.characterController.Move(targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity+ GetPlayerVerticalVelocity());
-        
+            stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity);
         }
        
         private float Rotate(Vector3 inputDir)
@@ -147,7 +146,6 @@ namespace ItTakesTwo
         }
         protected Vector3 GetPlayerVerticalVelocity()
         {
-            UseGravity();
              return new Vector3(0f, stateMachine.Player.characterController.velocity.y, 0f);
         }
         protected void RotateTowardsTargetRotation()
@@ -185,10 +183,11 @@ namespace ItTakesTwo
 
         protected void UseGravity()
         {
-            stateMachine.Player.velocity.y += -9.8f * Time.deltaTime;
-            stateMachine.Player.characterController.Move(stateMachine.Player.velocity * Time.deltaTime);
+            stateMachine.Player.velocity.y += Time.deltaTime*-9.8f;
+            stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
 
-            if (stateMachine.Player.velocity.y < 0)
+            bool isGrounded= CheckGroundLayers();
+            if (isGrounded &&  stateMachine.Player.velocity.y < 0)
                 stateMachine.Player.velocity.y = 0f;
         }
 
