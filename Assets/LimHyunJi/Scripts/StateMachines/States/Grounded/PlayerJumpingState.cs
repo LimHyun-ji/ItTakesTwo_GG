@@ -7,8 +7,6 @@ namespace ItTakesTwo
     public class PlayerJumpingState : PlayerMovingState
     {
         private float jumpHeight;
-        private bool isGrounded;
-        private float currentDelayTime;
         public PlayerJumpingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
             jumpHeight=movementData.JumpData.JumpHeight;
@@ -18,7 +16,7 @@ namespace ItTakesTwo
             base.Enter();
             stateMachine.Player.velocity.y += Mathf.Sqrt(jumpHeight * -2f * -9.8f);
         }
-        public override void Update()
+        public override void PhysicsUpdate()
         {
             base.Update();
             OnFall();

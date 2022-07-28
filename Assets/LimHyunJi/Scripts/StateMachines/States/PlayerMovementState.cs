@@ -77,21 +77,24 @@ namespace ItTakesTwo
         }
         private void Move()
         {
-            Vector3 movementDirection;
-            
-            if (((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f)))
+            if(stateMachine.Player.isMovable)
             {
-                return; //not moving
-            }
+                Vector3 movementDirection;
+                
+                if (((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f)))
+                {
+                    return; //not moving
+                }
 
-            movementDirection = GetMovementInputDirection();
-            float targetRotationYAngle = Rotate(movementDirection);
+                movementDirection = GetMovementInputDirection();
+                float targetRotationYAngle = Rotate(movementDirection);
 
-            Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
-            float movementSpeed = GetMovementSpeed();
-            Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
+                Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
+                float movementSpeed = GetMovementSpeed();
+                Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
-            stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity);
+                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity);
+            }            
         }
        
         private float Rotate(Vector3 inputDir)

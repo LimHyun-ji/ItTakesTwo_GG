@@ -17,45 +17,26 @@ namespace ItTakesTwo
         #region  IState Methods
         public override void Enter()
         {
-            base.Enter();            
+            base.Enter();    
+            stateMachine.Player.isMovable=false;        
             stateMachine.ReusableData.SpeedModifier=dashData.speedModifier;
-            AddForceOnTransitionFromStationaryState();
         }
-        public override void Update() 
+        public override void PhysicsUpdate()
         {
             currentDashTime +=Time.deltaTime;
+            stateMachine.Player.transform.position += stateMachine.Player.transform.forward* GetMovementSpeed() * Time.deltaTime;
             if(currentDashTime > movementData.DashData.DashTime)
             {
                 stateMachine.ChangeState(stateMachine.IdlingState);
                 currentDashTime=0;
             }            
         }
-          public override void OnAnimationTransitionEvent()
+        public override void Exit()
         {
-        }
+            base.Exit();
+            stateMachine.Player.isMovable=true;        
 
+        }
         #endregion
-        # region Main Methods
-        private void AddForceOnTransitionFromStationaryState()
-        {
-            if(stateMachine.ReusableData.MovementInput != Vector2.zero)
-                return;
-            Vector3 characterRotationDir=stateMachine.Player.transform.forward;
-            characterRotationDir.y=0f;//이거 왜 해주는지?
-
-            stateMachine.Player.velocity=characterRotationDir * GetMovementSpeed();
-        }
-
-        #endregion
-
-        #region Input Methods
-        protected override void OnMovementCanceled(InputAction.CallbackContext context)
-        {
-        }
-        protected override void OnDashStarted(InputAction.CallbackContext context)
-        {
-        }
-
-        #endregion
-    }
+   }
 }
