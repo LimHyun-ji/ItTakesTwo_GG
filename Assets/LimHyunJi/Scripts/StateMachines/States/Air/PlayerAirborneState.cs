@@ -24,7 +24,7 @@ namespace ItTakesTwo
         }
         public override void OnTriggerEnter(Collider other) 
         {
-            if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
                 OnLand();
             }
@@ -32,7 +32,6 @@ namespace ItTakesTwo
 
         private void OnLand()
         {
-            //Land
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
 

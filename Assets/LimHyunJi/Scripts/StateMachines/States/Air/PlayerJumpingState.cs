@@ -16,19 +16,11 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-            //currentDelayTime=0f;
-            //isGrounded= CheckGroundLayers();
-            //if(isGrounded)
-            stateMachine.Player.rigidBody.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            stateMachine.Player.velocity.y += Mathf.Sqrt(jumpHeight * -2f * -9.8f);
         }
         public override void Update()
         {
             base.Update();
-            // currentDelayTime +=Time.deltaTime;
-            // if(isGrounded && currentDelayTime>delayTime)
-            // {
-            //     stateMachine.ChangeState(stateMachine.IdlingState);
-            // }
             OnFall();
         }
 

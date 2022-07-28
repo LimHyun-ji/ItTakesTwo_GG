@@ -43,7 +43,7 @@ namespace ItTakesTwo
             Vector3 characterRotationDir=stateMachine.Player.transform.forward;
             characterRotationDir.y=0f;//이거 왜 해주는지?
 
-            stateMachine.Player.rigidBody.velocity=characterRotationDir * GetMovementSpeed();
+            stateMachine.Player.velocity=characterRotationDir * GetMovementSpeed();
         }
 
         #endregion

@@ -12,15 +12,6 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-        }
-        public override void OnTriggerEnter(Collider other)
-        {
-            //Debug.Log(other.gameObject.layer);
-            if(other.gameObject.layer == 3)//Ground
-            {
-                stateMachine.ChangeState(stateMachine.IdlingState);
-            }
-        }
-        
+        }       
     }
 }

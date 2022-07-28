@@ -83,11 +83,7 @@ namespace ItTakesTwo
         }
         public void OnJump(InputAction.CallbackContext context)
         {
-            bool grounded=CheckGroundLayers();
-           if(grounded)
-            {
-                stateMachine.ChangeState(stateMachine.JumpingState);
-            }
+            stateMachine.ChangeState(stateMachine.JumpingState);
         }
 
         protected void OnFall()

@@ -46,7 +46,6 @@ namespace ItTakesTwo
         }
         public virtual void PhysicsUpdate()
         {
-            Debug.Log(GetPlayerVerticalVelocity());
             Move();
             UseGravity();
         }
