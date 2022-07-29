@@ -15,6 +15,7 @@ namespace ItTakesTwo
         public Rigidbody rigidBody{get; private set;}
         public Vector3 velocity;
         public LayerMask GroundLayers;
+        public GameObject groundPivot;
         public Transform mainCameraTransform{get; private set;}
         [HideInInspector]
         public Transform cameraLookPoint;

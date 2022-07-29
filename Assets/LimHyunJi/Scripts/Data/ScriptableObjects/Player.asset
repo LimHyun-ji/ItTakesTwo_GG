@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GroundedData>k__BackingField:
     <baseSpeed>k__BackingField: 5
-    <groundCheckRadius>k__BackingField: 1.1
+    <groundCheckRadius>k__BackingField: 0.1
     <FlyCheckRadius>k__BackingField: 4
     <waterCheckRadius>k__BackingField: 1
     <BaseRotationData>k__BackingField:
@@ -31,3 +31,6 @@ MonoBehaviour:
     <JumpData>k__BackingField:
       <JumpHeight>k__BackingField: 5
       airJumpCount: 0
+  <ForceDownData>k__BackingField:
+    <GravityScale>k__BackingField: 1000
+    ForceDownDelayTime: 0.3

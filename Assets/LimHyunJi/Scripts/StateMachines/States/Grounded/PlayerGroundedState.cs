@@ -56,7 +56,7 @@ namespace ItTakesTwo
         {
             if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
-                if(isGrounded)
+                if(CheckGroundLayers())
                     return;
                 else
                     OnFall();

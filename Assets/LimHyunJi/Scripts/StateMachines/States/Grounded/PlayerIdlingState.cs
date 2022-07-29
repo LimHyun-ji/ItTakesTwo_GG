@@ -17,12 +17,12 @@ namespace ItTakesTwo
             movementData.DashData.airDashCount=0;
             stateMachine.ReusableData.SpeedModifier =0f;
         }
-        public override void Update()
+        public override void PhysicsUpdate()
         {
-            base.Update();
+            base.PhysicsUpdate();
 
             if(stateMachine.ReusableData.MovementInput == Vector2.zero)
-                return;
+                return; 
             OnMove();
         }
         #endregion

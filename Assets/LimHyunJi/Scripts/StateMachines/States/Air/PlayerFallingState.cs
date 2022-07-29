@@ -15,6 +15,7 @@ namespace ItTakesTwo
         }
         public override void PhysicsUpdate()
         {
+            base.PhysicsUpdate();
             UseGravity(45f);
         }
     }

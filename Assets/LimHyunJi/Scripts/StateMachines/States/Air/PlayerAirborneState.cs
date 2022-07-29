@@ -20,7 +20,6 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
-
         }
         public override void OnTriggerEnter(Collider other) 
         {
@@ -39,10 +38,17 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
+            stateMachine.Player.Input.PlayerActions.DownForce.performed += OnDownForce;
         }
         protected override void RemoveinputActionsCallBacks()
         {
             base.RemoveinputActionsCallBacks();
+            stateMachine.Player.Input.PlayerActions.DownForce.performed -= OnDownForce;
+        }
+        
+        public void OnDownForce(InputAction.CallbackContext context)
+        {
+            stateMachine.ChangeState(stateMachine.ForceDownState);
         }
         #endregion
     }

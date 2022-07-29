@@ -95,7 +95,7 @@ namespace ItTakesTwo
                 float movementSpeed = GetMovementSpeed();
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
-                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity);
+                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity+GetPlayerVerticalVelocity());
             }            
         }
        
@@ -231,7 +231,7 @@ namespace ItTakesTwo
         }
         protected virtual bool CheckGroundLayers()
         {
-            bool grounded =Physics.CheckSphere(stateMachine.Player.transform.position, movementData.groundCheckRadius, stateMachine.Player.GroundLayers, QueryTriggerInteraction.Ignore);
+            bool grounded =Physics.CheckSphere(stateMachine.Player.groundPivot.transform.position, movementData.groundCheckRadius, stateMachine.Player.GroundLayers, QueryTriggerInteraction.Ignore);
             return grounded;
         }
         #endregion
