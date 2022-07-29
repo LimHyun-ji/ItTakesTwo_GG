@@ -95,7 +95,7 @@ namespace ItTakesTwo
                 float movementSpeed = GetMovementSpeed();
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
-                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity+GetPlayerVerticalVelocity());
+                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity);
             }            
         }
        
