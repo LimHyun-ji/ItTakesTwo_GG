@@ -9,6 +9,7 @@ namespace ItTakesTwo
 
     public class PlayerGroundedState : PlayerMovementState
     {
+        protected bool shouldSprint;
         public PlayerGroundedState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -29,9 +30,7 @@ namespace ItTakesTwo
         {
             base.AddInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
-            stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
-            stateMachine.Player.Input.PlayerActions.Sprint.performed +=OnSprintPerformed;
-            stateMachine.Player.Input.PlayerActions.Jump.started += OnJump;
+            stateMachine.Player.Input.PlayerActions.SprintToggle.started +=OnSprintToggle;
 
         }
 
@@ -40,24 +39,24 @@ namespace ItTakesTwo
             base.RemoveinputActionsCallBacks();
 
             stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
-            stateMachine.Player.Input.PlayerActions.Dash.started -= OnDashStarted;
-            stateMachine.Player.Input.PlayerActions.Sprint.performed -=OnSprintPerformed;
-            stateMachine.Player.Input.PlayerActions.Jump.started -= OnJump;
+            stateMachine.Player.Input.PlayerActions.SprintToggle.started -=OnSprintToggle;
 
         }
 
         protected virtual void OnMove()
         {
-            stateMachine.ChangeState(stateMachine.RunningState);   
+            if(shouldSprint)
+                stateMachine.ChangeState(stateMachine.SprintingState);   
+            else
+                stateMachine.ChangeState(stateMachine.RunningState);   
         }
         
 
         public override void OnTriggerExit(Collider other) 
         {
-            if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
-                bool grounded = CheckGroundLayers();
-                if(grounded)
+                if(isGrounded)
                     return;
                 else
                     OnFall();
@@ -73,23 +72,12 @@ namespace ItTakesTwo
         {
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
-        protected virtual void OnDashStarted(InputAction.CallbackContext context)
+        
+        public void OnSprintToggle(InputAction.CallbackContext context)
         {
-            stateMachine.ChangeState(stateMachine.DashingState);
+            shouldSprint = !shouldSprint;
         }
-        public void OnSprintPerformed(InputAction.CallbackContext context)
-        {
-            stateMachine.ChangeState(stateMachine.SprintingState);
-        }
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            stateMachine.ChangeState(stateMachine.JumpingState);
-        }
-
-        protected void OnFall()
-        {
-            stateMachine.ChangeState(stateMachine.FallingState);
-        }
+       
         #endregion
     }
 }

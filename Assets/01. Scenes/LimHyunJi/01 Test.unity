@@ -523,6 +523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Data>k__BackingField: {fileID: 11400000, guid: ca524a26fe998a043a2645d54d3cf7d8, type: 2}
   characterController: {fileID: 0}
+  isMovable: 0
   velocity: {x: 0, y: 0, z: 0}
   GroundLayers:
     serializedVersion: 2
@@ -1315,6 +1316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Data>k__BackingField: {fileID: 11400000, guid: ca524a26fe998a043a2645d54d3cf7d8, type: 2}
   characterController: {fileID: 0}
+  isMovable: 0
   velocity: {x: 0, y: 0, z: 0}
   GroundLayers:
     serializedVersion: 2

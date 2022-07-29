@@ -51,12 +51,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sprint",
+                    "name": "SprintToggle",
                     "type": "Button",
                     "id": "3a63c3b5-a64e-49ff-8aec-9be5a00f262f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold(duration=1)",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -163,22 +163,11 @@
                 {
                     "name": "",
                     "id": "3f5fa371-e988-4905-a4d3-3e0ed1ff5717",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/capsLock",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "19b13793-b094-4e91-b145-044a43afab0b",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
+                    "action": "SprintToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

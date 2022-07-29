@@ -25,7 +25,9 @@ MonoBehaviour:
       <speedModifier>k__BackingField: 5.54
       <DashDistance>k__BackingField: 3.9
       <DashDrag>k__BackingField: {x: 1, y: 1, z: 10}
-      <DashTime>k__BackingField: 0.1
+      <DashTime>k__BackingField: 0.2
       <SprintTime>k__BackingField: 10
+      airDashCount: 0
     <JumpData>k__BackingField:
       <JumpHeight>k__BackingField: 5
+      airJumpCount: 0

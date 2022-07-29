@@ -14,12 +14,24 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-            stateMachine.Player.velocity.y += Mathf.Sqrt(jumpHeight * -2f * -9.8f);
+            bool grounded =CheckGroundLayers();
+            if(!isGrounded)
+            {
+                movementData.JumpData.airJumpCount++;
+            }
+            
+            //stateMachine.Player.velocity.y += Mathf.Sqrt(jumpHeight * -2f * -9.8f);
+            stateMachine.Player.velocity.y += Mathf.Sqrt(jumpHeight * -2f *-9.8f);
+            //stateMachine.Player.rigidBody.AddForce(Vector2.up * jumpHeight, ForceMode.Impulse);
         }
         public override void PhysicsUpdate()
         {
-            base.Update();
+            base.PhysicsUpdate();
             OnFall();
+        }
+        public override void Exit()
+        {
+            base.Exit();
         }
 
     }

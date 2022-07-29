@@ -10,6 +10,7 @@ namespace ItTakesTwo
     public class PlayerMovementState : IState
     {
         protected PlayerMovementStateMachine stateMachine;
+        protected bool isGrounded;
 
         protected PlayerGroundedData movementData;
         public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine)
@@ -28,6 +29,7 @@ namespace ItTakesTwo
         public virtual void Enter()
         {
             Debug.Log("State"+ GetType().Name);
+            UseGravity(9.8f);
             AddInputActionsCallBacks();
         }
 
@@ -47,7 +49,7 @@ namespace ItTakesTwo
         public virtual void PhysicsUpdate()
         {
             Move();
-            UseGravity();
+            UseGravity(9.8f);
         }
         public virtual void OnTriggerEnter(Collider other) 
         {
@@ -183,12 +185,13 @@ namespace ItTakesTwo
             return Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         }
 
-        protected void UseGravity()
+        protected void UseGravity(float gravity)
         {
-            stateMachine.Player.velocity.y += Time.deltaTime*-9.8f;
+            isGrounded=CheckGroundLayers();
+            
+            stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
             stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
 
-            bool isGrounded= CheckGroundLayers();
             if (isGrounded &&  stateMachine.Player.velocity.y < 0)
                 stateMachine.Player.velocity.y = 0f;
         }
@@ -200,15 +203,32 @@ namespace ItTakesTwo
 
         protected virtual void AddInputActionsCallBacks()
         {
-
+            stateMachine.Player.Input.PlayerActions.Jump.started += OnJump;
+            stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
         }
 
     
         protected virtual void RemoveinputActionsCallBacks()
         {
+            stateMachine.Player.Input.PlayerActions.Jump.started -= OnJump;
+            stateMachine.Player.Input.PlayerActions.Dash.started -= OnDashStarted;
+        }
+        
+        protected virtual void OnDashStarted(InputAction.CallbackContext context)
+        {
+            if(movementData.DashData.airDashCount == 0)
+                stateMachine.ChangeState(stateMachine.DashingState);
+        }
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if(movementData.JumpData.airJumpCount == 0)
+                stateMachine.ChangeState(stateMachine.JumpingState);
         }
 
-     
+        protected void OnFall()
+        {
+            stateMachine.ChangeState(stateMachine.FallingState);
+        }
         protected virtual bool CheckGroundLayers()
         {
             bool grounded =Physics.CheckSphere(stateMachine.Player.transform.position, movementData.groundCheckRadius, stateMachine.Player.GroundLayers, QueryTriggerInteraction.Ignore);

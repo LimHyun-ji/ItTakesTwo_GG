@@ -12,6 +12,10 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-        }       
+        }
+        public override void PhysicsUpdate()
+        {
+            UseGravity(45f);
+        }
     }
 }

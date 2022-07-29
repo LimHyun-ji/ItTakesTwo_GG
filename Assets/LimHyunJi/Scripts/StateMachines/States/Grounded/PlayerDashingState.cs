@@ -6,10 +6,11 @@ using UnityEngine.InputSystem;
 
 namespace ItTakesTwo
 {
-    public class PlayerDashingState : PlayerGroundedState
+    public class PlayerDashingState : PlayerMovingState
     {
         private PlayerDashData dashData;
         private float currentDashTime=0;
+        
         public PlayerDashingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
             dashData=movementData.DashData;
@@ -18,16 +19,25 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();    
-            stateMachine.Player.isMovable=false;        
+            stateMachine.Player.isMovable=false;   
+            if(!isGrounded)   
+            {
+                movementData.DashData.airDashCount++;
+            }
             stateMachine.ReusableData.SpeedModifier=dashData.speedModifier;
+
         }
         public override void PhysicsUpdate()
         {
+            base.PhysicsUpdate();
             currentDashTime +=Time.deltaTime;
             stateMachine.Player.transform.position += stateMachine.Player.transform.forward* GetMovementSpeed() * Time.deltaTime;
             if(currentDashTime > movementData.DashData.DashTime)
             {
-                stateMachine.ChangeState(stateMachine.IdlingState);
+                if(isGrounded)
+                    stateMachine.ChangeState(stateMachine.IdlingState);
+                else
+                    stateMachine.ChangeState(stateMachine.FallingState);
                 currentDashTime=0;
             }            
         }
@@ -35,7 +45,6 @@ namespace ItTakesTwo
         {
             base.Exit();
             stateMachine.Player.isMovable=true;        
-
         }
         #endregion
    }
