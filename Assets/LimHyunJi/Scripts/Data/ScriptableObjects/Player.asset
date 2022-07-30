@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GroundedData>k__BackingField:
     <baseSpeed>k__BackingField: 5
-    <groundCheckRadius>k__BackingField: 0.1
+    <groundCheckRadius>k__BackingField: 0.028
     <FlyCheckRadius>k__BackingField: 4
     <waterCheckRadius>k__BackingField: 1
     <BaseRotationData>k__BackingField:

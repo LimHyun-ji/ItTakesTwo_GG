@@ -11,9 +11,6 @@ namespace ItTakesTwo
         public void HandleInut();
         public void Update();
         public void PhysicsUpdate();//FixedUpdate
-        public void OnAnimationEnterEvent();
-        public void OnAnimationExitEvent();
-        public void OnAnimationTransitionEvent();
         public void OnTriggerExit(Collider collider);
         public void OnTriggerEnter(Collider collider);
     }

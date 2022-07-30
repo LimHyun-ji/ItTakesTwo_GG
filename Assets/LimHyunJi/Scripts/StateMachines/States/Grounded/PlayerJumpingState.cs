@@ -14,7 +14,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-            //stateMachine.ReusableData.SpeedModifier=0f;            
+            stateMachine.Player.velocity.y=0f;            
             if(!isGrounded)
             {
                 movementData.JumpData.airJumpCount++;

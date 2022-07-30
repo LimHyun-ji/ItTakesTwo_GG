@@ -10,6 +10,7 @@ namespace ItTakesTwo
     public class PlayerGroundedState : PlayerMovementState
     {
         protected bool shouldSprint;
+        protected bool shouldSlide;
         public PlayerGroundedState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -31,7 +32,7 @@ namespace ItTakesTwo
             base.AddInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
             stateMachine.Player.Input.PlayerActions.SprintToggle.started +=OnSprintToggle;
-
+            stateMachine.Player.Input.PlayerActions.Slide.started += OnSlide;
         }
 
         protected override void RemoveinputActionsCallBacks()
@@ -40,11 +41,14 @@ namespace ItTakesTwo
 
             stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
             stateMachine.Player.Input.PlayerActions.SprintToggle.started -=OnSprintToggle;
+            stateMachine.Player.Input.PlayerActions.Slide.started -= OnSlide;
 
         }
 
         protected virtual void OnMove()
         {
+            // if(shouldSlide)
+            //     stateMachine.ChangeState(stateMachine.SlidingState);
             if(shouldSprint)
                 stateMachine.ChangeState(stateMachine.SprintingState);   
             else
@@ -56,7 +60,7 @@ namespace ItTakesTwo
         {
             if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
-                if(CheckGroundLayers())
+                if(stateMachine.Player.characterController.isGrounded || CheckGroundLayers())
                     return;
                 else
                     OnFall();
@@ -77,7 +81,10 @@ namespace ItTakesTwo
         {
             shouldSprint = !shouldSprint;
         }
-       
+        private void OnSlide(InputAction.CallbackContext obj)
+        {
+            shouldSlide = !shouldSlide;
+        }
         #endregion
     }
 }

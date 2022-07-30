@@ -13,6 +13,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+
             movementData.JumpData.airJumpCount=0;
             movementData.DashData.airDashCount=0;
             stateMachine.ReusableData.SpeedModifier =0f;
@@ -20,7 +21,6 @@ namespace ItTakesTwo
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-
             if(stateMachine.ReusableData.MovementInput == Vector2.zero)
                 return; 
             OnMove();

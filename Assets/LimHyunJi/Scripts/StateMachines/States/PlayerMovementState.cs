@@ -48,8 +48,8 @@ namespace ItTakesTwo
         }
         public virtual void PhysicsUpdate()
         {
-            Move();
             UseGravity(9.8f);
+            Move();
         }
         public virtual void OnTriggerEnter(Collider other) 
         {
@@ -58,17 +58,7 @@ namespace ItTakesTwo
         public virtual void OnTriggerExit(Collider other) 
         {
         }
-        public virtual void OnAnimationEnterEvent()
-        {
-        }
-
-        public virtual void OnAnimationExitEvent()
-        {
-        }
-
-        public virtual void OnAnimationTransitionEvent()
-        {
-        }
+ 
 
         #endregion
 
@@ -187,13 +177,13 @@ namespace ItTakesTwo
 
         protected void UseGravity(float gravity)
         {
-            isGrounded=CheckGroundLayers();
+            isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers();
             
             stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
             stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
 
-            if (isGrounded &&  stateMachine.Player.velocity.y < 0)
-                stateMachine.Player.velocity.y = 0f;
+            if (isGrounded && stateMachine.Player.velocity.y < 0)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
+                stateMachine.Player.velocity.y = 0f; 
         }
 
         protected void ResetVelocity()

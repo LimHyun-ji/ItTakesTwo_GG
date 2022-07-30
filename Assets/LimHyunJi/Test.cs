@@ -7,7 +7,7 @@ namespace ItTakesTwo
     public class Test : MonoBehaviour
     {
         float speed=3f;
-        Vector3 _velocity;
+        public Vector3 _velocity;
         private CharacterController _controller;
 
         void Start()
