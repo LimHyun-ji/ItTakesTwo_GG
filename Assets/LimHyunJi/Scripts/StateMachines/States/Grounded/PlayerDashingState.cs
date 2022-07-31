@@ -29,9 +29,10 @@ namespace ItTakesTwo
         }
         public override void PhysicsUpdate()
         {
+            //대시는 다른 방식으로 수정할 것
             base.PhysicsUpdate();
             currentDashTime +=Time.deltaTime;
-            stateMachine.Player.transform.position += stateMachine.Player.transform.forward* GetMovementSpeed() * Time.deltaTime;
+            stateMachine.Player.characterController.Move(Time.deltaTime * stateMachine.Player.transform.forward* GetMovementSpeed());
             if(currentDashTime > movementData.DashData.DashTime)
             {
                 if(isGrounded)

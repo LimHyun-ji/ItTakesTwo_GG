@@ -6,31 +6,113 @@ namespace ItTakesTwo
 {
     public class PlayerBaseState : IState
     {
-        public void Enter()
+        protected PlayerMovementStateMachine stateMachine;
+        protected bool isGrounded;
+
+        protected PlayerGroundedData movementData;
+        public PlayerBaseState(PlayerMovementStateMachine playerMovementStateMachine)
+        {
+            stateMachine=playerMovementStateMachine;
+            movementData=stateMachine.Player.Data.GroundedData;
+
+            InitializedData();
+        }
+        private void InitializedData()
+        {
+            stateMachine.ReusableData.TimeToReachTargetRotation=movementData.BaseRotationData.targetRotationReachTime;
+        }
+        public virtual void Enter()
+        {
+            Debug.Log("State"+ GetType().Name);
+            AddInputActionsCallBacks();
+        }
+
+        public virtual void Exit()
+        {
+            RemoveInputActionsCallBacks();
+        }
+
+        public virtual void HandleInput()
+        {
+            ReadMovementInput();
+        }
+
+        public virtual void OnTriggerEnter(Collider collider)
         {
         }
 
-        public void Exit()
+        public virtual void OnTriggerExit(Collider collider)
         {
         }
 
-        public void HandleInut()
+        public virtual void PhysicsUpdate()
+        {
+        }
+        public virtual void Update()
         {
         }
 
-        public void OnTriggerEnter(Collider collider)
+        #region Main Methods
+        private void ReadMovementInput()
         {
+            stateMachine.ReusableData.MovementInput=stateMachine.Player.Input.PlayerActions.Movement.ReadValue<Vector2>();
+        }
+        #endregion
+
+        #region ReusableMethods
+        protected virtual void AddInputActionsCallBacks()
+        {
+            
+        }
+        protected virtual void RemoveInputActionsCallBacks()
+        {
+            
+        }
+        protected Vector3 GetMovementInputDirection()
+        {
+            return new Vector3(stateMachine.ReusableData.MovementInput.x, 0f,stateMachine.ReusableData.MovementInput.y);
+        }
+        protected float GetMovementSpeed()
+        {
+            return movementData.baseSpeed * stateMachine.ReusableData.SpeedModifier;
+        }
+        protected Vector3 GetPlayerHorizontalVelocity()
+        {
+            Vector3 playerHorizontalvelocity = stateMachine.Player.characterController.velocity;
+            playerHorizontalvelocity.y=0f;
+
+            return playerHorizontalvelocity;
         }
 
-        public void OnTriggerExit(Collider collider)
+        protected Vector3 GetPlayerVerticalVelocity()
         {
+             return new Vector3(0f, stateMachine.Player.characterController.velocity.y, 0f);
         }
 
-        public void PhysicsUpdate()
+        protected void UseGravity(float gravity)
         {
+            isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers();
+            
+            stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
+            stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
+
+            if (isGrounded && stateMachine.Player.velocity.y < 0)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
+                stateMachine.Player.velocity.y = 0f; 
         }
-        void IState.Update()
+
+        protected void ResetVelocity()
         {
+            stateMachine.Player.velocity =Vector3.zero;
         }
+
+        
+        protected bool CheckGroundLayers()
+        {
+            bool grounded =Physics.CheckSphere(stateMachine.Player.groundPivot.transform.position, movementData.groundCheckRadius, stateMachine.Player.GroundLayers, QueryTriggerInteraction.Ignore);
+            return grounded;
+        }
+        
+        #endregion
+
     }
 }

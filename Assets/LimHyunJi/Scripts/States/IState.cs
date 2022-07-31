@@ -8,7 +8,7 @@ namespace ItTakesTwo
     {
         public void Enter();
         public void Exit();
-        public void HandleInut();
+        public void HandleInput();
         public void Update();
         public void PhysicsUpdate();//FixedUpdate
         public void OnTriggerExit(Collider collider);

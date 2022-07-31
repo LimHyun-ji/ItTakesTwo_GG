@@ -16,7 +16,7 @@ namespace ItTakesTwo
         }
         public void HandleInut()
         {
-            currentState?.HandleInut();
+            currentState?.HandleInput();
         }
         public void Update()
         {

@@ -23,6 +23,7 @@ namespace ItTakesTwo
         }
         public override void OnTriggerEnter(Collider other) 
         {
+            base.OnTriggerEnter(other);
             if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
                 OnLand();
@@ -40,9 +41,9 @@ namespace ItTakesTwo
             base.AddInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.DownForce.performed += OnDownForce;
         }
-        protected override void RemoveinputActionsCallBacks()
+        protected override void RemoveInputActionsCallBacks()
         {
-            base.RemoveinputActionsCallBacks();
+            base.RemoveInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.DownForce.performed -= OnDownForce;
         }
         

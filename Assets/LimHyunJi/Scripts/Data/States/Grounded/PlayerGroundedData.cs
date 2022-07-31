@@ -16,6 +16,7 @@ namespace ItTakesTwo
         [field: SerializeField]  public PlayerRunData RunData{get; private set;}
         [field: SerializeField]  public PlayerDashData DashData{get; private set;}
         [field: SerializeField]  public PlayerJumpData JumpData{get; private set;}
+        [field: SerializeField]  public PlayerSlopeData SlopeData{get; private set;}
 
 
     }
