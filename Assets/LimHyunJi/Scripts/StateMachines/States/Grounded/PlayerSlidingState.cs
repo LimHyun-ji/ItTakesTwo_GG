@@ -11,7 +11,7 @@ namespace ItTakesTwo
         public PlayerSlidingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
-        Vector3 movementDir;
+        Vector3 movementDir=Vector3.zero;
         public override void Enter()
         {
             base.Enter();
@@ -20,13 +20,6 @@ namespace ItTakesTwo
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-            //Move(Vector3.right);
-            SlopeMove();
-        }
-
-        private void SlopeMove()
-        {
-            stateMachine.Player.characterController.Move(GetEnvironmentDir());
 
         }
 
@@ -36,9 +29,10 @@ namespace ItTakesTwo
         }
         protected override void Move(Vector3 environmentDir)
         {
-            base.Move(environmentDir);
+            movementDir=GetSlopeDirection();
+            stateMachine.Player.characterController.Move(movementDir*GetMovementSpeed()*Time.deltaTime);
+            //base.Move(movementDir);
 
-            //stateMachine.Player.characterController.Move(GetEnvironmentDir() *5f* Time.deltaTime);
         }
         
         protected override void AddInputActionsCallBacks()
@@ -51,20 +45,33 @@ namespace ItTakesTwo
         }
         protected void OnExitSlide(InputAction.CallbackContext obj)
         {
+            shouldSlide=false;
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
-        protected Vector3 GetEnvironmentDir()
-        {
-            RaycastHit hit;
 
-            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2 + 1f))
+        RaycastHit slopeHit;
+
+        private Vector3 GetSlopeDirection()
+        {
+            
+            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out slopeHit, stateMachine.Player.characterController.height/2* movementData.SlopeData.slopeForceRayLength,1<<8))
             {
-                // Vector3 slopeDir = Vector3.down-hit.normal*Vector3.Dot(Vector3.up, hit.normal);
-                // slopeDir.Normalize();
-                    if(hit.normal != Vector3.up)
-                        return Vector3.Cross(hit.normal, hit.point);
+                if(slopeHit.normal ==Vector3.up) 
+                    return Vector3.zero;
+                Vector3 slopeDir= Vector3.up - slopeHit.normal * Vector3.Dot(Vector3.up, slopeHit.normal);
+                float slideSpeed=GetMovementSpeed()+Time.deltaTime;
+
+                movementDir = slopeDir * -slideSpeed;
+                movementDir.y=movementDir.y -movementData.SlopeData.SlopeForce*100*Time.deltaTime;
+                if(movementDir.y>0) movementDir.y=0f;
+                return movementDir;
+                //stateMachine.Player.characterController.Move(movementDir*Time.deltaTime);
             }
-            return Vector3.zero;              
+            return Vector3.zero;
+
         }
+        
+
+        
     }
 }

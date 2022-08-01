@@ -22,18 +22,18 @@ MonoBehaviour:
     <RunData>k__BackingField:
       <speedModifier>k__BackingField: 1
     <DashData>k__BackingField:
-      <speedModifier>k__BackingField: 3
+      <speedModifier>k__BackingField: 2
       <DashDistance>k__BackingField: 1.26
       <DashDrag>k__BackingField: {x: 1, y: 1, z: 10}
-      <DashTime>k__BackingField: 0.2
+      <DashTime>k__BackingField: 0.4
       <SprintTime>k__BackingField: 3
       airDashCount: 0
     <JumpData>k__BackingField:
       <JumpHeight>k__BackingField: 5
       airJumpCount: 0
     <SlopeData>k__BackingField:
-      <SlopeForce>k__BackingField: 5
-      <slopeForceRayLength>k__BackingField: 1
+      <SlopeForce>k__BackingField: 1
+      <slopeForceRayLength>k__BackingField: 1.5
       <speedModifier>k__BackingField: 1
   <ForceDownData>k__BackingField:
     <GravityScale>k__BackingField: 1000

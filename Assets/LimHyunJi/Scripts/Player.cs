@@ -58,5 +58,7 @@ namespace ItTakesTwo
         {
             movementStateMachine.OnTriggerExit(collider);
         }
+
+
     }
 }

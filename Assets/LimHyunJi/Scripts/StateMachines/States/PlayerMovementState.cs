@@ -9,6 +9,8 @@ namespace ItTakesTwo
 
     public class PlayerMovementState : PlayerBaseState
     {
+        protected static bool shouldSlide;
+
         public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -53,13 +55,14 @@ namespace ItTakesTwo
             if(stateMachine.Player.isMovable)
             {
                 Vector3 movementDirection;
+
                 
-                if (((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f)))
+                if ((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f) && environmentDir == Vector3.zero)
                 {
                     return; //not moving
                 }
 
-                movementDirection = GetMovementInputDirection()+ environmentDir.normalized;
+                movementDirection = GetMovementInputDirection()+ environmentDir;
                 float targetRotationYAngle = Rotate(movementDirection);
 
                 Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
