@@ -76,11 +76,11 @@ namespace ItTakesTwo
             }
         }
 
-        protected bool OnSlope()
+        protected bool OnSlope()//원래 layer 1<< 8로 ground에 ray를 쏴야 정상인데 그냥 몸통에다가 쏴서 움직이지 slope Force를 추가해주는 격
         {
             //isJumping return false;
             RaycastHit hit;
-            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2.0f* movementData.SlopeData.slopeForceRayLength, 1<<8))
+            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2.0f* movementData.SlopeData.slopeForceRayLength))
                 if(hit.normal != Vector3.up)
                     return true;
             return false;

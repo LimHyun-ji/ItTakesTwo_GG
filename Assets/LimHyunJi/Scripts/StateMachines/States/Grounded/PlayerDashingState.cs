@@ -10,6 +10,7 @@ namespace ItTakesTwo
     {
         private PlayerDashData dashData;
         private float currentDashTime=0;
+        float downForce;
         
         public PlayerDashingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
@@ -23,7 +24,11 @@ namespace ItTakesTwo
             if(!isGrounded)   
             {
                 movementData.DashData.airDashCount++;
+                downForce=0f;
             }
+            else
+                downForce=movementData.SlopeData.SlopeForce*100;
+                
             stateMachine.ReusableData.SpeedModifier=dashData.speedModifier;
 
         }
@@ -34,8 +39,8 @@ namespace ItTakesTwo
             
             Debug.Log(stateMachine.Player.characterController.velocity.y);
             currentDashTime +=Time.deltaTime;
-
-            stateMachine.Player.characterController.Move(Time.deltaTime * stateMachine.Player.transform.forward* GetMovementSpeed() + Vector3.down * movementData.SlopeData.SlopeForce*100*Time.deltaTime);
+            
+            stateMachine.Player.characterController.Move(Time.deltaTime * stateMachine.Player.transform.forward* GetMovementSpeed() + Vector3.down * downForce*Time.deltaTime);
             if(currentDashTime > movementData.DashData.DashTime)
             {
                 if(isGrounded)
