@@ -12,10 +12,12 @@ namespace ItTakesTwo
         {
         }
         Vector3 movementDir=Vector3.zero;
+        float slideSpeed;
         public override void Enter()
         {
             base.Enter();
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
+            slideSpeed=GetMovementSpeed()+Time.deltaTime;
         }
         public override void PhysicsUpdate()
         {
@@ -25,13 +27,14 @@ namespace ItTakesTwo
 
         public override void Exit()
         {
+            movementDir=Vector3.zero;
             base.Exit();
         }
-        protected override void Move(Vector3 environmentDir)
+        protected override void Move(Vector3 environmentDir, float environmentForce)
         {
             movementDir=GetSlopeDirection();
-            stateMachine.Player.characterController.Move(movementDir*GetMovementSpeed()*Time.deltaTime);
-            //base.Move(movementDir);
+            stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
+            //base.Move(movementDir,slideSpeed);
 
         }
         
@@ -54,12 +57,16 @@ namespace ItTakesTwo
         private Vector3 GetSlopeDirection()
         {
             
+
             if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out slopeHit, stateMachine.Player.characterController.height/2* movementData.SlopeData.slopeForceRayLength,1<<8))
             {
-                if(slopeHit.normal ==Vector3.up) 
-                    return Vector3.zero;
+                if(slopeHit.normal ==Vector3.up)
+                {
+                    slideSpeed = Mathf.Lerp(slideSpeed , 0f, Time.deltaTime);
+                    return movementDir;//이전 값 리턴
+
+                }
                 Vector3 slopeDir= Vector3.up - slopeHit.normal * Vector3.Dot(Vector3.up, slopeHit.normal);
-                float slideSpeed=GetMovementSpeed()+Time.deltaTime;
 
                 movementDir = slopeDir * -slideSpeed;
                 movementDir.y=movementDir.y -movementData.SlopeData.SlopeForce*100*Time.deltaTime;
@@ -68,9 +75,7 @@ namespace ItTakesTwo
                 //stateMachine.Player.characterController.Move(movementDir*Time.deltaTime);
             }
             return Vector3.zero;
-
-        }
-        
+        }        
 
         
     }

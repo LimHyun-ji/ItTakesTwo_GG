@@ -28,7 +28,7 @@ namespace ItTakesTwo
         {
             base.PhysicsUpdate();
             UseGravity(9.8f);
-            Move(Vector3.zero);
+            Move(Vector3.zero, 0f);
         }
         public override void HandleInput()
         {
@@ -50,7 +50,7 @@ namespace ItTakesTwo
 
         #region Main Methods
 
-        protected virtual void Move(Vector3 environmentDir)
+        protected virtual void Move(Vector3 environmentDir, float environmentForce)
         {
             if(stateMachine.Player.isMovable)
             {
@@ -62,7 +62,7 @@ namespace ItTakesTwo
                     return; //not moving
                 }
 
-                movementDirection = GetMovementInputDirection()+ environmentDir;
+                movementDirection = GetMovementInputDirection();
                 float targetRotationYAngle = Rotate(movementDirection);
 
                 Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
