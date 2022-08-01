@@ -11,6 +11,7 @@ namespace ItTakesTwo
     {
 
         protected bool shouldSprint;
+        protected bool shouldSlide;
         protected bool canSlide=true;//임시, 슬라이딩 가능한 경사면이 있으면 슬라이딩으로 할 있도록 trigger에서 체크 
         public PlayerGroundedState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
@@ -22,7 +23,7 @@ namespace ItTakesTwo
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-            SlopeForce(movementData.SlopeData.SlopeForce);
+            SlopeForce();
         }
 
         public override void Exit()
@@ -59,7 +60,6 @@ namespace ItTakesTwo
         public override void OnTriggerExit(Collider other) 
         {
             base.OnTriggerExit(other);
-            isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers() || OnSlope();
             if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
                 if(isGrounded)
@@ -68,11 +68,11 @@ namespace ItTakesTwo
                     OnFall();
             }
         }
-        protected void SlopeForce(float force)
+        protected void SlopeForce()
         {
             if(stateMachine.ReusableData.MovementInput != Vector2.zero && OnSlope())
             {
-                stateMachine.Player.characterController.Move(Vector3.down *GetMovementSpeed()* force *Time.deltaTime);
+                stateMachine.Player.characterController.Move(Vector3.down * stateMachine.Player.characterController.height /2 *GetMovementSpeed()* movementData.SlopeData.SlopeForce *Time.deltaTime);
             }
         }
 
@@ -80,7 +80,7 @@ namespace ItTakesTwo
         {
             //isJumping return false;
             RaycastHit hit;
-            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2.0f* movementData.SlopeData.slopeForceRayLength, 1<<8))
+            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2* movementData.SlopeData.slopeForceRayLength))
                 if(hit.normal != Vector3.up)
                     return true;
             return false;
@@ -101,10 +101,7 @@ namespace ItTakesTwo
         }
         protected void OnSlide(InputAction.CallbackContext obj)
         {
-            shouldSlide = true;
-            if(shouldSlide)
-                stateMachine.ChangeState(stateMachine.SlidingState);
-            
+            stateMachine.ChangeState(stateMachine.SlidingState);
         }
         #endregion
     }

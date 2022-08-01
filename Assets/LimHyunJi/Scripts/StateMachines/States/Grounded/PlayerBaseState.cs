@@ -7,7 +7,7 @@ namespace ItTakesTwo
     public class PlayerBaseState : IState
     {
         protected PlayerMovementStateMachine stateMachine;
-        protected static bool isGrounded;
+        protected bool isGrounded;
 
         protected PlayerGroundedData movementData;
         public PlayerBaseState(PlayerMovementStateMachine playerMovementStateMachine)
@@ -95,7 +95,8 @@ namespace ItTakesTwo
             
             stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
             stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
-            if (isGrounded && stateMachine.Player.velocity.y <0f)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
+
+            if (isGrounded && stateMachine.Player.velocity.y < 0)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
                 stateMachine.Player.velocity.y = 0f; 
         }
 
