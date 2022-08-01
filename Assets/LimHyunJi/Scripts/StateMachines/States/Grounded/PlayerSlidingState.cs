@@ -33,8 +33,8 @@ namespace ItTakesTwo
         protected override void Move(Vector3 environmentDir, float environmentForce)
         {
             movementDir=GetSlopeDirection();
-            stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
-            //base.Move(movementDir,slideSpeed);
+            //stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
+            base.Move(movementDir,slideSpeed);
 
         }
         

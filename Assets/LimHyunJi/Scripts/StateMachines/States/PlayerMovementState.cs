@@ -62,14 +62,16 @@ namespace ItTakesTwo
                     return; //not moving
                 }
 
-                movementDirection = GetMovementInputDirection();
+                float speed = (GetMovementInputDirection()* GetMovementSpeed() + environmentDir*environmentForce).magnitude/2;
+                movementDirection = GetMovementInputDirection()+environmentDir;
                 float targetRotationYAngle = Rotate(movementDirection);
 
                 Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
                 float movementSpeed = GetMovementSpeed();
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
-                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity);
+                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection*movementSpeed - currentPlayerHorizontalVelocity);// + environmentDir * environmentForce *Time.deltaTime);
+                //stateMachine.Player.characterController.Move(environmentDir * environmentForce *Time.deltaTime);
             }            
         }
        
