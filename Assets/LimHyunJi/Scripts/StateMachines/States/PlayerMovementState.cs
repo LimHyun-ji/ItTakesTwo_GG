@@ -50,10 +50,13 @@ namespace ItTakesTwo
 
         #region Main Methods
         float newEnvironmentForce=0;
-
+        float speed=0f;
+        float addExternalSpeed;
+        public bool isInput;
 
         protected virtual void Move(Vector3 environmentDir, float environmentForce)
         {
+            //Debug.Log("Velocity" +stateMachine.Player.characterController.velocity.y);
             if(stateMachine.Player.isMovable)
             {
                 Vector3 movementDirection;
@@ -62,18 +65,48 @@ namespace ItTakesTwo
                 {
                     return; //not moving
                 }
+                //고칠 부분//
+                
                 newEnvironmentForce = Mathf.Lerp(newEnvironmentForce, environmentForce, Time.deltaTime);
 
-                float speed = (GetMovementInputDirection()* GetMovementSpeed() + environmentDir.normalized*newEnvironmentForce).magnitude;               
+                movementDirection=(GetMovementInputDirection() +environmentDir).normalized;
 
-                movementDirection = GetMovementInputDirection()+environmentDir;
+                if(environmentDir != Vector3.zero ) //환경방향이 있는 경우(ex 슬라이딩)
+                {
+                    if(!isInput)
+                        speed = newEnvironmentForce;
+                    
+                    if(stateMachine.ReusableData.MovementInput != Vector2.zero) 
+                    {
+                        isInput=true;
+                        Debug.Log(" Dot" + Vector3.Dot(GetMovementInputDirection(), environmentDir));
+                        if(Vector3.Dot(GetMovementInputDirection(), environmentDir)>1)//환경 방향이 같은 경우
+                        {
+                            speed = GetMovementSpeed()/2+ newEnvironmentForce;//*Time.deltaTime ;
+                            addExternalSpeed=GetMovementSpeed()/2;
+                        }
+                        else if(Vector3.Dot(GetMovementInputDirection(), environmentDir)<-1)
+                        {
+                            speed = -GetMovementSpeed() +newEnvironmentForce;//*Time.deltaTime;//환경 방향이 다른 경우
+                            addExternalSpeed = -GetMovementSpeed();
+                            if(speed<0) speed=0f;
+                        }  
+                    }
+                    else 
+                    {
+                        speed= Mathf.Lerp(speed, newEnvironmentForce, Time.deltaTime);
+                        //if(speed<0) speed=0f;
+                    }
+                                      
+                }
+                else  
+                    speed = GetMovementSpeed();
                 
                 float targetRotationYAngle = Rotate(movementDirection);
 
                 Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
-                float movementSpeed = GetMovementSpeed();
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
-
+            
                 stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection* speed - currentPlayerHorizontalVelocity);
                 //stateMachine.Player.characterController.Move(environmentDir * environmentForce *Time.deltaTime);
             }            

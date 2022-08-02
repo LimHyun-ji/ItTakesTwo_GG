@@ -32,7 +32,7 @@ MonoBehaviour:
       <JumpHeight>k__BackingField: 5
       airJumpCount: 0
     <SlopeData>k__BackingField:
-      <SlopeForce>k__BackingField: 10
+      <SlopeForce>k__BackingField: 1
       <slopeForceRayLength>k__BackingField: 1.5
       <speedModifier>k__BackingField: 1
   <ForceDownData>k__BackingField:

@@ -95,8 +95,8 @@ namespace ItTakesTwo
             
             stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
             stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
-            // if (isGrounded && stateMachine.Player.velocity.y <0f)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
-            //     stateMachine.Player.velocity.y = 0f; 
+            if (isGrounded && stateMachine.Player.velocity.y <-15f)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
+                stateMachine.Player.velocity.y = -15f; 
         }
 
         protected void ResetVelocity()

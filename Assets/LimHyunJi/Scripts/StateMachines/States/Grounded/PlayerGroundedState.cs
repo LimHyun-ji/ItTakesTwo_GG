@@ -70,7 +70,7 @@ namespace ItTakesTwo
         }
         protected void SlopeForce(float force)
         {
-            if(stateMachine.ReusableData.MovementInput != Vector2.zero && OnSlope())
+            if( OnSlope())
             {
                 stateMachine.Player.characterController.Move(Vector3.down *GetMovementSpeed()* force *Time.deltaTime);
             }

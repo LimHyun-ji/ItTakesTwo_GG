@@ -17,6 +17,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            isInput=false;
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
             slideSpeed=5*2;
         }
