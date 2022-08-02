@@ -49,28 +49,32 @@ namespace ItTakesTwo
         #endregion
 
         #region Main Methods
+        float newEnvironmentForce=0;
+
 
         protected virtual void Move(Vector3 environmentDir, float environmentForce)
         {
             if(stateMachine.Player.isMovable)
             {
                 Vector3 movementDirection;
-
                 
                 if ((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f) && environmentDir == Vector3.zero)
                 {
                     return; //not moving
                 }
+                newEnvironmentForce = Mathf.Lerp(newEnvironmentForce, environmentForce, Time.deltaTime);
 
-                float speed = (GetMovementInputDirection()* GetMovementSpeed() + environmentDir*environmentForce).magnitude/2;
+                float speed = (GetMovementInputDirection()* GetMovementSpeed() + environmentDir.normalized*newEnvironmentForce).magnitude;               
+
                 movementDirection = GetMovementInputDirection()+environmentDir;
+                
                 float targetRotationYAngle = Rotate(movementDirection);
 
                 Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
                 float movementSpeed = GetMovementSpeed();
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
-                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection*movementSpeed - currentPlayerHorizontalVelocity);// + environmentDir * environmentForce *Time.deltaTime);
+                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection* speed - currentPlayerHorizontalVelocity);
                 //stateMachine.Player.characterController.Move(environmentDir * environmentForce *Time.deltaTime);
             }            
         }

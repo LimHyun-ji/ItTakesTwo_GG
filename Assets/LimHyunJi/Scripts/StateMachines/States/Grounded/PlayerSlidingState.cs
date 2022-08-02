@@ -12,12 +12,13 @@ namespace ItTakesTwo
         {
         }
         Vector3 movementDir=Vector3.zero;
+        float slideForce=2f;
         float slideSpeed;
         public override void Enter()
         {
             base.Enter();
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
-            slideSpeed=GetMovementSpeed()+Time.deltaTime;
+            slideSpeed=5*2;
         }
         public override void PhysicsUpdate()
         {
@@ -62,17 +63,16 @@ namespace ItTakesTwo
             {
                 if(slopeHit.normal ==Vector3.up)
                 {
-                    slideSpeed = Mathf.Lerp(slideSpeed , 0f, Time.deltaTime);
+                    slideSpeed = 0f;// Mathf.Lerp(slideSpeed , 0f, Time.deltaTime);
                     return movementDir;//이전 값 리턴
 
                 }
                 Vector3 slopeDir= Vector3.up - slopeHit.normal * Vector3.Dot(Vector3.up, slopeHit.normal);
 
-                movementDir = slopeDir * -slideSpeed;
+                movementDir = -slopeDir * slideSpeed;//* -slideSpeed;
                 movementDir.y=movementDir.y -movementData.SlopeData.SlopeForce*100*Time.deltaTime;
                 if(movementDir.y>0) movementDir.y=0f;
                 return movementDir;
-                //stateMachine.Player.characterController.Move(movementDir*Time.deltaTime);
             }
             return Vector3.zero;
         }        
