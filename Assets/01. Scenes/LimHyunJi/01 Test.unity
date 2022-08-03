@@ -318,9 +318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5658d9f3e7dd66469cc18993aaa4b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothSpeed: 0.5
+  followSpeed: 30
   smoothTime: 2
-  offset: {x: 0, y: 3, z: -10}
+  offset: {x: 0, y: 5, z: -20}
+  cameraTransform: {fileID: 0}
+  distance: 3
+  speed: 2
 --- !u!1 &84732430
 GameObject:
   m_ObjectHideFlags: 0

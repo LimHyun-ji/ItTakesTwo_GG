@@ -7,7 +7,7 @@ namespace ItTakesTwo
 {
     public class CameraController : MonoBehaviour
     {
-        public float smoothSpeed=0.3f;
+        public float followSpeed=10f;
         public float smoothTime=1f;
         public Vector3 offset;
         public Transform cameraTransform;
@@ -34,51 +34,93 @@ namespace ItTakesTwo
 
             desiredPosition= target.position + offset;
             transform.position=desiredPosition;
-            //cameraTransform=transform;
+
+            //LookAt
+            transform.forward =(target.position - transform.position).normalized;
+            //transform.eulerAngles=new Vector3(transform.eulerAngles.x, 0, 0);
         }
 
         // Update is called once per frame
-        void LateUpdate()
+        void FixedUpdate()
         {
             cameraInput = Input.PlayerActions.Look.ReadValue<Vector2>();
             playerMovementInput =Input.PlayerActions.Movement.ReadValue<Vector2>();
 
             if(target)
             {
-                
-                //FollowTarget(target);
-                Look();  
-                
-                //if( playerMovementInput.x == 0f)
-                    //transform.LookAt(target);
+                Debug.Log(GetTargetDistance());
+                if(GetTargetDistance()> Mathf.Abs(offset.z+1f))
+                {
+                    transform.position += (GetFollowDirection()*followSpeed)*Time.deltaTime;
+                }
+                if(GetTargetDistance()<Mathf.Abs(offset.z-1f))
+                {
+                    transform.position -= GetFollowDirection()*followSpeed*Time.deltaTime;
+                }
 
+                transform.position += GetRotateDirection()*cameraInput.x*Time.deltaTime;
+                //LookAt
+                //Vector3 lookDir =(target.position - transform.position).normalized;
+                //transform.forward=lookDir;
+               
             }
         }
 
-        private void FollowTarget(Transform target)
-        {
-            //좌우 할때는 약간 돌아감
-            desiredPosition= target.position + offset;
-
-            smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothSpeed);
-            transform.position = desiredPosition;
-        }
-        private void Look()
-        {
-            cameraTransform.RotateAround(target.position, Vector3.up, cameraInput.x*Time.deltaTime*10f);
-            smoothedPosition = Vector3.SmoothDamp(transform.position, cameraTransform.position, ref velocity, smoothSpeed);
-            smoothedRotation=Vector3.SmoothDamp(transform.eulerAngles, cameraTransform.eulerAngles, ref velocity, smoothSpeed);
+        // private void FollowTarget(Transform target)
+        // {
+        //     //좌우 할때는 약간 돌아감
             
-            //transform.position =smoothedPosition;
-            //transform.eulerAngles=smoothedRotation;
+        //     desiredPosition= target.position + offset;
+        //     //smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothSpeed);
+            
+        //     if(Vector3.Distance( desiredPosition, transform.position ) >0)
+        //     {
+        //         Vector3 moveDir= (desiredPosition -transform.position).normalized;
+        //         transform.position += moveDir * 1f*Time.deltaTime;
+        //     }
+            
+        //     // transform.forward =(target.position - transform.position).normalized;
+        //     // transform.eulerAngles=new Vector3(transform.eulerAngles.x, 0, 0);
+        // }
+        // private void Look()
+        // {
+        //     //transform.RotateAround(target.position, Vector3.up, cameraInput.x*Time.deltaTime*10f);
+            
+            
+        //     //smoothedPosition = Vector3.SmoothDamp(transform.position, cameraTransform.position, ref velocity, smoothSpeed);
+        //     //smoothedRotation=Vector3.SmoothDamp(transform.eulerAngles, cameraTransform.eulerAngles, ref velocity, smoothSpeed);
+            
+        //     //transform.position =smoothedPosition;
+        //     //transform.eulerAngles=smoothedRotation;
 
 
-            // Vector3 moveDir = (target.position - transform.position).normalized;
-            // Vector3 normal = Vector3.Cross(moveDir, Vector3.up);
-            // Debug.Log(cameraInput.x);
-            // desiredPosition += normal.normalized * cameraInput.x *Time.deltaTime ;
+        //     Vector3 moveDir = (target.position - transform.position).normalized;
+        //     Vector3 normal = Vector3.Cross(moveDir, Vector3.up);
+        //     // Debug.Log(cameraInput.x);
+        //     desiredPosition += normal.normalized * cameraInput.x *Time.deltaTime ;
+        //     //transform.position=desiredPosition;
+        //     if(Vector3.Distance( desiredPosition, target.position ) > -offset.z)
+        //     {
+        //         transform.position += moveDir *smoothSpeed*Time.deltaTime;
+        //     }
+        // }
+        private Vector3 GetFollowDirection()
+        {
+            Vector3 moveDir = (target.position-transform.position).normalized;
+
+            return new Vector3(moveDir.x, 0, moveDir.z);
         }
+        private Vector3 GetRotateDirection()
+        {
+            Vector3 moveDir = (target.position - transform.position).normalized;
+            Vector3 normal = Vector3.Cross(moveDir, Vector3.up);
 
+            return normal;
+        }
+        private float GetTargetDistance()
+        {
+            return Vector3.Distance(target.position, transform.position);
+        }
     }
 
 }
