@@ -14,7 +14,7 @@ namespace ItTakesTwo
 
             currentState.Enter();
         }
-        public void HandleInut()
+        public void HandleInput()
         {
             currentState?.HandleInput();
         }

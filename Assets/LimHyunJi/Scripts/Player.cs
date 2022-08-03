@@ -41,7 +41,7 @@ namespace ItTakesTwo
         }
         protected virtual void Update() 
         {
-            movementStateMachine.HandleInut();
+            movementStateMachine.HandleInput();
             movementStateMachine.Update();
         }
         protected virtual void FixedUpdate() 

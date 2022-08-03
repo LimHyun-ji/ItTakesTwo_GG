@@ -12,6 +12,7 @@ namespace ItTakesTwo
         {
         }
         Vector3 movementDir=Vector3.zero;
+        RaycastHit slopeHit;
         float slideForce=2f;
         float slideSpeed;
         public override void Enter()
@@ -24,12 +25,13 @@ namespace ItTakesTwo
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-
+            SetPlayerRotation(slopeHit.normal);
         }
 
         public override void Exit()
         {
             movementDir=Vector3.zero;
+            SetPlayerRotation(Vector3.up);
             base.Exit();
         }
         protected override void Move(Vector3 environmentDir, float environmentForce)
@@ -53,13 +55,9 @@ namespace ItTakesTwo
             shouldSlide=false;
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
-
-        RaycastHit slopeHit;
-
         private Vector3 GetSlopeDirection()
         {
             
-
             if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out slopeHit, stateMachine.Player.characterController.height/2* movementData.SlopeData.slopeForceRayLength,1<<8))
             {
                 if(slopeHit.normal ==Vector3.up)
@@ -78,6 +76,19 @@ namespace ItTakesTwo
             return Vector3.zero;
         }        
 
-        
+    
+        //나중에 수정할 것
+        private void SetPlayerRotation(Vector3 dir)
+        {
+
+            // float x= Mathf.Lerp(stateMachine.Player.transform.up.x, dir.x, Time.deltaTime);
+            // float y= Mathf.Lerp(stateMachine.Player.transform.up.x, dir.y, Time.deltaTime);
+            // float z= Mathf.Lerp(stateMachine.Player.transform.up.x, dir.z, Time.deltaTime);
+
+            //stateMachine.Player.transform.up=new Vector3(x, y, z);
+
+            stateMachine.Player.transform.up= dir;
+            
+        }
     }
 }

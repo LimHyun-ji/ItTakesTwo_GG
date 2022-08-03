@@ -30,6 +30,7 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
+            //UseGravity(100f);
         }
 
     }
