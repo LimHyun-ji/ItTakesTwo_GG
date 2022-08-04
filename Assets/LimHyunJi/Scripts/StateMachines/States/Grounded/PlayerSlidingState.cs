@@ -11,10 +11,14 @@ namespace ItTakesTwo
         public PlayerSlidingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
-        Vector3 movementDir=Vector3.zero;
+        Vector3 environmentDir=Vector3.zero;
         RaycastHit slopeHit;
         float slideForce=2f;
+        float newEnvironmentForce;
+        float addExternalSpeed;
+
         float slideSpeed;
+        float moveSpeed;
         public override void Enter()
         {
             base.Enter();
@@ -30,15 +34,51 @@ namespace ItTakesTwo
 
         public override void Exit()
         {
-            movementDir=Vector3.zero;
+            environmentDir=Vector3.zero;
             SetPlayerRotation(Vector3.up);
             base.Exit();
         }
-        protected override void Move(Vector3 environmentDir, float environmentForce)
+        protected override void Move()
         {
-            movementDir=GetSlopeDirection();
+            environmentDir=GetSlopeDirection();
             //stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
-            base.Move(movementDir,slideSpeed);
+            //base.Move(movementDir,slideSpeed);
+            Vector3 inputDir = stateMachine.Player.transform.right * stateMachine.ReusableData.MovementInput.x
+                                + stateMachine.Player.transform.forward * stateMachine.ReusableData.MovementInput.y;
+            newEnvironmentForce = Mathf.Lerp(newEnvironmentForce, slideSpeed, Time.deltaTime);
+
+            Vector3 movementDirection=(inputDir +environmentDir).normalized;
+
+            if(environmentDir != Vector3.zero ) //환경방향이 있는 경우(ex 슬라이딩)
+            {
+                if(!isInput)
+                    moveSpeed = newEnvironmentForce;
+                
+                if(stateMachine.ReusableData.MovementInput != Vector2.zero) 
+                {
+                    isInput=true;
+                    Debug.Log(" Dot" + Vector3.Dot(inputDir, environmentDir));
+                    if(Vector3.Dot(inputDir, environmentDir)>1)//환경 방향이 같은 경우
+                    {
+                        moveSpeed = GetMovementSpeed()/2+ newEnvironmentForce;//*Time.deltaTime ;
+                        addExternalSpeed=GetMovementSpeed()/2;
+                    }
+                    else if(Vector3.Dot(inputDir, environmentDir)<-1)
+                    {
+                        moveSpeed = -GetMovementSpeed() +newEnvironmentForce;//*Time.deltaTime;//환경 방향이 다른 경우
+                        addExternalSpeed = -GetMovementSpeed();
+                        if(moveSpeed<0) moveSpeed=0f;
+                    }  
+                }
+                else 
+                {
+                    moveSpeed= Mathf.Lerp(moveSpeed, newEnvironmentForce, Time.deltaTime);
+                    //if(speed<0) speed=0f;
+                }
+            }
+            Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
+
+            stateMachine.Player.characterController.Move(Time.deltaTime* movementDirection* moveSpeed - currentPlayerHorizontalVelocity);
 
         }
         
@@ -63,15 +103,15 @@ namespace ItTakesTwo
                 if(slopeHit.normal ==Vector3.up)
                 {
                     slideSpeed = 0f;// Mathf.Lerp(slideSpeed , 0f, Time.deltaTime);
-                    return movementDir;//이전 값 리턴
+                    return environmentDir;//이전 값 리턴
 
                 }
                 Vector3 slopeDir= Vector3.up - slopeHit.normal * Vector3.Dot(Vector3.up, slopeHit.normal);
 
-                movementDir = -slopeDir * slideSpeed;//* -slideSpeed;
-                movementDir.y=movementDir.y -movementData.SlopeData.SlopeForce*100*Time.deltaTime;
-                if(movementDir.y>0) movementDir.y=0f;
-                return movementDir;
+                environmentDir = -slopeDir * slideSpeed;//* -slideSpeed;
+                environmentDir.y=environmentDir.y -movementData.SlopeData.SlopeForce*100*Time.deltaTime;
+                if(environmentDir.y>0) environmentDir.y=0f;
+                return environmentDir;
             }
             return Vector3.zero;
         }        
