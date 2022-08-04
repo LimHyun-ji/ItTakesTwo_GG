@@ -8,7 +8,7 @@ namespace ItTakesTwo
 
         public void ChangeState(IState newState)
         {
-            currentState?.Exit();
+            currentState?.Exit();   //점프 중에 또 점프 안하려고
 
             currentState =newState;
 
