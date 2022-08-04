@@ -20,23 +20,8 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.ReusableData.SpeedModifier=sprintData.speedModifier;
-            //startTime =Time.time;
-            currentSprintTime=0f;
         }
-        public override void Update()
-        {
-            base.Update();
-            currentSprintTime += Time.deltaTime;
-            if(stateMachine.ReusableData.MovementInput == Vector2.zero)
-            {
-                stateMachine.ChangeState(stateMachine.IdlingState);
-                return;
-            }
-        }
-        public override void Exit()
-        {
-            base.Exit();
-        }
+        
         #region Reusable Methods
         
         #endregion

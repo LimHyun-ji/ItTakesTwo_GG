@@ -13,16 +13,21 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-            
-            stateMachine.ReusableData.SpeedModifier =0f;
-            ResetVelocity();
-        }
-        public override void Update()
-        {
-            base.Update();
 
-            if(stateMachine.ReusableData.MovementInput == Vector2.zero)
+            movementData.JumpData.airJumpCount=0;
+            movementData.DashData.airDashCount=0;
+            stateMachine.ReusableData.SpeedModifier =0f;
+        }
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+            if(shouldSlide)
+            {
+                stateMachine.ChangeState(stateMachine.SlidingState);
                 return;
+            }
+            if(stateMachine.ReusableData.MovementInput == Vector2.zero)
+                return; 
             OnMove();
         }
         #endregion

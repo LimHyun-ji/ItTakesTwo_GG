@@ -10,6 +10,7 @@ namespace ItTakesTwo
         public PlayerRunningState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
+
         #region IState Methods
         public override void Enter()
         {
@@ -24,7 +25,6 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
-
         }
         #endregion
     }

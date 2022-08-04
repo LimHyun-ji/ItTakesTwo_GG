@@ -14,9 +14,9 @@ namespace ItTakesTwo
 
             currentState.Enter();
         }
-        public void HandleInut()
+        public void HandleInput()
         {
-            currentState?.HandleInut();
+            currentState?.HandleInput();
         }
         public void Update()
         {
@@ -34,18 +34,6 @@ namespace ItTakesTwo
         public void OnTriggerExit(Collider collider)
         {
             currentState?.OnTriggerExit(collider);
-        }
-        public void OnAnimationEnterEvent()
-        {
-            currentState?.OnAnimationEnterEvent();
-        }
-        public void OnAnimationExitEvent()
-        {
-            currentState?.OnAnimationExitEvent();
-        }
-           public void OnAnimationTransitionEvent()
-        {
-            currentState?.OnAnimationTransitionEvent();
         }
     }
 }

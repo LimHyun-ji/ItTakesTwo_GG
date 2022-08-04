@@ -8,5 +8,7 @@ namespace ItTakesTwo
     public class PlayerSO : ScriptableObject
     {
         [field: SerializeField] public PlayerGroundedData GroundedData{get; private set;}
+        [field: SerializeField] public PlayerForceDownData ForceDownData{get; private set;}
+
     }
 }

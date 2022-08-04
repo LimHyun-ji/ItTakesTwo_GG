@@ -11,9 +11,11 @@ namespace ItTakesTwo
         [field: SerializeField] public PlayerSO Data {get; private set;}
         
         public CharacterController characterController;
+        public bool isMovable;
         public Rigidbody rigidBody{get; private set;}
         public Vector3 velocity;
         public LayerMask GroundLayers;
+        public GameObject groundPivot;
         public Transform mainCameraTransform{get; private set;}
         [HideInInspector]
         public Transform cameraLookPoint;
@@ -34,10 +36,12 @@ namespace ItTakesTwo
             Input=GetComponent<PlayerInput>();
             movementStateMachine.ChangeState(movementStateMachine.IdlingState);
             cameraLookPoint=transform.Find("CameraLookPoint");
+
+            isMovable=true;
         }
         protected virtual void Update() 
         {
-            movementStateMachine.HandleInut();
+            movementStateMachine.HandleInput();
             movementStateMachine.Update();
         }
         protected virtual void FixedUpdate() 
@@ -54,5 +58,7 @@ namespace ItTakesTwo
         {
             movementStateMachine.OnTriggerExit(collider);
         }
+
+
     }
 }

@@ -7,92 +7,74 @@ using UnityEngine.InputSystem;
 namespace ItTakesTwo
 {
 
-    public class PlayerMovementState : IState
+    public class PlayerMovementState : PlayerBaseState
     {
-        protected PlayerMovementStateMachine stateMachine;
+        protected static bool shouldSlide;
 
-        protected PlayerGroundedData movementData;
-        public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine)
+        public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
-            stateMachine=playerMovementStateMachine;
-            movementData=stateMachine.Player.Data.GroundedData;
-
-            InitializedData();
         }
-        private void InitializedData()
-        {
-            stateMachine.ReusableData.TimeToReachTargetRotation=movementData.BaseRotationData.targetRotationReachTime;
-        }
-        
         #region IState Methods
-        public virtual void Enter()
+        public override void Enter()
         {
-            Debug.Log("State"+ GetType().Name);
-            AddInputActionsCallBacks();
+            base.Enter();
+            UseGravity(9.8f);
         }
-
-    
-        public virtual void Exit()
+        public override void Update()
         {
-            RemoveinputActionsCallBacks();
+            base.Update();
         }
-
-        public virtual void HandleInut()
+        public override void PhysicsUpdate()
         {
-            ReadMovementInput();
-        }
-        public virtual void Update()
-        {
-        }
-        public virtual void PhysicsUpdate()
-        {
-            Debug.Log(GetPlayerVerticalVelocity());
+            base.PhysicsUpdate();
+            UseGravity(9.8f);
             Move();
-            UseGravity();
         }
-        public virtual void OnTriggerEnter(Collider other) 
+        public override void HandleInput()
         {
-
+            base.HandleInput();
         }
-        public virtual void OnTriggerExit(Collider other) 
+        public override void OnTriggerEnter(Collider collider)
         {
-        }
-        public virtual void OnAnimationEnterEvent()
-        {
+            base.OnTriggerEnter(collider);
+            UseGravity(9.8f);
         }
 
-        public virtual void OnAnimationExitEvent()
+        public override void OnTriggerExit(Collider collider)
         {
-        }
-
-        public virtual void OnAnimationTransitionEvent()
-        {
+            base.OnTriggerExit(collider);
+            UseGravity(9.8f);
         }
 
         #endregion
 
         #region Main Methods
-        private void ReadMovementInput()
+        public bool isInput;
+
+        protected virtual void Move()
         {
-            stateMachine.ReusableData.MovementInput=stateMachine.Player.Input.PlayerActions.Movement.ReadValue<Vector2>();
-        }
-        private void Move()
-        {
-            Vector3 movementDirection;
-            
-            if (((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f)))
+            //Debug.Log("Velocity" +stateMachine.Player.characterController.velocity.y);
+            if(stateMachine.Player.isMovable)
             {
-                return; //not moving
-            }
+                Vector3 movementDirection;
+                
+                if ((stateMachine.ReusableData.MovementInput == Vector2.zero || stateMachine.ReusableData.SpeedModifier == 0f))
+                {
+                    return; //not moving
+                }
+                //고칠 부분//
+                movementDirection=GetMovementInputDirection();
+                 
+                float speed = GetMovementSpeed();
+                
+                float targetRotationYAngle = Rotate(movementDirection);
 
-            movementDirection = GetMovementInputDirection();
-            float targetRotationYAngle = Rotate(movementDirection);
-
-            Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
-            float movementSpeed = GetMovementSpeed();
-            Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
-
-            stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection * movementSpeed - currentPlayerHorizontalVelocity);
+                Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
+                Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
+                Debug.Log(speed);
+                stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection* speed - currentPlayerHorizontalVelocity);
+                //stateMachine.Player.characterController.Move(environmentDir * environmentForce *Time.deltaTime);
+            }            
         }
        
         private float Rotate(Vector3 inputDir)
@@ -125,28 +107,21 @@ namespace ItTakesTwo
             stateMachine.ReusableData.CurrentTargetRotation.y=targetAngle;
             stateMachine.ReusableData.DampedTargetRotationPassedTime.y=0f;
         }
-       
+
         #endregion
 
         #region Reusable Methods
-        protected Vector3 GetMovementInputDirection()
+        protected override void AddInputActionsCallBacks()
         {
-            return new Vector3(stateMachine.ReusableData.MovementInput.x, 0f,stateMachine.ReusableData.MovementInput.y);
+            base.AddInputActionsCallBacks();
+            stateMachine.Player.Input.PlayerActions.Jump.started += OnJump;
+            stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
         }
-        protected float GetMovementSpeed()
+        protected override void RemoveInputActionsCallBacks()
         {
-            return movementData.baseSpeed * stateMachine.ReusableData.SpeedModifier;
-        }
-        protected Vector3 GetPlayerHorizontalVelocity()
-        {
-            Vector3 playerHorizontalvelocity = stateMachine.Player.characterController.velocity;
-            playerHorizontalvelocity.y=0f;
-
-            return playerHorizontalvelocity;
-        }
-        protected Vector3 GetPlayerVerticalVelocity()
-        {
-             return new Vector3(0f, stateMachine.Player.characterController.velocity.y, 0f);
+            base.RemoveInputActionsCallBacks();
+            stateMachine.Player.Input.PlayerActions.Jump.started -= OnJump;
+            stateMachine.Player.Input.PlayerActions.Dash.started -= OnDashStarted;
         }
         protected void RotateTowardsTargetRotation()
         {
@@ -155,7 +130,7 @@ namespace ItTakesTwo
             if(currentYAngle ==stateMachine.ReusableData.CurrentTargetRotation.y)
                 return;
                 
-            float smoothYAngle=Mathf.SmoothDampAngle(currentYAngle,stateMachine.ReusableData.CurrentTargetRotation.y, ref         stateMachine.ReusableData.DampedTargetRotationCurrentVelocity.y,stateMachine.ReusableData.TimeToReachTargetRotation.y-stateMachine.ReusableData.DampedTargetRotationPassedTime.y);
+            float smoothYAngle=Mathf.SmoothDampAngle(currentYAngle,stateMachine.ReusableData.CurrentTargetRotation.y, ref stateMachine.ReusableData.DampedTargetRotationCurrentVelocity.y,stateMachine.ReusableData.TimeToReachTargetRotation.y-stateMachine.ReusableData.DampedTargetRotationPassedTime.y);
                     stateMachine.ReusableData.DampedTargetRotationPassedTime.y += Time.deltaTime;
 
             Quaternion targetRotation =Quaternion.Euler(0f, smoothYAngle, 0f);
@@ -181,37 +156,24 @@ namespace ItTakesTwo
             return Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         }
 
-        protected void UseGravity()
-        {
-            stateMachine.Player.velocity.y += Time.deltaTime*-9.8f;
-            stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
 
-            bool isGrounded= CheckGroundLayers();
-            if (isGrounded &&  stateMachine.Player.velocity.y < 0)
-                stateMachine.Player.velocity.y = 0f;
+        
+        protected void OnDashStarted(InputAction.CallbackContext context)
+        {
+            if(movementData.DashData.airDashCount == 0)
+                stateMachine.ChangeState(stateMachine.DashingState);
+        }
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if(movementData.JumpData.airJumpCount == 0)
+                stateMachine.ChangeState(stateMachine.JumpingState);
         }
 
-        protected void ResetVelocity()
+        protected void OnFall()
         {
-            stateMachine.Player.velocity =Vector3.zero;
+            stateMachine.ChangeState(stateMachine.FallingState);
         }
 
-        protected virtual void AddInputActionsCallBacks()
-        {
-
-        }
-
-    
-        protected virtual void RemoveinputActionsCallBacks()
-        {
-        }
-
-     
-        protected virtual bool CheckGroundLayers()
-        {
-            bool grounded =Physics.CheckSphere(stateMachine.Player.transform.position, movementData.groundCheckRadius, stateMachine.Player.GroundLayers, QueryTriggerInteraction.Ignore);
-            return grounded;
-        }
         #endregion
     }
 }

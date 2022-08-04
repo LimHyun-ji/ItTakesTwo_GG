@@ -13,14 +13,10 @@ namespace ItTakesTwo
         {
             base.Enter();
         }
-        public override void OnTriggerEnter(Collider other)
+        public override void PhysicsUpdate()
         {
-            //Debug.Log(other.gameObject.layer);
-            if(other.gameObject.layer == 3)//Ground
-            {
-                stateMachine.ChangeState(stateMachine.IdlingState);
-            }
+            base.PhysicsUpdate();
+            UseGravity(45f);
         }
-        
     }
 }

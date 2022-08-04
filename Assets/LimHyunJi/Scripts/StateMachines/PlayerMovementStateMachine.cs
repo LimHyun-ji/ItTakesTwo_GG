@@ -15,6 +15,8 @@ namespace ItTakesTwo
         public PlayerDashingState DashingState {get;}
         public PlayerJumpingState JumpingState{get;} 
         public PlayerFallingState FallingState{get;}
+        public PlayerForceDownState ForceDownState{get;}
+        public PlayerSlidingState SlidingState{get;}
 
 
         public PlayerMovementStateMachine(Player player)//생성자
@@ -27,6 +29,8 @@ namespace ItTakesTwo
             DashingState =new PlayerDashingState(this);
             JumpingState=new PlayerJumpingState(this);
             FallingState=new PlayerFallingState(this);
+            ForceDownState=new PlayerForceDownState(this);
+            SlidingState = new PlayerSlidingState(this);
         }
     }
 }

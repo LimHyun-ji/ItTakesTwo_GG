@@ -9,6 +9,9 @@ namespace ItTakesTwo
 
     public class PlayerGroundedState : PlayerMovementState
     {
+
+        protected bool shouldSprint;
+        protected bool canSlide=true;//임시, 슬라이딩 가능한 경사면이 있으면 슬라이딩으로 할 있도록 trigger에서 체크 
         public PlayerGroundedState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -16,54 +19,72 @@ namespace ItTakesTwo
         {
             base.Enter();
         }
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+            SlopeForce(movementData.SlopeData.SlopeForce);
+        }
+
         public override void Exit()
         {
             base.Exit();
         }
-
-        
-
-        
         #region  Reusable Methods
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
-            stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
-            stateMachine.Player.Input.PlayerActions.Sprint.performed +=OnSprintPerformed;
-            stateMachine.Player.Input.PlayerActions.Jump.started += OnJump;
-
+            stateMachine.Player.Input.PlayerActions.SprintToggle.started +=OnSprintToggle;
+            stateMachine.Player.Input.PlayerActions.Slide.performed += OnSlide;
         }
 
-        protected override void RemoveinputActionsCallBacks()
+        protected override void RemoveInputActionsCallBacks()
         {
-            base.RemoveinputActionsCallBacks();
+            base.RemoveInputActionsCallBacks();
 
             stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
-            stateMachine.Player.Input.PlayerActions.Dash.started -= OnDashStarted;
-            stateMachine.Player.Input.PlayerActions.Sprint.performed -=OnSprintPerformed;
-            stateMachine.Player.Input.PlayerActions.Jump.started -= OnJump;
+            stateMachine.Player.Input.PlayerActions.SprintToggle.started -=OnSprintToggle;
+            stateMachine.Player.Input.PlayerActions.Slide.performed -= OnSlide;
 
         }
 
         protected virtual void OnMove()
         {
-            stateMachine.ChangeState(stateMachine.RunningState);   
+            if(shouldSprint)
+                stateMachine.ChangeState(stateMachine.SprintingState);   
+            else
+                stateMachine.ChangeState(stateMachine.RunningState);   
         }
-        
 
         public override void OnTriggerExit(Collider other) 
         {
-            if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            base.OnTriggerExit(other);
+            isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers() || OnSlope();
+            if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
-                bool grounded = CheckGroundLayers();
-                if(grounded)
+                if(isGrounded)
                     return;
                 else
                     OnFall();
             }
         }
+        protected void SlopeForce(float force)
+        {
+            if( OnSlope())
+            {
+                stateMachine.Player.characterController.Move(Vector3.down *GetMovementSpeed()* force *Time.deltaTime);
+            }
+        }
 
+        protected bool OnSlope()//원래 layer 1<< 8로 ground에 ray를 쏴야 정상인데 그냥 몸통에다가 쏴서 움직이지 slope Force를 추가해주는 격
+        {
+            //isJumping return false;
+            RaycastHit hit;
+            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2.0f* movementData.SlopeData.slopeForceRayLength))
+                if(hit.normal != Vector3.up)
+                    return true;
+            return false;
+        }
         #endregion
 
         #region Input Methods
@@ -73,26 +94,17 @@ namespace ItTakesTwo
         {
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
-        protected virtual void OnDashStarted(InputAction.CallbackContext context)
+        
+        public void OnSprintToggle(InputAction.CallbackContext context)
         {
-            stateMachine.ChangeState(stateMachine.DashingState);
+            shouldSprint = !shouldSprint;
         }
-        public void OnSprintPerformed(InputAction.CallbackContext context)
+        protected void OnSlide(InputAction.CallbackContext obj)
         {
-            stateMachine.ChangeState(stateMachine.SprintingState);
-        }
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            bool grounded=CheckGroundLayers();
-           if(grounded)
-            {
-                stateMachine.ChangeState(stateMachine.JumpingState);
-            }
-        }
-
-        protected void OnFall()
-        {
-            stateMachine.ChangeState(stateMachine.FallingState);
+            shouldSlide = true;
+            if(shouldSlide)
+                stateMachine.ChangeState(stateMachine.SlidingState);
+            
         }
         #endregion
     }

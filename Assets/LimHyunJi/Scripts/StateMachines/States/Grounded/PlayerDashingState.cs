@@ -6,10 +6,12 @@ using UnityEngine.InputSystem;
 
 namespace ItTakesTwo
 {
-    public class PlayerDashingState : PlayerGroundedState
+    public class PlayerDashingState : PlayerMovingState
     {
         private PlayerDashData dashData;
         private float currentDashTime=0;
+        float downForce;
+        
         public PlayerDashingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
             dashData=movementData.DashData;
@@ -17,45 +19,42 @@ namespace ItTakesTwo
         #region  IState Methods
         public override void Enter()
         {
-            base.Enter();            
+            base.Enter();    
+            stateMachine.Player.isMovable=false;   
+            if(!isGrounded)   
+            {
+                movementData.DashData.airDashCount++;
+                downForce=0f;
+            }
+            else
+                downForce=movementData.SlopeData.SlopeForce*100;
+                
             stateMachine.ReusableData.SpeedModifier=dashData.speedModifier;
-            AddForceOnTransitionFromStationaryState();
+
         }
-        public override void Update() 
+        public override void PhysicsUpdate()
         {
+            //대시는 다른 방식으로 수정할 것
+            base.PhysicsUpdate();
+            
+            Debug.Log(stateMachine.Player.characterController.velocity.y);
             currentDashTime +=Time.deltaTime;
+            
+            stateMachine.Player.characterController.Move(Time.deltaTime * stateMachine.Player.transform.forward* GetMovementSpeed() + Vector3.down * downForce*Time.deltaTime);
             if(currentDashTime > movementData.DashData.DashTime)
             {
-                stateMachine.ChangeState(stateMachine.IdlingState);
+                if(isGrounded)
+                    stateMachine.ChangeState(stateMachine.IdlingState);
+                else
+                    stateMachine.ChangeState(stateMachine.FallingState);
                 currentDashTime=0;
             }            
         }
-          public override void OnAnimationTransitionEvent()
+        public override void Exit()
         {
+            base.Exit();
+            stateMachine.Player.isMovable=true;        
         }
-
         #endregion
-        # region Main Methods
-        private void AddForceOnTransitionFromStationaryState()
-        {
-            if(stateMachine.ReusableData.MovementInput != Vector2.zero)
-                return;
-            Vector3 characterRotationDir=stateMachine.Player.transform.forward;
-            characterRotationDir.y=0f;//이거 왜 해주는지?
-
-            stateMachine.Player.rigidBody.velocity=characterRotationDir * GetMovementSpeed();
-        }
-
-        #endregion
-
-        #region Input Methods
-        protected override void OnMovementCanceled(InputAction.CallbackContext context)
-        {
-        }
-        protected override void OnDashStarted(InputAction.CallbackContext context)
-        {
-        }
-
-        #endregion
-    }
+   }
 }

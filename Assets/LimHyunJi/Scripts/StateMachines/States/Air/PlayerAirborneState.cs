@@ -20,11 +20,11 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
-
         }
         public override void OnTriggerEnter(Collider other) 
         {
-            if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            base.OnTriggerEnter(other);
+            if(((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0)
             {
                 OnLand();
             }
@@ -32,7 +32,6 @@ namespace ItTakesTwo
 
         private void OnLand()
         {
-            //Land
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
 
@@ -40,10 +39,17 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
+            stateMachine.Player.Input.PlayerActions.DownForce.performed += OnDownForce;
         }
-        protected override void RemoveinputActionsCallBacks()
+        protected override void RemoveInputActionsCallBacks()
         {
-            base.RemoveinputActionsCallBacks();
+            base.RemoveInputActionsCallBacks();
+            stateMachine.Player.Input.PlayerActions.DownForce.performed -= OnDownForce;
+        }
+        
+        public void OnDownForce(InputAction.CallbackContext context)
+        {
+            stateMachine.ChangeState(stateMachine.ForceDownState);
         }
         #endregion
     }
