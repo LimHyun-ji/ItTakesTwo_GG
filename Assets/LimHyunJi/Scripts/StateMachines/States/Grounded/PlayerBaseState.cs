@@ -92,11 +92,12 @@ namespace ItTakesTwo
         protected void UseGravity(float gravity)
         {
             isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers();
-            
+            //Debug.Log("velocity : "+stateMachine.Player.velocity.y);
+
             stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
             stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
-            if (isGrounded && stateMachine.Player.velocity.y <-15f)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
-                stateMachine.Player.velocity.y = -15f; 
+            if (isGrounded && stateMachine.Player.velocity.y <-1f)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
+                stateMachine.Player.velocity.y = -1f; 
         }
 
         protected void ResetVelocity()

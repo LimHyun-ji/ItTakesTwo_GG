@@ -9,6 +9,8 @@ namespace ItTakesTwo
     public class PlayerAirborneState : PlayerMovementState
     {
         protected bool canFly;
+        protected bool canInteract;
+        protected GameObject interactableObject;
         public PlayerAirborneState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -21,13 +23,31 @@ namespace ItTakesTwo
         {
             base.Exit();
         }
-        public override void OnTriggerEnter(Collider other) 
+        public override void OnTriggerEnter(Collider collider) 
         {
-            base.OnTriggerEnter(other);
-            if(((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0)
+            base.OnTriggerEnter(collider);
+            if(((1 << collider.gameObject.layer) & stateMachine.Player.GroundLayers) != 0)
             {
                 OnLand();
             }
+            //상호작용 가능한 물체랑 tirgger하면
+            if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
+            {
+                
+                canInteract=true;
+                interactableObject=collider.gameObject;
+            }
+
+        }
+        public override void OnTriggerExit(Collider collider)
+        {
+            base.OnTriggerExit(collider);
+            if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
+            {
+                canInteract=false;
+                interactableObject=null;
+            }
+            
         }
 
         private void OnLand()
@@ -40,13 +60,25 @@ namespace ItTakesTwo
         {
             base.AddInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.DownForce.performed += OnDownForce;
+            stateMachine.Player.Input.PlayerActions.Interact.performed += OnInteract;
         }
         protected override void RemoveInputActionsCallBacks()
         {
             base.RemoveInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.DownForce.performed -= OnDownForce;
+            stateMachine.Player.Input.PlayerActions.Interact.performed += OnInteract;
         }
-        
+
+        private void OnInteract(InputAction.CallbackContext obj)
+        {
+            if(!interactableObject) return;
+            if(canInteract && interactableObject.tag == "Hook")
+            {
+                //SwingState
+                Debug.Log("SwingState");
+            }
+        }
+
         public void OnDownForce(InputAction.CallbackContext context)
         {
             stateMachine.ChangeState(stateMachine.ForceDownState);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,123 +8,142 @@ namespace ItTakesTwo
 {
     public class CameraController : MonoBehaviour
     {
-        public float followSpeed=10f;
-        public float smoothTime=1f;
-        public Vector3 offset;
+        public float smoothSpeed=10f;
+        public float mouseSpeed=10f;
+        public float cameraObstacleSpeed=10f;
+        public float minDistance=3f;
+        public float baseDistance =20f;
+        public float maxDistance =30f;
+        private Vector3 initCamLocalPos;
+        public Vector3 baseOffset;
+        private Vector3 offset;
         public Transform CameraLookTransform;
+
+        
 
         public PlayerInput Input{get; private set;}
         private Transform target;
-        //private Vector3 velocity = Vector3.zero;
-        //private float mx;
-        //private float my;
+        private Vector3 velocity = Vector3.zero;
         private Vector2 cameraInput;
         private Vector2 playerMovementInput;
-        //private Vector3 cameraEulerAngle;
-        private Vector3 desiredPosition;
-        Vector3 smoothedPosition;
-        Vector3 smoothedRotation;
-        
-        public float distance=3f;
-        public float speed=2f;
+
         // Start is called before the first frame update
         void Start()
         {
+            initCamLocalPos=transform.localPosition;
             target = GameObject.FindWithTag("Player").transform;
-            //CameraLookTransform=target.transform;
             
             Input = target.gameObject.GetComponent<PlayerInput>();
-
-            
-
-            //LookAt
-            transform.forward =(target.position - transform.position).normalized;
-            //transform.eulerAngles=new Vector3(transform.eulerAngles.x, 0, 0);
-
-            desiredPosition= target.position + offset;
-            transform.position=desiredPosition;
+            offset = baseOffset;
+            CameraLookTransform.position=target.position + offset;
+        }
+        void LateUpdate()
+        {
+            Look();
+            CheckIsObstacle();
         }
 
-        // Update is called once per frame
         void FixedUpdate()
         {
             cameraInput = Input.PlayerActions.Look.ReadValue<Vector2>();
             playerMovementInput =Input.PlayerActions.Movement.ReadValue<Vector2>();
-            
-            CameraLookTransform.position=target.position;
+            //CameraLookTransform.position=target.position;
             if(target)
             {
-                
-               //FollowTarget(target);
-               Look();
+                transform.forward=(CameraLookTransform.position- transform.position).normalized;
+               FollowTarget(target);
+               //Look();
+               //Debug.Log(Vector3.Distance(CameraLookTransform.position, transform.position));
+            }
+            
+        }
+
+        private void FollowTarget(Transform target)
+        {
+            Vector3 desiredPosition= target.position+offset;
+            Vector3 smoothedPosition = Vector3.SmoothDamp(CameraLookTransform.position, desiredPosition, ref velocity, smoothSpeed);
+            CameraLookTransform.position=smoothedPosition;
+        }
+        float camVelocity;
+        float mouseX;
+        float mouseY;
+        //마우스 감도에 따라 부드럽게 움직이는 것 구현하기(추가해야할 사항)
+        private void Look()
+        {            
+            mouseX += UnityEngine.Input.GetAxis("Mouse X")*mouseSpeed;
+            mouseY += UnityEngine.Input.GetAxis("Mouse Y")*mouseSpeed;
+            mouseY=Mathf.Clamp(mouseY, -60f, 60f);
+
+            CameraLookTransform.eulerAngles =new Vector3(-mouseY, mouseX, 0);
+            
+        }
+
+
+
+        private void CheckIsObstacle()
+        {
+            //player 가 카메라 방향으로 ray를 쏜다
+            Vector3 rayDir=(transform.position-target.position).normalized;
+            RaycastHit hitInfo;
+            
+
+            if(Physics.Raycast(target.position, rayDir, out hitInfo))
+            {
+                Debug.Log(hitInfo.transform.gameObject.tag);
+                //ray가 닿은 경우
+                if(!(hitInfo.transform.gameObject.tag == "Player"))//장애물에 닿은 경우
+                {
+                    Vector3 fixedPoint=hitInfo.point;
+                    //if(fixedPoint.z<-3) fixedPoint.z=-3;
+                    transform.position = SetCameraPosition(transform.position, fixedPoint, Vector3.zero);
+                    return;
+                }
+                //카메라 또는 player에 닿은 경우
+                else
+                    transform.localPosition = SetCameraPosition(transform.localPosition, initCamLocalPos, baseOffset);
+            }
+            //ray 가 안 닿은 경우
+            else
+            {
+                Debug.Log("안 닿음");
+                transform.localPosition= SetCameraPosition(transform.localPosition, initCamLocalPos, baseOffset);
             }
         }
 
-         private void FollowTarget(Transform target)
+        private Vector3 SetCameraPosition(Vector3 currentPos, Vector3 cameraPos, Vector3 targetOffset)
         {
-        //     //좌우 할때는 약간 돌아감
-            
-             desiredPosition= target.position + offset;
-        //     //smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothSpeed);
-            
-        //     if(Vector3.Distance( desiredPosition, transform.position ) >0)
-        //     {
-        //         Vector3 moveDir= (desiredPosition -transform.position).normalized;
-        //         transform.position += moveDir * 1f*Time.deltaTime;
-        //     }
-            
-        //     // transform.forward =(target.position - transform.position).normalized;
-        //     // transform.eulerAngles=new Vector3(transform.eulerAngles.x, 0, 0);
-                transform.position=desiredPosition;
-         }
+            offset=targetOffset;
+            currentPos= Vector3.Lerp(currentPos, cameraPos, Time.deltaTime);
+            float distance=Vector3.Distance(currentPos, cameraPos);
+            if(distance<0.1f)
+            {
+                currentPos = cameraPos;
+            }
 
-         private void Look()
-         {
-            Vector3 eulerAngle= CameraLookTransform.eulerAngles;
-            eulerAngle.y += (cameraInput.x*Time.deltaTime);
-            eulerAngle.x +=(cameraInput.y*Time.deltaTime);
+            return currentPos;
 
-            CameraLookTransform.eulerAngles=eulerAngle;
-         }
-        // private void Look()
-        // {
-        //     //transform.RotateAround(target.position, Vector3.up, cameraInput.x*Time.deltaTime*10f);
-            
-            
-        //     //smoothedPosition = Vector3.SmoothDamp(transform.position, cameraTransform.position, ref velocity, smoothSpeed);
-        //     //smoothedRotation=Vector3.SmoothDamp(transform.eulerAngles, cameraTransform.eulerAngles, ref velocity, smoothSpeed);
-            
-        //     //transform.position =smoothedPosition;
-        //     //transform.eulerAngles=smoothedRotation;
+        }
 
+        private void SetBaseCameraDistance(float targetPointZ)
+        {
+            offset = baseOffset;
+            Vector3 newCameraDistancePos=transform.localPosition;
+            newCameraDistancePos.z -= cameraObstacleSpeed*Time.deltaTime;
+            if(newCameraDistancePos.z<baseDistance)
+                newCameraDistancePos.z=baseDistance;
+            transform.localPosition=newCameraDistancePos;
+        }
 
-        //     Vector3 moveDir = (target.position - transform.position).normalized;
-        //     Vector3 normal = Vector3.Cross(moveDir, Vector3.up);
-        //     // Debug.Log(cameraInput.x);
-        //     desiredPosition += normal.normalized * cameraInput.x *Time.deltaTime ;
-        //     //transform.position=desiredPosition;
-        //     if(Vector3.Distance( desiredPosition, target.position ) > -offset.z)
-        //     {
-        //         transform.position += moveDir *smoothSpeed*Time.deltaTime;
-        //     }
-        // }
+        private void SetCloseCamera()
+        {
+            offset = Vector3.zero;
+            Vector3 newCameraDistancePos =transform.localPosition;
+            newCameraDistancePos.z += cameraObstacleSpeed*Time.deltaTime;
+            if(newCameraDistancePos.z > minDistance)
+                newCameraDistancePos.z= minDistance;
+            transform.localPosition=newCameraDistancePos;
+        }
 
-
-        // Debug.Log(GetTargetDistance());
-        //         if(GetTargetDistance()> Mathf.Abs(offset.z+1f))
-        //         {
-        //             transform.position += (GetFollowDirection()*followSpeed)*Time.deltaTime;
-        //         }
-        //         if(GetTargetDistance()<Mathf.Abs(offset.z-1f))
-        //         {
-        //             transform.position -= GetFollowDirection()*followSpeed*Time.deltaTime;
-        //         }
-
-        //         transform.position += GetRotateDirection()*cameraInput.x*Time.deltaTime;
-        //         //LookAt
-        //         //Vector3 lookDir =(target.position - transform.position).normalized;
-        //         //transform.forward=lookDir;
-        
         private Vector3 GetFollowDirection()
         {
             Vector3 moveDir = (target.position-transform.position).normalized;

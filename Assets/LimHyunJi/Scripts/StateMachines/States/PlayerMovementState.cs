@@ -71,9 +71,8 @@ namespace ItTakesTwo
 
                 Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
-                Debug.Log(speed);
+                //Debug.Log(speed);
                 stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection* speed - currentPlayerHorizontalVelocity);
-                //stateMachine.Player.characterController.Move(environmentDir * environmentForce *Time.deltaTime);
             }            
         }
        
