@@ -8,6 +8,7 @@ namespace ItTakesTwo
     {
         protected PlayerMovementStateMachine stateMachine;
         protected static bool isGrounded;
+        public static GameObject interactableObject;
 
         protected PlayerGroundedData movementData;
         public PlayerBaseState(PlayerMovementStateMachine playerMovementStateMachine)

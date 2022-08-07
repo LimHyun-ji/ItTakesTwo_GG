@@ -10,7 +10,7 @@ namespace ItTakesTwo
     {
         protected bool canFly;
         protected bool canInteract;
-        protected GameObject interactableObject;
+        
         public PlayerAirborneState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -33,22 +33,21 @@ namespace ItTakesTwo
             //상호작용 가능한 물체랑 tirgger하면
             if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
             {
-                
                 canInteract=true;
                 interactableObject=collider.gameObject;
             }
 
         }
-        public override void OnTriggerExit(Collider collider)
-        {
-            base.OnTriggerExit(collider);
-            if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
-            {
-                canInteract=false;
-                interactableObject=null;
-            }
+        // public override void OnTriggerExit(Collider collider)
+        // {
+        //     base.OnTriggerExit(collider);
+        //     if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
+        //     {
+        //         canInteract=false;
+        //         interactableObject=null;
+        //     }
             
-        }
+        // }
 
         private void OnLand()
         {
@@ -66,16 +65,16 @@ namespace ItTakesTwo
         {
             base.RemoveInputActionsCallBacks();
             stateMachine.Player.Input.PlayerActions.DownForce.performed -= OnDownForce;
-            stateMachine.Player.Input.PlayerActions.Interact.performed += OnInteract;
+            stateMachine.Player.Input.PlayerActions.Interact.performed -= OnInteract;
         }
 
-        private void OnInteract(InputAction.CallbackContext obj)
+        protected void OnInteract(InputAction.CallbackContext obj)
         {
             if(!interactableObject) return;
             if(canInteract && interactableObject.tag == "Hook")
             {
-                //SwingState
-                Debug.Log("SwingState");
+                Debug.Log("Arir Interact"+ interactableObject);
+                stateMachine.ChangeState(stateMachine.SwingState);
             }
         }
 

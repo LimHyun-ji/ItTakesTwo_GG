@@ -20,7 +20,7 @@ namespace ItTakesTwo
         [HideInInspector]
         public Transform cameraLookPoint;
         public PlayerInput Input{get; private set;}
-        private PlayerMovementStateMachine movementStateMachine;
+        public PlayerMovementStateMachine movementStateMachine;
 
 
         private void Awake() 

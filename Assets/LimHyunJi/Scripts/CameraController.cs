@@ -8,6 +8,8 @@ namespace ItTakesTwo
 {
     public class CameraController : MonoBehaviour
     {
+        public PlayerInput Input{get; private set;}
+        public Transform CameraLookTransform;
         public float smoothSpeed=10f;
         public float mouseSpeed=10f;
         public float cameraObstacleSpeed=10f;
@@ -17,11 +19,12 @@ namespace ItTakesTwo
         private Vector3 initCamLocalPos;
         public Vector3 baseOffset;
         private Vector3 offset;
-        public Transform CameraLookTransform;
-
+        private bool isObstacle;
+        private Vector3 fixedPoint;
+        float mouseX;
+        float mouseY;
         
 
-        public PlayerInput Input{get; private set;}
         private Transform target;
         private Vector3 velocity = Vector3.zero;
         private Vector2 cameraInput;
@@ -32,28 +35,39 @@ namespace ItTakesTwo
         {
             initCamLocalPos=transform.localPosition;
             target = GameObject.FindWithTag("Player").transform;
-            
+            // Player player =target.GetComponent<Player>();
+            // bool isnput=player.movementStateMachine.SwingState.isInput;
+            // player.movementStateMachine.SwingState.
             Input = target.gameObject.GetComponent<PlayerInput>();
             offset = baseOffset;
             CameraLookTransform.position=target.position + offset;
         }
+        private void Update() 
+        {
+            cameraInput = Input.PlayerActions.Look.ReadValue<Vector2>();
+            playerMovementInput =Input.PlayerActions.Movement.ReadValue<Vector2>();
+        }
         void LateUpdate()
         {
             Look();
-            CheckIsObstacle();
+            isObstacle=CheckIsObstacle();
         }
 
         void FixedUpdate()
         {
-            cameraInput = Input.PlayerActions.Look.ReadValue<Vector2>();
-            playerMovementInput =Input.PlayerActions.Movement.ReadValue<Vector2>();
-            //CameraLookTransform.position=target.position;
-            if(target)
+            if(!target) return;
+            
+            transform.forward=(CameraLookTransform.position- transform.position).normalized;
+            FollowTarget(target);
+
+            if(isObstacle)
             {
-                transform.forward=(CameraLookTransform.position- transform.position).normalized;
-               FollowTarget(target);
-               //Look();
-               //Debug.Log(Vector3.Distance(CameraLookTransform.position, transform.position));
+                //CameraLookTransform.position= target.position;
+                transform.position = SetCameraPosition(transform.position, fixedPoint, baseOffset);
+            }
+            else
+            {
+                transform.localPosition = SetCameraPosition(transform.localPosition, initCamLocalPos, baseOffset);
             }
             
         }
@@ -64,10 +78,7 @@ namespace ItTakesTwo
             Vector3 smoothedPosition = Vector3.SmoothDamp(CameraLookTransform.position, desiredPosition, ref velocity, smoothSpeed);
             CameraLookTransform.position=smoothedPosition;
         }
-        float camVelocity;
-        float mouseX;
-        float mouseY;
-        //마우스 감도에 따라 부드럽게 움직이는 것 구현하기(추가해야할 사항)
+        
         private void Look()
         {            
             mouseX += UnityEngine.Input.GetAxis("Mouse X")*mouseSpeed;
@@ -80,33 +91,32 @@ namespace ItTakesTwo
 
 
 
-        private void CheckIsObstacle()
+        private bool CheckIsObstacle()
         {
             //player 가 카메라 방향으로 ray를 쏜다
-            Vector3 rayDir=(transform.position-target.position).normalized;
+            Vector3 rayDir=(transform.position-CameraLookTransform.position).normalized;
             RaycastHit hitInfo;
             
-
-            if(Physics.Raycast(target.position, rayDir, out hitInfo))
+            int layerMask = ((1 << LayerMask.NameToLayer("Player")));// | (1 << LayerMask.NameToLayer("Interactable")));  // Everything에서 Player,GUN 레이어만 제외하고 충돌 체크함
+            layerMask  = ~layerMask ;
+            //레이어 마스크로 사용하도록 코드 수정할 것
+            if(Physics.Raycast(CameraLookTransform.position, rayDir, out hitInfo, 20f))
             {
-                Debug.Log(hitInfo.transform.gameObject.tag);
+                //Debug.Log(hitInfo.transform.gameObject.tag);
                 //ray가 닿은 경우
-                if(!(hitInfo.transform.gameObject.tag == "Player"))//장애물에 닿은 경우
+                if(!((hitInfo.transform.gameObject.tag == "Player") || hitInfo.transform.gameObject.tag== "Hook"))//장애물에 닿은 경우
                 {
-                    Vector3 fixedPoint=hitInfo.point;
-                    //if(fixedPoint.z<-3) fixedPoint.z=-3;
-                    transform.position = SetCameraPosition(transform.position, fixedPoint, Vector3.zero);
-                    return;
+                    fixedPoint=hitInfo.point;
+                    return true;
                 }
                 //카메라 또는 player에 닿은 경우
                 else
-                    transform.localPosition = SetCameraPosition(transform.localPosition, initCamLocalPos, baseOffset);
+                    return false;
             }
             //ray 가 안 닿은 경우
             else
             {
-                Debug.Log("안 닿음");
-                transform.localPosition= SetCameraPosition(transform.localPosition, initCamLocalPos, baseOffset);
+                return false;
             }
         }
 

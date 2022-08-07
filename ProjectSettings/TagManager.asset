@@ -27,8 +27,8 @@ TagManager:
   - 
   - 
   - Interactable
-  - 
-  - 
+  - Player
+  - Camera
   - 
   - 
   - 

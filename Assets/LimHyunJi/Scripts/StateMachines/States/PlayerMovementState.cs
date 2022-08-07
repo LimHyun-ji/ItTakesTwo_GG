@@ -10,6 +10,7 @@ namespace ItTakesTwo
     public class PlayerMovementState : PlayerBaseState
     {
         protected static bool shouldSlide;
+        public bool isInput;
 
         public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
@@ -49,7 +50,6 @@ namespace ItTakesTwo
         #endregion
 
         #region Main Methods
-        public bool isInput;
 
         protected virtual void Move()
         {
