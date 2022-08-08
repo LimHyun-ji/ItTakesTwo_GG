@@ -6,13 +6,16 @@ namespace ItTakesTwo
 {
     public class PlayerInput : MonoBehaviour
     {
-        public PlayerInputActions InputActions {get; private set;}
-        public PlayerInputActions.PlayerActions PlayerActions{get; private set;}
-
-        private void Awake() 
+        public PlayerInputActions InputActions {get; protected set;}
+        public PlayerInputActions.Player1Actions PlayerActions{get; private set;}
+        
+        //public struct PlayerActions{};
+        //public PlayerActions playerActions;
+        protected virtual void Awake() 
         {
-            InputActions =new PlayerInputActions();
-            PlayerActions =InputActions.Player;
+            InputActions = new PlayerInputActions();
+
+            PlayerActions = InputActions.Player1;
         }
 
         private void OnEnable() 

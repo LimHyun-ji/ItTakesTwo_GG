@@ -19,11 +19,12 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            movementData.JumpData.airJumpCount=0;
             Debug.Log("interactable : " +interactableObject);
             initEulerAngles=interactableObject.transform.eulerAngles;
             stateMachine.Player.transform.forward=interactableObject.transform.forward;
             stateMachine.Player.gameObject.transform.SetParent(interactableObject.transform, false);
-            ResetLocalTransform(3f);
+            ResetLocalTransform(5f);
         }
 
         public override void Exit()
@@ -31,6 +32,10 @@ namespace ItTakesTwo
             base.Exit();
             stateMachine.Player.gameObject.transform.SetParent(null);
             stateMachine.Player.characterController.Move(interactableObject.transform.forward* 5f);
+        }
+        public override void OnTriggerExit(Collider collider)
+        {
+            
         }
 
 

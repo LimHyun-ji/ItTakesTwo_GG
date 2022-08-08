@@ -40,6 +40,7 @@ namespace ItTakesTwo
 
         public virtual void OnTriggerEnter(Collider collider)
         {
+            if(collider.gameObject.tag == "Player") return;
         }
 
         public virtual void OnTriggerExit(Collider collider)

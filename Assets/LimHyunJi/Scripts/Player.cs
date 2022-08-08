@@ -10,6 +10,7 @@ namespace ItTakesTwo
         [field: Header("References")]
         [field: SerializeField] public PlayerSO Data {get; private set;}
         
+        public string PlayerName="";
         public CharacterController characterController;
         public bool isMovable;
         public Rigidbody rigidBody{get; private set;}
@@ -27,6 +28,19 @@ namespace ItTakesTwo
         {
             characterController=GetComponent<CharacterController>();
             rigidBody =GetComponent<Rigidbody>();
+            // if (PlayerName == "Player1")
+            // {
+            //     gameObject.AddComponent<Player1Input>();
+            //     Input=GetComponent<Player1Input>();
+            //     Input =(Player1Input)Input;
+                
+            // }
+            // if(PlayerName == "Player2")
+            // {
+            //     gameObject.AddComponent<Player2Input>();
+            //     Input=GetComponent<Player2Input>();
+            //     Input =(Player2Input)Input;
+            // }
             Input=GetComponent<PlayerInput>();
             movementStateMachine=new PlayerMovementStateMachine(this);
             mainCameraTransform=Camera.main.transform;

@@ -26,6 +26,7 @@ namespace ItTakesTwo
         public override void OnTriggerEnter(Collider collider) 
         {
             base.OnTriggerEnter(collider);
+            if(collider.gameObject.tag =="Player") return;
             if(((1 << collider.gameObject.layer) & stateMachine.Player.GroundLayers) != 0)
             {
                 OnLand();
@@ -38,16 +39,15 @@ namespace ItTakesTwo
             }
 
         }
-        // public override void OnTriggerExit(Collider collider)
-        // {
-        //     base.OnTriggerExit(collider);
-        //     if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
-        //     {
-        //         canInteract=false;
-        //         interactableObject=null;
-        //     }
-            
-        // }
+        public override void OnTriggerExit(Collider collider)
+        {
+            base.OnTriggerExit(collider);
+            if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
+            {
+                canInteract=false;
+                interactableObject=null;
+            }
+        }
 
         private void OnLand()
         {
@@ -58,6 +58,18 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
+
+            Player1Input p1Input = stateMachine.Player.Input as Player1Input;
+            
+            // if(p1Input != null)
+            // {
+            //     []
+            // }
+            // else
+            // {
+
+            // }
+
             stateMachine.Player.Input.PlayerActions.DownForce.performed += OnDownForce;
             stateMachine.Player.Input.PlayerActions.Interact.performed += OnInteract;
         }
@@ -73,8 +85,14 @@ namespace ItTakesTwo
             if(!interactableObject) return;
             if(canInteract && interactableObject.tag == "Hook")
             {
-                Debug.Log("Arir Interact"+ interactableObject);
                 stateMachine.ChangeState(stateMachine.SwingState);
+                interactableObject.GetComponent<SphereCollider>().enabled=false;
+            }
+            if(canInteract && interactableObject.tag == "RollerCoaster")
+            {
+                Debug.Log("Arir Interact Roller"+ interactableObject);
+                stateMachine.ChangeState(stateMachine.RidingState);
+                interactableObject.GetComponent<SphereCollider>().enabled=false;
             }
         }
 

@@ -15,10 +15,19 @@ namespace ItTakesTwo
         public Vector3 P3;
         public Vector3 P4;
 
-        private void Update()
+        private void FixedUpdate()
         {
             value=Mathf.Lerp(value, 1, Time.deltaTime);
             player.transform.position = BezierTest(P1, P2, P3, P4, value);
+            if(Vector3.Distance(player.transform.position, P4)<0.01)
+            {
+                Debug.Log("end");
+                player.transform.position += (P4-P3).normalized * Time.deltaTime * value*2f;
+            }
+            else
+            {
+                player.transform.position = BezierTest(P1, P2, P3, P4, value);
+            }
         }
         public Vector3 BezierTest(Vector3 P_1, Vector3 P_2, Vector3 P_3, Vector3 P_4, float value)
         {
