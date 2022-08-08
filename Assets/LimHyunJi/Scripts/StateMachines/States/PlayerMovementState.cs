@@ -113,14 +113,30 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
-            stateMachine.Player.Input.PlayerActions.Jump.started += OnJump;
-            stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Jump.started += OnJump;
+                stateMachine.Player.Input.Player1Actions.Dash.started += OnDashStarted;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Jump.started += OnJump;
+                stateMachine.Player.Input.Player2Actions.Dash.started += OnDashStarted;
+            }
         }
         protected override void RemoveInputActionsCallBacks()
         {
             base.RemoveInputActionsCallBacks();
-            stateMachine.Player.Input.PlayerActions.Jump.started -= OnJump;
-            stateMachine.Player.Input.PlayerActions.Dash.started -= OnDashStarted;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Jump.started -= OnJump;
+                stateMachine.Player.Input.Player1Actions.Dash.started -= OnDashStarted;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Jump.started -= OnJump;
+                stateMachine.Player.Input.Player2Actions.Dash.started -= OnDashStarted;
+            }
         }
         protected void RotateTowardsTargetRotation()
         {

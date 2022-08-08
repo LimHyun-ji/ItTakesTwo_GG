@@ -20,7 +20,6 @@ namespace ItTakesTwo
         {
             base.Enter();
             movementData.JumpData.airJumpCount=0;
-            Debug.Log("interactable : " +interactableObject);
             initEulerAngles=interactableObject.transform.eulerAngles;
             stateMachine.Player.transform.forward=interactableObject.transform.forward;
             stateMachine.Player.gameObject.transform.SetParent(interactableObject.transform, false);
@@ -61,7 +60,6 @@ namespace ItTakesTwo
             if(isEnd)//뒤로
             {
                 xEulerAngle=Mathf.Lerp(xEulerAngle,3f, Time.deltaTime);
-                //xEulerAngle=Mathf.Lerp(, -30, Time.deltaTime);
                 if(x>30)    isEnd=false;
             }
             interactableObject.transform.Rotate(interactableObject.transform.right, xEulerAngle, Space.World); 

@@ -86,11 +86,17 @@ namespace ItTakesTwo
         
         protected override void AddInputActionsCallBacks()
         {
-            stateMachine.Player.Input.PlayerActions.Slide.performed += OnExitSlide;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+                stateMachine.Player.Input.Player1Actions.Slide.performed += OnExitSlide;
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+                stateMachine.Player.Input.Player2Actions.Slide.performed += OnExitSlide;
         }
         protected override void RemoveInputActionsCallBacks()
         {
-            stateMachine.Player.Input.PlayerActions.Slide.performed -= OnExitSlide;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+                stateMachine.Player.Input.Player1Actions.Slide.performed -= OnExitSlide;
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+                stateMachine.Player.Input.Player2Actions.Slide.performed -= OnExitSlide;
         }
         protected void OnExitSlide(InputAction.CallbackContext obj)
         {

@@ -24,17 +24,17 @@ namespace ItTakesTwo
         float mouseX;
         float mouseY;
         
-
-        private Transform target;
+        public enum CameraType{ camera1, camera2};
+        public CameraType cameraName;
+        public Transform target;
         private Vector3 velocity = Vector3.zero;
         private Vector2 cameraInput;
         private Vector2 playerMovementInput;
 
         // Start is called before the first frame update
         void Start()
-        {
+        {            
             initCamLocalPos=transform.localPosition;
-            target = GameObject.FindWithTag("Player").transform;
             // Player player =target.GetComponent<Player>();
             // bool isnput=player.movementStateMachine.SwingState.isInput;
             // player.movementStateMachine.SwingState.
@@ -44,8 +44,8 @@ namespace ItTakesTwo
         }
         private void Update() 
         {
-            cameraInput = Input.PlayerActions.Look.ReadValue<Vector2>();
-            playerMovementInput =Input.PlayerActions.Movement.ReadValue<Vector2>();
+            cameraInput = Input.Player1Actions.Look.ReadValue<Vector2>();
+            playerMovementInput =Input.Player1Actions.Movement.ReadValue<Vector2>();
         }
         void LateUpdate()
         {

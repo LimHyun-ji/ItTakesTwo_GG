@@ -23,7 +23,7 @@ namespace ItTakesTwo
 
         public PlayerMovementStateMachine(Player player)//생성자
         {
-            Player=player;
+            Player = player;
             ReusableData=new PlayerStateReusableData();
             IdlingState=new PlayerIdlingState(this);
             RunningState=new PlayerRunningState(this);

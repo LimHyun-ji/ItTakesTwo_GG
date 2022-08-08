@@ -58,26 +58,32 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.DownForce.performed += OnDownForce;
+                stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.DownForce.performed += OnDownForce;
+                stateMachine.Player.Input.Player2Actions.Interact.performed += OnInteract;
+            }
 
-            Player1Input p1Input = stateMachine.Player.Input as Player1Input;
-            
-            // if(p1Input != null)
-            // {
-            //     []
-            // }
-            // else
-            // {
 
-            // }
-
-            stateMachine.Player.Input.PlayerActions.DownForce.performed += OnDownForce;
-            stateMachine.Player.Input.PlayerActions.Interact.performed += OnInteract;
         }
         protected override void RemoveInputActionsCallBacks()
         {
             base.RemoveInputActionsCallBacks();
-            stateMachine.Player.Input.PlayerActions.DownForce.performed -= OnDownForce;
-            stateMachine.Player.Input.PlayerActions.Interact.performed -= OnInteract;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.DownForce.performed -= OnDownForce;
+                stateMachine.Player.Input.Player1Actions.Interact.performed -= OnInteract;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.DownForce.performed -= OnDownForce;
+                stateMachine.Player.Input.Player2Actions.Interact.performed -= OnInteract;
+            }
         }
 
         protected void OnInteract(InputAction.CallbackContext obj)
@@ -86,13 +92,13 @@ namespace ItTakesTwo
             if(canInteract && interactableObject.tag == "Hook")
             {
                 stateMachine.ChangeState(stateMachine.SwingState);
-                interactableObject.GetComponent<SphereCollider>().enabled=false;
+                //interactableObject.GetComponent<SphereCollider>().enabled=false;//multil에서는 이렇게 해도 됨 
             }
             if(canInteract && interactableObject.tag == "RollerCoaster")
             {
                 Debug.Log("Arir Interact Roller"+ interactableObject);
                 stateMachine.ChangeState(stateMachine.RidingState);
-                interactableObject.GetComponent<SphereCollider>().enabled=false;
+                //interactableObject.GetComponent<SphereCollider>().enabled=false;
             }
         }
 

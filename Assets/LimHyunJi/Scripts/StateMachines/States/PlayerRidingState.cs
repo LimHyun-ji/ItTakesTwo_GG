@@ -6,7 +6,7 @@ namespace ItTakesTwo
 {
     public class PlayerRidingState : PlayerMovementState
     {
-        private GameObject bezierController;
+        private GameObject bezierObj;
         public PlayerRidingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -14,8 +14,11 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-            bezierController=GameObject.FindWithTag("RollerCoaster");
-            bezierController.GetComponent<BezierController>().enabled=true;
+            bezierObj=GameObject.FindWithTag("RollerCoaster");
+            BezierController bezierController = bezierObj.GetComponent<BezierController>();
+            bezierController.enabled=true;
+            bezierController.value=0f;
+            bezierController.player = stateMachine.Player.gameObject;
         }
     }
 }

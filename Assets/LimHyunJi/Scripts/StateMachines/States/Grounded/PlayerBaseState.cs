@@ -57,7 +57,11 @@ namespace ItTakesTwo
         #region Main Methods
         private void ReadMovementInput()
         {
-            stateMachine.ReusableData.MovementInput=stateMachine.Player.Input.PlayerActions.Movement.ReadValue<Vector2>();
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+                stateMachine.ReusableData.MovementInput=stateMachine.Player.Input.Player1Actions.Movement.ReadValue<Vector2>();
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+                stateMachine.ReusableData.MovementInput=stateMachine.Player.Input.Player2Actions.Movement.ReadValue<Vector2>();
+
         }
         #endregion
 

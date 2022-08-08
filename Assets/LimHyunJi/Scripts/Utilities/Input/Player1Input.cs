@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ItTakesTwo
 {
-    public class Player1Input : PlayerInput
+    public class Player1Input : PlayerInput, ITest
     {
         public PlayerInputActions.Player1Actions PlayerActions{get; set;}
 
@@ -13,5 +13,17 @@ namespace ItTakesTwo
             InputActions = new PlayerInputActions();
             PlayerActions = InputActions.Player1;
         }
+
+        PlayerInputActions.Player1Actions ITest.GetPlayerActions()
+        {
+            return PlayerActions;
+        }
+
+        
+    }
+
+    public interface ITest
+    {
+        PlayerInputActions.Player1Actions GetPlayerActions();
     }
 }

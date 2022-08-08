@@ -33,18 +33,36 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
-            stateMachine.Player.Input.PlayerActions.Movement.canceled += OnMovementCanceled;
-            stateMachine.Player.Input.PlayerActions.SprintToggle.started +=OnSprintToggle;
-            stateMachine.Player.Input.PlayerActions.Slide.performed += OnSlide;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Movement.canceled += OnMovementCanceled;
+                stateMachine.Player.Input.Player1Actions.SprintToggle.started +=OnSprintToggle;
+                stateMachine.Player.Input.Player1Actions.Slide.performed += OnSlide;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Movement.canceled += OnMovementCanceled;
+                stateMachine.Player.Input.Player2Actions.SprintToggle.started +=OnSprintToggle;
+                stateMachine.Player.Input.Player2Actions.Slide.performed += OnSlide;
+            }
         }
 
         protected override void RemoveInputActionsCallBacks()
         {
             base.RemoveInputActionsCallBacks();
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Movement.canceled -= OnMovementCanceled;
+                stateMachine.Player.Input.Player1Actions.SprintToggle.started -=OnSprintToggle;
+                stateMachine.Player.Input.Player1Actions.Slide.performed -= OnSlide;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Movement.canceled -= OnMovementCanceled;
+                stateMachine.Player.Input.Player2Actions.SprintToggle.started -=OnSprintToggle;
+                stateMachine.Player.Input.Player2Actions.Slide.performed -= OnSlide;
+            }
 
-            stateMachine.Player.Input.PlayerActions.Movement.canceled -= OnMovementCanceled;
-            stateMachine.Player.Input.PlayerActions.SprintToggle.started -=OnSprintToggle;
-            stateMachine.Player.Input.PlayerActions.Slide.performed -= OnSlide;
 
         }
 

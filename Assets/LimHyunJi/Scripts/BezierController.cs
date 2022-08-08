@@ -10,6 +10,7 @@ namespace ItTakesTwo
         public GameObject player;
         [Range(0, 1)]
         public float value;
+        public float speed=2f;
         public Vector3 P1;
         public Vector3 P2;
         public Vector3 P3;
@@ -22,11 +23,12 @@ namespace ItTakesTwo
             if(Vector3.Distance(player.transform.position, P4)<0.01)
             {
                 Debug.Log("end");
-                player.transform.position += (P4-P3).normalized * Time.deltaTime * value*2f;
+                player.transform.position += (P4-P3).normalized * Time.deltaTime * speed*2f;
             }
             else
             {
                 player.transform.position = BezierTest(P1, P2, P3, P4, value);
+                player.transform.forward= (BezierTest(P1, P2, P3, P4, value+Time.deltaTime)- BezierTest(P1, P2, P3, P4, value)).normalized;
             }
         }
         public Vector3 BezierTest(Vector3 P_1, Vector3 P_2, Vector3 P_3, Vector3 P_4, float value)
@@ -66,7 +68,7 @@ namespace ItTakesTwo
                 Vector3 Before=Generator.BezierTest(Generator.P1, Generator.P2, Generator.P3, Generator.P4, value_Before);
                 float value_After=(i+1)/50;
                 Vector3 After= Generator.BezierTest(Generator.P1, Generator.P2, Generator.P3, Generator.P4, value_After);
-
+                
                 Handles.DrawLine(Before, After);
             }
         }

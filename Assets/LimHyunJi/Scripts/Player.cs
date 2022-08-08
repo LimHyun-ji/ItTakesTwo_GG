@@ -10,7 +10,9 @@ namespace ItTakesTwo
         [field: Header("References")]
         [field: SerializeField] public PlayerSO Data {get; private set;}
         
-        public string PlayerName="";
+        public enum PlayerType {player1, player2};
+        public PlayerType playerName;
+
         public CharacterController characterController;
         public bool isMovable;
         public Rigidbody rigidBody{get; private set;}
@@ -20,28 +22,19 @@ namespace ItTakesTwo
         public Transform mainCameraTransform{get; private set;}
         [HideInInspector]
         public Transform cameraLookPoint;
-        public PlayerInput Input{get; private set;}
+        public PlayerInput Input{get; protected set;}
         public PlayerMovementStateMachine movementStateMachine;
 
 
-        private void Awake() 
+        protected virtual void Awake() 
         {
             characterController=GetComponent<CharacterController>();
             rigidBody =GetComponent<Rigidbody>();
-            // if (PlayerName == "Player1")
-            // {
-            //     gameObject.AddComponent<Player1Input>();
-            //     Input=GetComponent<Player1Input>();
-            //     Input =(Player1Input)Input;
-                
-            // }
-            // if(PlayerName == "Player2")
-            // {
-            //     gameObject.AddComponent<Player2Input>();
-            //     Input=GetComponent<Player2Input>();
-            //     Input =(Player2Input)Input;
-            // }
             Input=GetComponent<PlayerInput>();
+
+            ITest iInput = GetComponent<Player1Input>();
+            //iInput.getPlayerAction().Jump
+           
             movementStateMachine=new PlayerMovementStateMachine(this);
             mainCameraTransform=Camera.main.transform;
         }
