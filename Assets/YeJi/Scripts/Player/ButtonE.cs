@@ -7,27 +7,28 @@ namespace ItTakesTwo
 {
     public class ButtonE : MonoBehaviour
     {
-        public bool bE;
-        public float curY;
+        public bool eHolding;
+        public bool eOnce;
         
         // Start is called before the first frame update
         void Start()
         {
-            bE = false;
-            curY = transform.position.y;
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (Input.GetKey(KeyCode.E))
+            {
+                eHolding = true;
+            }
             if (Input.GetKeyDown(KeyCode.E))
             {
-                bE = true;
-                print("button e pushed");
+                eOnce = true;
             }
-            else
+            if (Input.GetKeyUp(KeyCode.E))
             {
-                bE = false;
+                eHolding = false;
             }
         }
     }

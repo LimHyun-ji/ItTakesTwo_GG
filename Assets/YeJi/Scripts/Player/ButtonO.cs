@@ -6,25 +6,28 @@ namespace ItTakesTwo
 {
     public class ButtonO : MonoBehaviour
     {
-        public bool bO;
+        public bool oHolding;
+        public bool oOnce;
         
         // Start is called before the first frame update
         void Start()
         {
-            bO = false;
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (Input.GetKey(KeyCode.O))
+            {
+                oHolding = true;
+            }
             if (Input.GetKeyDown(KeyCode.O))
             {
-                bO = true;
-                print("button o pushed");
+                oOnce = true;
             }
-            else
+            if (Input.GetKeyUp(KeyCode.O))
             {
-                bO = false;
+                oHolding = false;
             }
         }
     }

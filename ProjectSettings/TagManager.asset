@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Npole
+  - Spole
   layers:
   - Default
   - TransparentFX
@@ -11,10 +13,10 @@ TagManager:
   - Ground
   - Water
   - UI
-  - RedMagnet
-  - BlueMagnet
-  - JumpPadN
-  - JumpPadS
+  - Magnet
+  - Player
+  - 
+  - 
   - 
   - 
   - 
