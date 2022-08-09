@@ -10,25 +10,33 @@ namespace ItTakesTwo
         public GameObject player;
         [Range(0, 1)]
         public float value;
+        [Range(1, 10)]
         public float speed=2f;
         public Vector3 P1;
         public Vector3 P2;
         public Vector3 P3;
         public Vector3 P4;
+        private bool isEnd;
+        private void Start()
+        {
+
+        }
 
         private void FixedUpdate()
         {
-            value=Mathf.Lerp(value, 1, Time.deltaTime);
-            player.transform.position = BezierTest(P1, P2, P3, P4, value);
-            if(Vector3.Distance(player.transform.position, P4)<0.01)
+            value +=Time.deltaTime;
+            //Mathf.Lerp(value, 1, Time.deltaTime);
+            if(Vector3.Distance(player.transform.position, P4)>0.1 && isEnd==false)
             {
-                Debug.Log("end");
-                player.transform.position += (P4-P3).normalized * Time.deltaTime * speed*2f;
+                Debug.Log("Ride");
+                player.transform.position = BezierTest(P1, P2, P3, P4, value);
+                player.transform.forward= (BezierTest(P1, P2, P3, P4, value+Time.deltaTime)- BezierTest(P1, P2, P3, P4, value)).normalized;
             }
             else
             {
-                player.transform.position = BezierTest(P1, P2, P3, P4, value);
-                player.transform.forward= (BezierTest(P1, P2, P3, P4, value+Time.deltaTime)- BezierTest(P1, P2, P3, P4, value)).normalized;
+                Debug.Log("end");
+                isEnd=true;
+                player.GetComponent<CharacterController>().Move(player.transform.forward *value*3f* Time.deltaTime);
             }
         }
         public Vector3 BezierTest(Vector3 P_1, Vector3 P_2, Vector3 P_3, Vector3 P_4, float value)
