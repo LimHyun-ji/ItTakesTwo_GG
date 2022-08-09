@@ -115,12 +115,10 @@ namespace ItTakesTwo
             base.AddInputActionsCallBacks();
             if(stateMachine.Player.playerName == Player.PlayerType.player1)
             {
-                stateMachine.Player.Input.Player1Actions.Jump.started += OnJump;
                 stateMachine.Player.Input.Player1Actions.Dash.started += OnDashStarted;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.player2)
             {
-                stateMachine.Player.Input.Player2Actions.Jump.started += OnJump;
                 stateMachine.Player.Input.Player2Actions.Dash.started += OnDashStarted;
             }
         }
@@ -178,16 +176,10 @@ namespace ItTakesTwo
             if(movementData.DashData.airDashCount == 0)
                 stateMachine.ChangeState(stateMachine.DashingState);
         }
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            if(movementData.JumpData.airJumpCount == 0)
-                stateMachine.ChangeState(stateMachine.JumpingState);
-        }
+        
 
-        protected void OnFall()
-        {
-            stateMachine.ChangeState(stateMachine.FallingState);
-        }
+        
+        
 
         #endregion
     }

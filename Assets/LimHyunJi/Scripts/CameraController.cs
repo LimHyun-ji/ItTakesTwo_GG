@@ -35,9 +35,6 @@ namespace ItTakesTwo
         void Start()
         {            
             initCamLocalPos=transform.localPosition;
-            // Player player =target.GetComponent<Player>();
-            // bool isnput=player.movementStateMachine.SwingState.isInput;
-            // player.movementStateMachine.SwingState.
             Input = target.gameObject.GetComponent<PlayerInput>();
             offset = baseOffset;
             CameraLookTransform.position=target.position + offset;

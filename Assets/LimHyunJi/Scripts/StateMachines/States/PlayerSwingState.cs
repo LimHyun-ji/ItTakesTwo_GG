@@ -4,25 +4,46 @@ using UnityEngine;
 
 namespace ItTakesTwo
 {
-    public class PlayerSwingState : PlayerMovementState
+    public class PlayerSwingState : PlayerBaseState
     {
         Vector3 initEulerAngles;
+        Vector3 initLocalPos;
+        Vector3 targetLocalPos;
+        RopeRenderer ropeRenderer;
+        LineRenderer lineRenderer;
         public PlayerSwingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
+        }
+        public override void Update()
+        {
+            base.Update();
+            //MoveLocalPos(initLocalPos,targetLocalPos);
+            
         }
         public override void PhysicsUpdate()
         {
             //interactableObject.transform.forward=stateMachine.Player.transform.forward;
             InputSwing();
             DefaultSwing();
+            MakeRope();
+
         }
         public override void Enter()
         {
             base.Enter();
+            GameObject rope= GameObject.FindGameObjectWithTag("Rope");
+            ropeRenderer= rope.GetComponent<RopeRenderer>();
+            lineRenderer =rope.GetComponent<LineRenderer>();
+            lineRenderer.enabled=true;
+            stateMachine.Player.characterController.enabled=false;
+
             movementData.JumpData.airJumpCount=0;
             initEulerAngles=interactableObject.transform.eulerAngles;
             stateMachine.Player.transform.forward=interactableObject.transform.forward;
-            stateMachine.Player.gameObject.transform.SetParent(interactableObject.transform, false);
+            stateMachine.Player.gameObject.transform.SetParent(interactableObject.transform);
+            initLocalPos= stateMachine.Player.transform.localPosition;
+            targetLocalPos = TargetLocalPos(5f);
+
             ResetLocalTransform(5f);
         }
 
@@ -31,18 +52,20 @@ namespace ItTakesTwo
             base.Exit();
             stateMachine.Player.gameObject.transform.SetParent(null);
             stateMachine.Player.characterController.Move(interactableObject.transform.forward* 5f);
+            lineRenderer.enabled=false;
+            stateMachine.Player.characterController.enabled=true;
         }
-        public override void OnTriggerExit(Collider collider)
-        {
-            
-        }
-
 
         private void ResetLocalTransform(float distance)
         {
             stateMachine.Player.transform.localPosition= new Vector3(0, -distance, 0);
             stateMachine.Player.transform.localEulerAngles= Vector3.zero;
             stateMachine.Player.transform.localScale=Vector3.one;
+        }
+
+        private Vector3 TargetLocalPos(float distance)
+        {
+            return new Vector3(0, -distance, 0);
         }
         float xEulerAngle;
         bool isEnd;
@@ -54,7 +77,7 @@ namespace ItTakesTwo
                 x-=360;
             if(!isEnd)//앞으로
             {
-                xEulerAngle=Mathf.Lerp(xEulerAngle,-3f, Time.deltaTime);
+                xEulerAngle=Mathf.Lerp(xEulerAngle,-3f, Time.deltaTime);//3f는 이동할 각도만큼
                 if(x< -30)    isEnd=true;
             }
             if(isEnd)//뒤로
@@ -89,6 +112,17 @@ namespace ItTakesTwo
                 a-=360;
             a=Mathf.Lerp(a, targetAngle, Time.deltaTime);
             return a;
+        }
+
+
+        private void MoveLocalPos(Vector3 initPos, Vector3 targetPos)
+        {
+            initPos= Vector3.Lerp(initPos, targetPos, Time.deltaTime);
+            stateMachine.Player.transform.localPosition=initPos;
+        }
+        private void MakeRope()
+        {
+            ropeRenderer.SetPosition(interactableObject.transform.position, stateMachine.Player.transform.position);
         }
     }
 }

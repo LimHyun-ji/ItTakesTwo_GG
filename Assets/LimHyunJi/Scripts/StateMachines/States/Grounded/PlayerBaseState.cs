@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace ItTakesTwo
 {
@@ -68,11 +69,25 @@ namespace ItTakesTwo
         #region ReusableMethods
         protected virtual void AddInputActionsCallBacks()
         {
-            
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Jump.performed += OnJump;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Jump.performed += OnJump;
+            }
         }
         protected virtual void RemoveInputActionsCallBacks()
         {
-            
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Jump.performed -= OnJump;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Jump.performed -= OnJump;
+            }
         }
         protected Vector3 GetMovementInputDirection()
         {
@@ -116,6 +131,15 @@ namespace ItTakesTwo
         {
             bool grounded =Physics.CheckSphere(stateMachine.Player.groundPivot.transform.position, movementData.groundCheckRadius, stateMachine.Player.GroundLayers, QueryTriggerInteraction.Ignore);
             return grounded;
+        }
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if(movementData.JumpData.airJumpCount == 0)
+                stateMachine.ChangeState(stateMachine.JumpingState);
+        }
+        protected void OnFall()
+        {
+            stateMachine.ChangeState(stateMachine.FallingState);
         }
         
         #endregion

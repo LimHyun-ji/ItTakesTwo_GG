@@ -17,6 +17,11 @@ namespace ItTakesTwo
         public Vector3 P3;
         public Vector3 P4;
         private bool isEnd;
+
+        void OnEnable()
+        {
+            value=0f;
+        }
         private void Start()
         {
 
@@ -25,19 +30,21 @@ namespace ItTakesTwo
         private void FixedUpdate()
         {
             value +=Time.deltaTime;
-            //Mathf.Lerp(value, 1, Time.deltaTime);
-            if(Vector3.Distance(player.transform.position, P4)>0.1 && isEnd==false)
+            //Mathf.Lerp(value, 1, Time.deltaTime);//스르륵 감속 가능
+
+            //if(Vector3.Distance(player.transform.position, P4)>0.1 && isEnd==false)
             {
-                Debug.Log("Ride");
+                //fallingState
+                //Push
                 player.transform.position = BezierTest(P1, P2, P3, P4, value);
                 player.transform.forward= (BezierTest(P1, P2, P3, P4, value+Time.deltaTime)- BezierTest(P1, P2, P3, P4, value)).normalized;
             }
-            else
-            {
-                Debug.Log("end");
-                isEnd=true;
-                player.GetComponent<CharacterController>().Move(player.transform.forward *value*3f* Time.deltaTime);
-            }
+            // else
+            // {
+            //     Debug.Log("end");
+            //     isEnd=true;
+            //     player.GetComponent<CharacterController>().Move(player.transform.forward *value*3f* Time.deltaTime);
+            // }
         }
         public Vector3 BezierTest(Vector3 P_1, Vector3 P_2, Vector3 P_3, Vector3 P_4, float value)
         {
