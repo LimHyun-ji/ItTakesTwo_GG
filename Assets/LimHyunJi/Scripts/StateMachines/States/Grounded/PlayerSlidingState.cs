@@ -30,8 +30,6 @@ namespace ItTakesTwo
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-            //SetPlayerRotation(slopeHit.normal);
-            Debug.Log("MoveSpeed " +moveSpeed);
         }
 
         public override void Exit()
@@ -42,7 +40,6 @@ namespace ItTakesTwo
         }
         protected override void Move()
         {
-            Debug.Log("Move");
             environmentDir=GetSlopeDirection();
             //stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
             //base.Move(movementDir,slideSpeed);
@@ -135,8 +132,7 @@ namespace ItTakesTwo
 
             //stateMachine.Player.transform.up=new Vector3(x, y, z);
 
-            stateMachine.Player.transform.up= dir;
-            
+            stateMachine.Player.transform.up= dir;    
         }
     }
 }

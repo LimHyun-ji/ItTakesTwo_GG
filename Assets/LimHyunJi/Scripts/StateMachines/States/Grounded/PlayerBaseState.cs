@@ -42,10 +42,12 @@ namespace ItTakesTwo
         public virtual void OnTriggerEnter(Collider collider)
         {
             if(collider.gameObject.tag == "Player") return;
+            //if(((1 << collider.gameObject.layer) & LayerMask.NameToLayer("Magnet")) == 0) return;
         }
 
         public virtual void OnTriggerExit(Collider collider)
         {
+            //if(((1 << collider.gameObject.layer) & LayerMask.NameToLayer("Magnet")) == 0) return;
         }
 
         public virtual void PhysicsUpdate()
