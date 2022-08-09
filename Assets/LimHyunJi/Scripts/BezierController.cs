@@ -29,8 +29,8 @@ namespace ItTakesTwo
 
         private void FixedUpdate()
         {
-            value +=Time.deltaTime;
-            //Mathf.Lerp(value, 1, Time.deltaTime);//스르륵 감속 가능
+            value //+=Time.deltaTime;
+            =Mathf.Lerp(value, 1, Time.deltaTime);//스르륵 감속 가능
 
             //if(Vector3.Distance(player.transform.position, P4)>0.1 && isEnd==false)
             {

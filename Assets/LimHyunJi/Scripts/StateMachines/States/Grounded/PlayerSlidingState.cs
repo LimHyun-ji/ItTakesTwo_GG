@@ -24,7 +24,6 @@ namespace ItTakesTwo
             base.Enter();
             isInput=false;
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
-            //newEnvironmentForce=slideForce;
             slideSpeed=10f;
         }
         public override void PhysicsUpdate()
@@ -35,10 +34,9 @@ namespace ItTakesTwo
         public override void Exit()
         {
             environmentDir=Vector3.zero;
-            //SetPlayerRotation(Vector3.up);
             base.Exit();
         }
-        protected override void Move()
+        protected override void Move()//재정의
         {
             environmentDir=GetSlopeDirection();
             //stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
@@ -81,25 +79,26 @@ namespace ItTakesTwo
 
         }
         
-        protected override void AddInputActionsCallBacks()
-        {
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
-                stateMachine.Player.Input.Player1Actions.Slide.performed += OnExitSlide;
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
-                stateMachine.Player.Input.Player2Actions.Slide.performed += OnExitSlide;
-        }
-        protected override void RemoveInputActionsCallBacks()
-        {
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
-                stateMachine.Player.Input.Player1Actions.Slide.performed -= OnExitSlide;
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
-                stateMachine.Player.Input.Player2Actions.Slide.performed -= OnExitSlide;
-        }
-        protected void OnExitSlide(InputAction.CallbackContext obj)
-        {
-            shouldSlide=false;
-            stateMachine.ChangeState(stateMachine.IdlingState);
-        }
+        // protected override void AddInputActionsCallBacks()
+        // {
+            
+        //     if(stateMachine.Player.playerName == Player.PlayerType.player1)
+        //         stateMachine.Player.Input.Player1Actions.Slide.performed += OnExitSlide;
+        //     else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+        //         stateMachine.Player.Input.Player2Actions.Slide.performed += OnExitSlide;
+        // }
+        // protected override void RemoveInputActionsCallBacks()
+        // {
+        //     if(stateMachine.Player.playerName == Player.PlayerType.player1)
+        //         stateMachine.Player.Input.Player1Actions.Slide.performed -= OnExitSlide;
+        //     else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+        //         stateMachine.Player.Input.Player2Actions.Slide.performed -= OnExitSlide;
+        // }
+        // protected void OnExitSlide(InputAction.CallbackContext obj)
+        // {
+        //     // shouldSlide=false;
+        //     // stateMachine.ChangeState(stateMachine.IdlingState);
+        // }
         private Vector3 GetSlopeDirection()
         {
             
@@ -120,6 +119,10 @@ namespace ItTakesTwo
             }
             return Vector3.zero;
         }        
+        protected override void OnSlideHold(InputAction.CallbackContext obj)
+        {
+            stateMachine.ChangeState(stateMachine.IdlingState);
+        }
 
     
         //나중에 수정할 것

@@ -9,7 +9,7 @@ namespace ItTakesTwo
 
     public class PlayerMovementState : PlayerBaseState
     {
-        protected static bool shouldSlide;
+        
         public bool isInput;
 
         public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)

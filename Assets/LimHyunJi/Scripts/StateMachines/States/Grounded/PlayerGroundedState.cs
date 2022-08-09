@@ -11,6 +11,7 @@ namespace ItTakesTwo
     {
 
         protected bool shouldSprint;
+        protected bool shouldSlide;
         protected bool canSlide=true;//임시, 슬라이딩 가능한 경사면이 있으면 슬라이딩으로 할 있도록 trigger에서 체크 
         public PlayerGroundedState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
@@ -37,13 +38,13 @@ namespace ItTakesTwo
             {
                 stateMachine.Player.Input.Player1Actions.Movement.canceled += OnMovementCanceled;
                 stateMachine.Player.Input.Player1Actions.SprintToggle.started +=OnSprintToggle;
-                stateMachine.Player.Input.Player1Actions.Slide.performed += OnSlide;
+                stateMachine.Player.Input.Player1Actions.Slide.performed += OnSlideHold;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.player2)
             {
                 stateMachine.Player.Input.Player2Actions.Movement.canceled += OnMovementCanceled;
-                stateMachine.Player.Input.Player2Actions.SprintToggle.started +=OnSprintToggle;
-                stateMachine.Player.Input.Player2Actions.Slide.performed += OnSlide;
+                stateMachine.Player.Input.Player2Actions.SprintToggle.performed +=OnSprintToggle;
+                stateMachine.Player.Input.Player2Actions.Slide.performed += OnSlideHold;
             }
         }
 
@@ -54,13 +55,13 @@ namespace ItTakesTwo
             {
                 stateMachine.Player.Input.Player1Actions.Movement.canceled -= OnMovementCanceled;
                 stateMachine.Player.Input.Player1Actions.SprintToggle.started -=OnSprintToggle;
-                stateMachine.Player.Input.Player1Actions.Slide.performed -= OnSlide;
+                stateMachine.Player.Input.Player1Actions.Slide.performed -= OnSlideHold;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.player2)
             {
                 stateMachine.Player.Input.Player2Actions.Movement.canceled -= OnMovementCanceled;
                 stateMachine.Player.Input.Player2Actions.SprintToggle.started -=OnSprintToggle;
-                stateMachine.Player.Input.Player2Actions.Slide.performed -= OnSlide;
+                stateMachine.Player.Input.Player2Actions.Slide.performed -= OnSlideHold;
             }
 
 
@@ -117,12 +118,10 @@ namespace ItTakesTwo
         {
             shouldSprint = !shouldSprint;
         }
-        protected void OnSlide(InputAction.CallbackContext obj)
+        protected virtual void OnSlideHold(InputAction.CallbackContext obj)
         {
-            shouldSlide = true;
-            if(shouldSlide)
-                stateMachine.ChangeState(stateMachine.SlidingState);
-            
+            //shouldSlide = true;
+            stateMachine.ChangeState(stateMachine.SlidingState);
         }
         #endregion
     }

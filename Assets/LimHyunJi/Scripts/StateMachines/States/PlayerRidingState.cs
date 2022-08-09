@@ -36,7 +36,7 @@ namespace ItTakesTwo
         {
             base.Exit();
             bezierController.enabled=false;
-            stateMachine.Player.characterController.Move(stateMachine.Player.transform.forward * 3f);
+            //stateMachine.Player.characterController.Move(stateMachine.Player.transform.forward * 3f);
         }
         
     }
