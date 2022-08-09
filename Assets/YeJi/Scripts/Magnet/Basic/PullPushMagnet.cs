@@ -37,8 +37,8 @@ namespace ItTakesTwo
         // Start is called before the first frame update
         void Start()
         {
-            may = GameObject.Find("May");
-            cody = GameObject.Find("Cody");
+            may = GameObject.Find("Player1");
+            cody = GameObject.Find("Player2");
             buttonE = may.GetComponent<ButtonE>();
             buttonO = cody.GetComponent<ButtonO>();
         }

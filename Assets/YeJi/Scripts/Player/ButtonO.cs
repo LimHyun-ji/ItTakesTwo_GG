@@ -17,15 +17,15 @@ namespace ItTakesTwo
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKey(KeyCode.O))
+            if (Input.GetKey(KeyCode.Keypad9))
             {
                 oHolding = true;
             }
-            if (Input.GetKeyDown(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.Keypad9))
             {
                 oOnce = true;
             }
-            if (Input.GetKeyUp(KeyCode.O))
+            if (Input.GetKeyUp(KeyCode.Keypad9))
             {
                 oHolding = false;
             }

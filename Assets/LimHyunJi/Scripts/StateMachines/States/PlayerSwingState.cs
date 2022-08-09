@@ -51,9 +51,9 @@ namespace ItTakesTwo
         {
             base.Exit();
             stateMachine.Player.gameObject.transform.SetParent(null);
+            stateMachine.Player.characterController.enabled=true;
             stateMachine.Player.characterController.Move(interactableObject.transform.forward* 5f);
             lineRenderer.enabled=false;
-            stateMachine.Player.characterController.enabled=true;
         }
 
         private void ResetLocalTransform(float distance)

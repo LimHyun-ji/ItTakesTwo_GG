@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Npole
   - Spole
+  - Rope
+  - Hook
+  - RollerCoaster
   layers:
   - Default
   - TransparentFX
@@ -27,8 +30,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Interactable
+  - Player
   - 
   - 
   - 
