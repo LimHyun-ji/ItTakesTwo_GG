@@ -24,22 +24,25 @@ namespace ItTakesTwo
             base.Enter();
             isInput=false;
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
-            slideSpeed=5*2;
+            //newEnvironmentForce=slideForce;
+            slideSpeed=10f;
         }
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-            SetPlayerRotation(slopeHit.normal);
+            //SetPlayerRotation(slopeHit.normal);
+            Debug.Log("MoveSpeed " +moveSpeed);
         }
 
         public override void Exit()
         {
             environmentDir=Vector3.zero;
-            SetPlayerRotation(Vector3.up);
+            //SetPlayerRotation(Vector3.up);
             base.Exit();
         }
         protected override void Move()
         {
+            Debug.Log("Move");
             environmentDir=GetSlopeDirection();
             //stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
             //base.Move(movementDir,slideSpeed);
@@ -57,7 +60,6 @@ namespace ItTakesTwo
                 if(stateMachine.ReusableData.MovementInput != Vector2.zero) 
                 {
                     isInput=true;
-                    Debug.Log(" Dot" + Vector3.Dot(inputDir, environmentDir));
                     if(Vector3.Dot(inputDir, environmentDir)>1)//환경 방향이 같은 경우
                     {
                         moveSpeed = GetMovementSpeed()/2+ newEnvironmentForce;//*Time.deltaTime ;
@@ -84,11 +86,17 @@ namespace ItTakesTwo
         
         protected override void AddInputActionsCallBacks()
         {
-            stateMachine.Player.Input.PlayerActions.Slide.performed += OnExitSlide;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+                stateMachine.Player.Input.Player1Actions.Slide.performed += OnExitSlide;
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+                stateMachine.Player.Input.Player2Actions.Slide.performed += OnExitSlide;
         }
         protected override void RemoveInputActionsCallBacks()
         {
-            stateMachine.Player.Input.PlayerActions.Slide.performed -= OnExitSlide;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+                stateMachine.Player.Input.Player1Actions.Slide.performed -= OnExitSlide;
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+                stateMachine.Player.Input.Player2Actions.Slide.performed -= OnExitSlide;
         }
         protected void OnExitSlide(InputAction.CallbackContext obj)
         {
@@ -98,7 +106,7 @@ namespace ItTakesTwo
         private Vector3 GetSlopeDirection()
         {
             
-            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out slopeHit, stateMachine.Player.characterController.height/2* movementData.SlopeData.slopeForceRayLength,1<<8))
+            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out slopeHit, stateMachine.Player.characterController.height/2* movementData.SlopeData.slopeForceRayLength,1<<3))
             {
                 if(slopeHit.normal ==Vector3.up)
                 {

@@ -10,6 +10,7 @@ namespace ItTakesTwo
     public class PlayerMovementState : PlayerBaseState
     {
         protected static bool shouldSlide;
+        public bool isInput;
 
         public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
@@ -49,7 +50,6 @@ namespace ItTakesTwo
         #endregion
 
         #region Main Methods
-        public bool isInput;
 
         protected virtual void Move()
         {
@@ -71,9 +71,8 @@ namespace ItTakesTwo
 
                 Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
-                Debug.Log(speed);
+                //Debug.Log(speed);
                 stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection* speed - currentPlayerHorizontalVelocity);
-                //stateMachine.Player.characterController.Move(environmentDir * environmentForce *Time.deltaTime);
             }            
         }
        
@@ -114,14 +113,28 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
-            stateMachine.Player.Input.PlayerActions.Jump.started += OnJump;
-            stateMachine.Player.Input.PlayerActions.Dash.started += OnDashStarted;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Dash.started += OnDashStarted;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Dash.started += OnDashStarted;
+            }
         }
         protected override void RemoveInputActionsCallBacks()
         {
             base.RemoveInputActionsCallBacks();
-            stateMachine.Player.Input.PlayerActions.Jump.started -= OnJump;
-            stateMachine.Player.Input.PlayerActions.Dash.started -= OnDashStarted;
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Jump.started -= OnJump;
+                stateMachine.Player.Input.Player1Actions.Dash.started -= OnDashStarted;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Jump.started -= OnJump;
+                stateMachine.Player.Input.Player2Actions.Dash.started -= OnDashStarted;
+            }
         }
         protected void RotateTowardsTargetRotation()
         {
@@ -163,16 +176,10 @@ namespace ItTakesTwo
             if(movementData.DashData.airDashCount == 0)
                 stateMachine.ChangeState(stateMachine.DashingState);
         }
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            if(movementData.JumpData.airJumpCount == 0)
-                stateMachine.ChangeState(stateMachine.JumpingState);
-        }
+        
 
-        protected void OnFall()
-        {
-            stateMachine.ChangeState(stateMachine.FallingState);
-        }
+        
+        
 
         #endregion
     }
