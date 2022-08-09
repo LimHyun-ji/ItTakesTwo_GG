@@ -22,8 +22,7 @@ namespace ItTakesTwo
         }
         public override void PhysicsUpdate()
         {
-            //interactableObject.transform.forward=stateMachine.Player.transform.forward;
-            InputSwing();
+            //InputSwing();
             DefaultSwing();
             MakeRope();
 
