@@ -87,6 +87,7 @@ namespace ItTakesTwo
                     OnFall();
             }
         }
+        //경사면에서 중력 더 받기
         protected void SlopeForce(float force)
         {
             if( OnSlope())
@@ -94,7 +95,7 @@ namespace ItTakesTwo
                 stateMachine.Player.characterController.Move(Vector3.down *GetMovementSpeed()* force *Time.deltaTime);
             }
         }
-
+        //경사면인지 판단하기
         protected bool OnSlope()//원래 layer 1<< 8로 ground에 ray를 쏴야 정상인데 그냥 몸통에다가 쏴서 움직이지 slope Force를 추가해주는 격
         {
             //isJumping return false;

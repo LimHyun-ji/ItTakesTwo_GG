@@ -62,7 +62,7 @@ namespace ItTakesTwo
                 {
                     return; //not moving
                 }
-                //고칠 부분//
+                
                 movementDirection=GetMovementInputDirection();
                  
                 float speed = GetMovementSpeed();
