@@ -154,7 +154,7 @@ namespace ItTakesTwo
                 {
                     print("jumpPad-push");
 
-                    player.velocity.y += 5;
+                    player.velocity.y += 10;
                 }
             }
         }
