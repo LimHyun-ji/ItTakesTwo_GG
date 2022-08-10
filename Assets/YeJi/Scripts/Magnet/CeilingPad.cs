@@ -15,9 +15,6 @@ namespace ItTakesTwo
         // Update is called once per frame
         void Update()
         {
-            print("x: " + transform.position.x);
-            print("y: " + transform.position.y);
-            print("z: " + transform.position.z);
         }
     }
 }
