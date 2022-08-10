@@ -21,11 +21,11 @@ namespace ItTakesTwo
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-            if(shouldSlide)
-            {
-                stateMachine.ChangeState(stateMachine.SlidingState);
-                return;
-            }
+            // if(shouldSlide)
+            // {
+            //     stateMachine.ChangeState(stateMachine.SlidingState);
+            //     return;
+            // }
             if(stateMachine.ReusableData.MovementInput == Vector2.zero)
                 return; 
             OnMove();

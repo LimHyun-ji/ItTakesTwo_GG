@@ -22,8 +22,7 @@ namespace ItTakesTwo
         }
         public override void PhysicsUpdate()
         {
-            //interactableObject.transform.forward=stateMachine.Player.transform.forward;
-            InputSwing();
+            //InputSwing();
             DefaultSwing();
             MakeRope();
 
@@ -42,9 +41,9 @@ namespace ItTakesTwo
             stateMachine.Player.transform.forward=interactableObject.transform.forward;
             stateMachine.Player.gameObject.transform.SetParent(interactableObject.transform);
             initLocalPos= stateMachine.Player.transform.localPosition;
-            targetLocalPos = TargetLocalPos(5f);
+            targetLocalPos = TargetLocalPos(7f);
 
-            ResetLocalTransform(5f);
+            ResetLocalTransform(7f);
         }
 
         public override void Exit()
@@ -52,7 +51,7 @@ namespace ItTakesTwo
             base.Exit();
             stateMachine.Player.gameObject.transform.SetParent(null);
             stateMachine.Player.characterController.enabled=true;
-            stateMachine.Player.characterController.Move(interactableObject.transform.forward* 5f);
+            stateMachine.Player.characterController.Move(interactableObject.transform.forward* 7f);
             lineRenderer.enabled=false;
         }
 

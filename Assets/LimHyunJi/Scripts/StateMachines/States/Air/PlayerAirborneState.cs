@@ -25,14 +25,14 @@ namespace ItTakesTwo
         }
         public override void OnTriggerEnter(Collider collider) 
         {
+
             base.OnTriggerEnter(collider);
-            if(collider.gameObject.tag =="Player") return;
             if(((1 << collider.gameObject.layer) & stateMachine.Player.GroundLayers) != 0)
             {
                 OnLand();
             }
             //상호작용 가능한 물체랑 tirgger하면
-            if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
+            if((  (1<<collider.gameObject.layer)  & LayerMask.GetMask("Interactable")) != 0)
             {
                 canInteract=true;
                 interactableObject=collider.gameObject;
@@ -42,10 +42,11 @@ namespace ItTakesTwo
         public override void OnTriggerExit(Collider collider)
         {
             base.OnTriggerExit(collider);
-            if(((1<<collider.gameObject.layer) & LayerMask.NameToLayer("Interactable")) == 0)
+            if((  (1<<collider.gameObject.layer) & LayerMask.GetMask("Interactable")) != 0)
             {
                 canInteract=false;
                 interactableObject=null;
+
             }
         }
 
@@ -88,6 +89,7 @@ namespace ItTakesTwo
 
         protected void OnInteract(InputAction.CallbackContext obj)
         {
+                Debug.Log("Arir Interact Hook"+ interactableObject);
             if(!interactableObject) return;
             if(canInteract && interactableObject.tag == "Hook")
             {
