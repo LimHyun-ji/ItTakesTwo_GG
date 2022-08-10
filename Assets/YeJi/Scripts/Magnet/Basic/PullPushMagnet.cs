@@ -32,8 +32,6 @@ namespace ItTakesTwo
         private float rot;
         private bool leverUp;
         #endregion
-
-        public bool shootRay;
         
         // Start is called before the first frame update
         void Start()
