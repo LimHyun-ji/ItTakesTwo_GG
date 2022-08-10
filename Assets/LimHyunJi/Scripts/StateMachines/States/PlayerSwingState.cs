@@ -16,13 +16,13 @@ namespace ItTakesTwo
         }
         public override void Update()
         {
-            base.Update();
+            //base.Update();
             //MoveLocalPos(initLocalPos,targetLocalPos);
             
         }
         public override void PhysicsUpdate()
         {
-            //InputSwing();
+            InputSwing();
             DefaultSwing();
             MakeRope();
 

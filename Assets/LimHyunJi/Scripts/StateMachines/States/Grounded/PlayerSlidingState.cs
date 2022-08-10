@@ -119,6 +119,32 @@ namespace ItTakesTwo
             }
             return Vector3.zero;
         }        
+         protected override void AddInputActionsCallBacks()
+        {
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Slide.performed += OnSlideHold;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Slide.performed += OnSlideHold;
+            }
+        }
+
+        protected override void RemoveInputActionsCallBacks()
+        {
+            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            {
+                stateMachine.Player.Input.Player1Actions.Slide.performed -= OnSlideHold;
+            }
+            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            {
+                stateMachine.Player.Input.Player2Actions.Slide.performed -= OnSlideHold;
+            }
+
+
+        }
+
         protected override void OnSlideHold(InputAction.CallbackContext obj)
         {
             stateMachine.ChangeState(stateMachine.IdlingState);
