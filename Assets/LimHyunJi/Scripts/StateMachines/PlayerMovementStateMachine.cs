@@ -19,6 +19,7 @@ namespace ItTakesTwo
         public PlayerSlidingState SlidingState{get;}
         public PlayerSwingState SwingState {get;}
         public PlayerRidingState RidingState{get;}
+        public PlayerWallJumpingState WallJumpingState{get;}
 
 
         public PlayerMovementStateMachine(Player player)//생성자
@@ -35,6 +36,8 @@ namespace ItTakesTwo
             SlidingState = new PlayerSlidingState(this);
             SwingState = new PlayerSwingState(this);
             RidingState = new PlayerRidingState(this);
+            WallJumpingState =new PlayerWallJumpingState(this);
+
         }
     }
 }

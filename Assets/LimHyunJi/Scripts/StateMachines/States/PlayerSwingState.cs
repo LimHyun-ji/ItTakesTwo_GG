@@ -17,8 +17,7 @@ namespace ItTakesTwo
         public override void Update()
         {
             //base.Update();
-            //MoveLocalPos(initLocalPos,targetLocalPos);
-            
+            //MoveLocalPos(initLocalPos,targetLocalPos); 
         }
         public override void PhysicsUpdate()
         {
@@ -40,10 +39,11 @@ namespace ItTakesTwo
             initEulerAngles=interactableObject.transform.eulerAngles;
             stateMachine.Player.transform.forward=interactableObject.transform.forward;
             stateMachine.Player.gameObject.transform.SetParent(interactableObject.transform);
+
             initLocalPos= stateMachine.Player.transform.localPosition;
             targetLocalPos = TargetLocalPos(7f);
 
-            ResetLocalTransform(7f);
+            //ResetLocalTransform(7f);
         }
 
         public override void Exit()

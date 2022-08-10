@@ -9,6 +9,8 @@ namespace ItTakesTwo
     {
         protected PlayerMovementStateMachine stateMachine;
         protected static bool isGrounded;
+        protected bool isWallArea;
+
         public static GameObject interactableObject;
 
         protected PlayerGroundedData movementData;
@@ -43,11 +45,16 @@ namespace ItTakesTwo
         {
             if(collider.gameObject.tag == "Player") return;
             //if(((1 << collider.gameObject.layer) & LayerMask.NameToLayer("Magnet")) == 0) return;
+            isWallArea = WallAreaCheck(collider);
+            Debug.Log(" IsWall"+ isWallArea);
+
         }
 
         public virtual void OnTriggerExit(Collider collider)
         {
             //if(((1 << collider.gameObject.layer) & LayerMask.NameToLayer("Magnet")) == 0) return;
+            isWallArea = !WallAreaCheck(collider);
+
         }
 
         public virtual void PhysicsUpdate()
@@ -136,12 +143,31 @@ namespace ItTakesTwo
         }
         public void OnJump(InputAction.CallbackContext context)
         {
-            if(movementData.JumpData.airJumpCount == 0)
+            Debug.Log("isWallArea " +isWallArea);
+            if(isWallArea)
+            {
+                stateMachine.ChangeState(stateMachine.WallJumpingState);
+            }
+            else
+            {
+                if(movementData.JumpData.airJumpCount == 0)
                 stateMachine.ChangeState(stateMachine.JumpingState);
+            }
+            
         }
         protected void OnFall()
         {
             stateMachine.ChangeState(stateMachine.FallingState);
+        }
+        //벽 사이에 들어가는지 트리거 체크
+        protected bool WallAreaCheck(Collider collider)
+        {
+            if(1<<collider.gameObject.layer == LayerMask.GetMask("WallArea"))
+            {
+                return true;
+            }
+            else 
+                return false;
         }
         
         #endregion
