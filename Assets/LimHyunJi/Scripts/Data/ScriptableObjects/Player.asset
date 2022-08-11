@@ -38,3 +38,7 @@ MonoBehaviour:
   <ForceDownData>k__BackingField:
     <GravityScale>k__BackingField: 1000
     ForceDownDelayTime: 0.3
+  <wallData>k__BackingField:
+    <SpeedModifier>k__BackingField: 2
+    <wallIdleTime>k__BackingField: 1
+    wallJumpCount: 354

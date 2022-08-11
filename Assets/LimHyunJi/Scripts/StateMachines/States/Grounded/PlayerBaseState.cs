@@ -9,7 +9,7 @@ namespace ItTakesTwo
     {
         protected PlayerMovementStateMachine stateMachine;
         protected static bool isGrounded;
-        protected bool isWallArea;
+        
 
         public static GameObject interactableObject;
 
@@ -44,16 +44,22 @@ namespace ItTakesTwo
         public virtual void OnTriggerEnter(Collider collider)
         {
             if(collider.gameObject.tag == "Player") return;
-            //if(((1 << collider.gameObject.layer) & LayerMask.NameToLayer("Magnet")) == 0) return;
-            isWallArea = WallAreaCheck(collider);
-            Debug.Log(" IsWall"+ isWallArea);
+            if(1<<collider.gameObject.layer == LayerMask.GetMask("WallArea"))
+            {
+                stateMachine.ReusableData.isWallArea = true;
+            }
+
 
         }
 
         public virtual void OnTriggerExit(Collider collider)
         {
             //if(((1 << collider.gameObject.layer) & LayerMask.NameToLayer("Magnet")) == 0) return;
-            isWallArea = !WallAreaCheck(collider);
+            //벽 사이에 있는지 트리거 체크
+            if(1<<collider.gameObject.layer == LayerMask.GetMask("WallArea"))
+            {
+                stateMachine.ReusableData.isWallArea = false; 
+            }
 
         }
 
@@ -121,12 +127,12 @@ namespace ItTakesTwo
 
         protected void UseGravity(float gravity)
         {
-            isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers();
+            stateMachine.ReusableData.isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers();
             //Debug.Log("velocity : "+stateMachine.Player.velocity.y);
 
             stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
             stateMachine.Player.characterController.Move(stateMachine.Player.velocity* Time.deltaTime);
-            if (isGrounded && stateMachine.Player.velocity.y <-1f)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
+            if (stateMachine.ReusableData.isGrounded && stateMachine.Player.velocity.y <-1f)// && stateMachine.ReusableData.MovementInput == Vector2.zero )
                 stateMachine.Player.velocity.y = -1f; 
         }
 
@@ -138,13 +144,13 @@ namespace ItTakesTwo
         
         protected bool CheckGroundLayers()
         {
+            //바닥 1차 체크
             bool grounded =Physics.CheckSphere(stateMachine.Player.groundPivot.transform.position, movementData.groundCheckRadius, stateMachine.Player.GroundLayers, QueryTriggerInteraction.Ignore);
             return grounded;
         }
         public void OnJump(InputAction.CallbackContext context)
         {
-            Debug.Log("isWallArea " +isWallArea);
-            if(isWallArea)
+            if(stateMachine.ReusableData.isWallArea)
             {
                 stateMachine.ChangeState(stateMachine.WallJumpingState);
             }
@@ -159,16 +165,7 @@ namespace ItTakesTwo
         {
             stateMachine.ChangeState(stateMachine.FallingState);
         }
-        //벽 사이에 들어가는지 트리거 체크
-        protected bool WallAreaCheck(Collider collider)
-        {
-            if(1<<collider.gameObject.layer == LayerMask.GetMask("WallArea"))
-            {
-                return true;
-            }
-            else 
-                return false;
-        }
+        
         
         #endregion
 

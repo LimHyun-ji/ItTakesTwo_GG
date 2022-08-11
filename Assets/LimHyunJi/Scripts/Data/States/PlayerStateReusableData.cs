@@ -7,8 +7,11 @@ namespace ItTakesTwo
     public class PlayerStateReusableData
     {
         public Vector2 MovementInput{get; set;}
+        public bool isWallArea;
+        public bool isGrounded;
         public float SpeedModifier {get; set;}=1f;
         private Vector3 currentTargetRotation;
+
         public ref Vector3 CurrentTargetRotation
         {
             get{ return ref currentTargetRotation;}

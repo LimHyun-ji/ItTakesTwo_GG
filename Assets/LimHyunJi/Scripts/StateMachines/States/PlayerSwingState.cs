@@ -43,7 +43,7 @@ namespace ItTakesTwo
             initLocalPos= stateMachine.Player.transform.localPosition;
             targetLocalPos = TargetLocalPos(7f);
 
-            //ResetLocalTransform(7f);
+            ResetLocalTransform(7f);
         }
 
         public override void Exit()

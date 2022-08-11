@@ -15,7 +15,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.velocity.y=0f;            
-            if(!isGrounded)
+            if(!stateMachine.ReusableData.isGrounded)
             {
                 movementData.JumpData.airJumpCount++;
             }

@@ -21,7 +21,7 @@ namespace ItTakesTwo
         {
             base.Enter();    
             stateMachine.Player.isMovable=false;   
-            if(!isGrounded)   
+            if(!stateMachine.ReusableData.isGrounded)   
             {
                 movementData.DashData.airDashCount++;
                 downForce=0f;
@@ -43,7 +43,7 @@ namespace ItTakesTwo
             stateMachine.Player.characterController.Move(Time.deltaTime * stateMachine.Player.transform.forward* GetMovementSpeed() + Vector3.down * downForce*Time.deltaTime);
             if(currentDashTime > movementData.DashData.DashTime)
             {
-                if(isGrounded)
+                if(stateMachine.ReusableData.isGrounded)
                     stateMachine.ChangeState(stateMachine.IdlingState);
                 else
                     stateMachine.ChangeState(stateMachine.FallingState);

@@ -25,7 +25,6 @@ namespace ItTakesTwo
         }
         public override void OnTriggerEnter(Collider collider) 
         {
-
             base.OnTriggerEnter(collider);
             if(((1 << collider.gameObject.layer) & stateMachine.Player.GroundLayers) != 0)
             {

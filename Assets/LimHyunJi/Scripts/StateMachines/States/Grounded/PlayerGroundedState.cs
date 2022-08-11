@@ -78,10 +78,10 @@ namespace ItTakesTwo
         public override void OnTriggerExit(Collider other) 
         {
             base.OnTriggerExit(other);
-            isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers() || OnSlope();
+            //isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers() || OnSlope();
             if(( ((1 << other.gameObject.layer) & stateMachine.Player.GroundLayers) != 0))
             {
-                if(isGrounded)
+                if(stateMachine.ReusableData.isGrounded)
                     return;
                 else
                     OnFall();
