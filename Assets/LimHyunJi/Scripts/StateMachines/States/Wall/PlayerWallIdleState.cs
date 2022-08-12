@@ -14,6 +14,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             currentTime=0f;
+            stateMachine.Player.velocity.y=0f;
 
         }
         public override void PhysicsUpdate()
@@ -22,7 +23,7 @@ namespace ItTakesTwo
             currentTime+= Time.deltaTime;
             if(currentTime>wallData.wallIdleTime)
             {
-                UseGravity(0.0001f);
+                UseGravity(1f);
             }
         }
         

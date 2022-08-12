@@ -68,7 +68,7 @@ namespace ItTakesTwo
             RaycastHit hitInfo=new RaycastHit();
             int layerMask=(1 << LayerMask.NameToLayer("Ground"));
 
-            if(Physics.SphereCast(stateMachine.Player.transform.position,0.5f,stateMachine.Player.transform.forward,out hitInfo, 0.5f, layerMask))
+            if(Physics.SphereCast(stateMachine.Player.transform.position,0.5f,stateMachine.Player.transform.forward,out hitInfo, 0.1f, layerMask))
             {
                 return true;
             }

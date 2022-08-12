@@ -24,7 +24,6 @@ namespace ItTakesTwo
             InputSwing();
             DefaultSwing();
             MakeRope();
-
         }
         public override void Enter()
         {

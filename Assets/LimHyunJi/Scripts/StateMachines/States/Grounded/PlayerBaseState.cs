@@ -87,10 +87,12 @@ namespace ItTakesTwo
             if(stateMachine.Player.playerName == Player.PlayerType.player1)
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed += OnJump;
+                //stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed += OnJump;
+                //stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
             }
         }
         protected virtual void RemoveInputActionsCallBacks()
@@ -98,10 +100,13 @@ namespace ItTakesTwo
             if(stateMachine.Player.playerName == Player.PlayerType.player1)
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed -= OnJump;
+                //stateMachine.Player.Input.Player1Actions.Interact.performed -= OnInteract;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed -= OnJump;
+                //stateMachine.Player.Input.Player1Actions.Interact.performed -= OnInteract;
+                
             }
         }
         protected Vector3 GetMovementInputDirection()
@@ -165,7 +170,15 @@ namespace ItTakesTwo
         {
             stateMachine.ChangeState(stateMachine.FallingState);
         }
-        
+        // protected void OnInteract(InputAction.CallbackContext obj)
+        // {
+        //     if("")
+        //     OnActivateDialog();
+        // }
+        protected void OnActivateDialog()
+        {
+
+        }
         
         #endregion
 
