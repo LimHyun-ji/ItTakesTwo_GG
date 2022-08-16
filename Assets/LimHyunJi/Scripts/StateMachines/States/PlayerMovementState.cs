@@ -11,6 +11,7 @@ namespace ItTakesTwo
     {
         
         public bool isInput;
+        protected bool canInteract;
 
         public PlayerMovementState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
@@ -39,12 +40,24 @@ namespace ItTakesTwo
         {
             base.OnTriggerEnter(collider);
             UseGravity(9.8f);
+            //상호작용 가능한 물체랑 tirgger하면
+            if((  (1<<collider.gameObject.layer)  & LayerMask.GetMask("Interactable")) != 0)
+            {
+                canInteract=true;
+                stateMachine.Player.interactableObject=collider.gameObject;
+            }
         }
 
         public override void OnTriggerExit(Collider collider)
         {
             base.OnTriggerExit(collider);
             UseGravity(9.8f);
+            if((  (1<<collider.gameObject.layer) & LayerMask.GetMask("Interactable")) != 0)
+            {
+                canInteract=false;
+                stateMachine.Player.interactableObject=null;
+
+            }
         }
 
         #endregion
@@ -116,10 +129,12 @@ namespace ItTakesTwo
             if(stateMachine.Player.playerName == Player.PlayerType.player1)
             {
                 stateMachine.Player.Input.Player1Actions.Dash.started += OnDashStarted;
+                stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.player2)
             {
                 stateMachine.Player.Input.Player2Actions.Dash.started += OnDashStarted;
+                stateMachine.Player.Input.Player2Actions.Interact.performed += OnInteract;
             }
         }
         protected override void RemoveInputActionsCallBacks()
@@ -127,13 +142,13 @@ namespace ItTakesTwo
             base.RemoveInputActionsCallBacks();
             if(stateMachine.Player.playerName == Player.PlayerType.player1)
             {
-                stateMachine.Player.Input.Player1Actions.Jump.started -= OnJump;
                 stateMachine.Player.Input.Player1Actions.Dash.started -= OnDashStarted;
+                stateMachine.Player.Input.Player1Actions.Interact.performed -= OnInteract;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.player2)
             {
-                stateMachine.Player.Input.Player2Actions.Jump.started -= OnJump;
                 stateMachine.Player.Input.Player2Actions.Dash.started -= OnDashStarted;
+                stateMachine.Player.Input.Player2Actions.Interact.performed -= OnInteract;
             }
         }
         protected void RotateTowardsTargetRotation()
@@ -177,7 +192,22 @@ namespace ItTakesTwo
                 stateMachine.ChangeState(stateMachine.DashingState);
         }
         
-        
+        protected void OnInteract(InputAction.CallbackContext obj)
+        {
+                Debug.Log("Arir Interact Hook"+ stateMachine.Player.interactableObject);
+            if(!stateMachine.Player.interactableObject) return;
+            if(canInteract && stateMachine.Player.interactableObject.tag == "Hook")
+            {
+                stateMachine.ChangeState(stateMachine.SwingState);
+                //interactableObject.GetComponent<SphereCollider>().enabled=false;//multil에서는 이렇게 해도 됨 
+            }
+            if(canInteract && stateMachine.Player.interactableObject.tag == "RollerCoaster")
+            {
+                Debug.Log("Arir Interact Roller"+ stateMachine.Player.interactableObject);
+                stateMachine.ChangeState(stateMachine.RidingState);
+                //interactableObject.GetComponent<SphereCollider>().enabled=false;
+            }
+        }
         
         
 

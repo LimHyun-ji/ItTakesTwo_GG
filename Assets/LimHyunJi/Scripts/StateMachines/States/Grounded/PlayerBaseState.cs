@@ -7,11 +7,7 @@ namespace ItTakesTwo
 {
     public class PlayerBaseState : IState
     {
-        protected PlayerMovementStateMachine stateMachine;
-        protected static bool isGrounded;
-        
-
-        public static GameObject interactableObject;
+        protected PlayerMovementStateMachine stateMachine;        
 
         protected PlayerGroundedData movementData;
         public PlayerBaseState(PlayerMovementStateMachine playerMovementStateMachine)
@@ -30,7 +26,14 @@ namespace ItTakesTwo
             Debug.Log("State"+ GetType().Name);
             AddInputActionsCallBacks();
         }
-
+        public virtual void PhysicsUpdate()
+        {
+        }
+        public virtual void Update()
+        {
+        }
+        
+        public void LateUpdate(){}//여기서는 안씀
         public virtual void Exit()
         {
             RemoveInputActionsCallBacks();
@@ -63,12 +66,7 @@ namespace ItTakesTwo
 
         }
 
-        public virtual void PhysicsUpdate()
-        {
-        }
-        public virtual void Update()
-        {
-        }
+       
 
         #region Main Methods
         private void ReadMovementInput()
@@ -179,7 +177,6 @@ namespace ItTakesTwo
         {
 
         }
-        
         #endregion
 
     }

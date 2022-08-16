@@ -11,6 +11,7 @@ namespace ItTakesTwo
         Vector3 targetLocalPos;
         RopeRenderer ropeRenderer;
         LineRenderer lineRenderer;
+        GameObject interactableObject;
         public PlayerSwingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -28,6 +29,8 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            interactableObject=stateMachine.Player.interactableObject;
+            
             GameObject rope= GameObject.FindGameObjectWithTag("Rope");
             ropeRenderer= rope.GetComponent<RopeRenderer>();
             lineRenderer =rope.GetComponent<LineRenderer>();

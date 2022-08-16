@@ -17,7 +17,13 @@ namespace ItTakesTwo
             string filePath=Path.Combine(Application.streamingAssetsPath, "Dialog_Hakim.csv");
             Debug.Log(ReadTxt(filePath));
             
-            StartCoroutine(ShowDialog(stringList));
+            //StartCoroutine(ShowDialog(stringList));
+        }
+        private void Update() {
+            if(Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                ShowDialogEvent();
+            }
         }
         string ReadTxt(string filePath)
         {
@@ -47,7 +53,7 @@ namespace ItTakesTwo
                 yield return new WaitForSeconds(1.5f);
             }
         }
-        public void ShowDialogEvent(List<string> stringList)
+        public void ShowDialogEvent()
         {
             dialog.text=stringList[count];
             count++;

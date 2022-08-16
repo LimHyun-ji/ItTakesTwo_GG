@@ -13,15 +13,19 @@ namespace ItTakesTwo
         public enum PlayerType {player1, player2};
         public PlayerType playerName;
 
+        [HideInInspector]
         public CharacterController characterController;
+        [HideInInspector]
         public bool isMovable;
         public Rigidbody rigidBody{get; private set;}
         public Vector3 velocity;
         public LayerMask GroundLayers;
         public GameObject groundPivot;
-        public Transform mainCameraTransform{get; private set;}
+        public Transform mainCameraTransform;//{get; private set;}
         [HideInInspector]
         public Transform cameraLookPoint;
+        [HideInInspector]
+        public GameObject interactableObject;
         public PlayerInput Input{get; protected set;}
         public PlayerMovementStateMachine movementStateMachine;
 
@@ -36,7 +40,7 @@ namespace ItTakesTwo
             //iInput.getPlayerAction().Jump
            
             movementStateMachine=new PlayerMovementStateMachine(this);
-            mainCameraTransform=Camera.main.transform;
+            //mainCameraTransform=Camera.main.transform;
         }
         protected virtual void Start() 
         {
