@@ -42,45 +42,40 @@ namespace ItTakesTwo
             
         }
 
-        //벽이랑 닿으면 벽 Idle
-        public override void OnTriggerEnter(Collider collider)
-        {
-            base.OnTriggerEnter(collider);
-            
-
-        }
         void OnWallJump(int wallJumpCount)
         {
             Vector3 dir;
-            if(wallJumpCount%2==0)
-                dir =Vector3.right;
+            if(wallData.wallJumpCount %2 ==0)
+            {
+                dir=wallData.WallJumpDir2;
+            }
             else
-                dir=Vector3.left;
+            {
+                dir=wallData.WallJumpDir1;
+            }
+            
+            //부드럽게 돌기(추가할 사항)
             stateMachine.Player.transform.forward=dir;
+
+            stateMachine.Player.transform.eulerAngles=new Vector3(0, stateMachine.Player.transform.eulerAngles.y, stateMachine.Player.transform.eulerAngles.z);
+
             dir+=Vector3.up;
             dir.Normalize();
-            stateMachine.Player.characterController.Move(dir*10f*Time.deltaTime);
+            stateMachine.Player.characterController.Move(dir*12f*Time.deltaTime);
         }
         //앞 방향으로 레이 쏴서 벽(Ground)가 있는지 확인하기
         protected bool WallCheck()
         {
             Ray ray=new Ray(stateMachine.Player.transform.position, stateMachine.Player.transform.forward);
             RaycastHit hitInfo=new RaycastHit();
-            int layerMask=(1 << LayerMask.NameToLayer("Ground"));
+            int layerMask=(1 << LayerMask.NameToLayer("Wall"));
 
             if(Physics.SphereCast(stateMachine.Player.transform.position,0.5f,stateMachine.Player.transform.forward,out hitInfo, 0.1f, layerMask))
             {
                 return true;
             }
             else return false;
-
         }
 
-
-
-
-
-
-        
     }
 }

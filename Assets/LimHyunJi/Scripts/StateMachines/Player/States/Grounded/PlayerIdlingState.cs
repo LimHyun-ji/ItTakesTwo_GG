@@ -13,6 +13,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.Data.wallData.wallJumpCount=0;
             movementData.JumpData.airJumpCount=0;
             movementData.DashData.airDashCount=0;
             stateMachine.ReusableData.SpeedModifier =0f;

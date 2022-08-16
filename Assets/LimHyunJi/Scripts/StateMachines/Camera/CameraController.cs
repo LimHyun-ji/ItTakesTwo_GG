@@ -8,9 +8,19 @@ namespace ItTakesTwo
 {
     public class CameraController : MonoBehaviour
     {
-        public PlayerInput Input{get; private set;}
+        public enum CameraState
+        {
+            IdleState,
+            RidingState,
+            WallState, 
+            MagnetState
+        }
+        public CameraState currentState;
+
         public Transform CameraLookTransform;
-        public float smoothSpeed=10f;
+        public float smoothSpeed=0.3f;
+        public float baseSmoothSpeed=0.3f;
+        public float ridingSmoothSpeed=0.1f;
         public float mouseSpeed=10f;
         public float cameraObstacleSpeed=10f;
         public float minDistance=3f;
@@ -28,43 +38,76 @@ namespace ItTakesTwo
         public CameraType cameraName;
         public Transform target;
         private Vector3 velocity = Vector3.zero;
-        private Vector2 cameraInput;
-        private Vector2 playerMovementInput;
+        private int  wallStateCount;
+        private int idleStateCount;
+        private Vector3 desiredDir;
 
-        CameraMovementStateMachine movementStateMachine;
+        // CameraMovementStateMachine movementStateMachine;
 
         //transform position z값을 -20으로 설정해두기
         //그래야 나중에 virtual camera쓸때 다시 원래값으로 돌아올 수 있음
         void Start()
         {            
-            movementStateMachine=new CameraMovementStateMachine(this);
+            // movementStateMachine=new CameraMovementStateMachine(this);
+            // movementStateMachine.ChangeState(movementStateMachine.BaseState);
             initCamLocalPos=transform.localPosition;
-            Input = target.gameObject.GetComponent<PlayerInput>();
+            initCamLocalPos.z=-baseDistance;
             offset = baseOffset;
             CameraLookTransform.position=target.position + offset;
+
+            currentState=CameraState.IdleState;
         }
         private void Update() 
         {
-            movementStateMachine.HandleInput();
-            movementStateMachine.Update();
+            // movementStateMachine.HandleInput();
+            // movementStateMachine.Update();
         }
         void LateUpdate()
         {
-            movementStateMachine.LateUpdate();
-
-            Look();
-            isObstacle=CheckIsObstacle();
+            //movementStateMachine.LateUpdate();
+            if(currentState ==CameraState.IdleState || currentState == CameraState.RidingState)
+                Look();
         }
 
         void FixedUpdate()
         {
-            movementStateMachine.PhysicsUpdate();
-
             if(!target) return;
-            
-            transform.forward=(CameraLookTransform.position- transform.position).normalized;
             FollowTarget(target);
 
+            switch(currentState)
+            {
+                case CameraState.IdleState:
+                    IdleFixedUpdate();
+                    break;
+                case CameraState.RidingState:
+                    RidingFixedUpdate();
+                    break;
+                case CameraState.WallState:
+                    WallFixedUpdate();
+                    break;
+                case CameraState.MagnetState:
+                    MagnetFixedUpdate();
+                    break;
+            }
+        }
+
+
+        protected void IdleFixedUpdate()
+        {
+            wallStateCount=0;
+            idleStateCount++;
+
+            if(idleStateCount==1)
+            {
+                desiredDir=(CameraLookTransform.position- transform.position).normalized;
+            }
+
+            smoothSpeed=baseSmoothSpeed;
+
+            isObstacle=CheckIsObstacle();
+            
+            //transform.forward=
+            //transform.forward=SetCameraRotation(transform.forward, desiredDir);
             if(isObstacle)
             {
                 //CameraLookTransform.position= target.position;
@@ -74,17 +117,36 @@ namespace ItTakesTwo
             {
                 transform.localPosition = SetCameraPosition(transform.localPosition, initCamLocalPos, baseOffset);
             }
-            
         }
-
-        private void OnTriggerEnter(Collider collider)
+        protected void RidingFixedUpdate()
         {
-            movementStateMachine.OnTriggerEnter(collider);
+            smoothSpeed=ridingSmoothSpeed;
         }
-
-        private void OnTriggerExit(Collider collider)
+        protected void WallFixedUpdate()
         {
-            movementStateMachine.OnTriggerExit(collider);
+            idleStateCount=0;
+            wallStateCount++;
+            if(wallStateCount==1)
+            {
+                desiredDir= -target.transform.right;
+            }
+            CameraLookTransform.forward=SetCameraRotation(CameraLookTransform.forward, desiredDir);
+
+            smoothSpeed=baseSmoothSpeed;
+            Vector3 wallCamPos= new Vector3(0, 0, -maxDistance);
+
+            transform.localPosition = SetCameraPosition(transform.localPosition, wallCamPos, baseOffset);
+
+            //CameraLookTransform.forward=target.right;
+            //측면 보기
+            //CameraLookTransform.forward=CameraLookTransform.right;
+            //transform.forward=CameraLookTransform.forward;
+
+        }
+        protected void MagnetFixedUpdate()
+        {
+            //자석패드에 붙을 때 Shake
+
         }
 
 
@@ -150,33 +212,20 @@ namespace ItTakesTwo
 
             return currentPos;
         }
-
-        private void SetBaseCameraDistance(float targetPointZ)
+        private Vector3 SetCameraRotation(Vector3 currRot, Vector3 targetRot)
         {
-            offset = baseOffset;
-            Vector3 newCameraDistancePos=transform.localPosition;
-            newCameraDistancePos.z -= cameraObstacleSpeed*Time.deltaTime;
-            if(newCameraDistancePos.z<baseDistance)
-                newCameraDistancePos.z=baseDistance;
-            transform.localPosition=newCameraDistancePos;
+            currRot=Vector3.Lerp(currRot, targetRot, Time.deltaTime);
+            float distance=Vector3.Distance(currRot, targetRot);
+            // if(distance<0.1f)
+            // {
+            //     currRot = targetRot;
+            // }
+
+            return currRot;
         }
 
-        private void SetCloseCamera()
-        {
-            offset = Vector3.zero;
-            Vector3 newCameraDistancePos =transform.localPosition;
-            newCameraDistancePos.z += cameraObstacleSpeed*Time.deltaTime;
-            if(newCameraDistancePos.z > minDistance)
-                newCameraDistancePos.z= minDistance;
-            transform.localPosition=newCameraDistancePos;
-        }
 
-        private Vector3 GetFollowDirection()
-        {
-            Vector3 moveDir = (target.position-transform.position).normalized;
-
-            return new Vector3(moveDir.x, 0, moveDir.z);
-        }
+        
     }
 
 }

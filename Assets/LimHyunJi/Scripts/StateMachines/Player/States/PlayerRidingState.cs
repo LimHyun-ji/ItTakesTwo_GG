@@ -8,6 +8,7 @@ namespace ItTakesTwo
     {
         private GameObject bezierObj;
         BezierController bezierController;
+        CameraController camera;
         public PlayerRidingState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
         }
@@ -15,6 +16,9 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            camera=stateMachine.Player.mainCameraTransform.gameObject.GetComponent<CameraController>();
+            camera.currentState=CameraController.CameraState.RidingState;
+
             movementData.JumpData.airJumpCount=0;
             bezierObj=GameObject.FindWithTag("RollerCoaster");
             bezierController = bezierObj.GetComponent<BezierController>();
@@ -37,6 +41,7 @@ namespace ItTakesTwo
             base.Exit();
             bezierController.enabled=false;
             //stateMachine.Player.characterController.Move(stateMachine.Player.transform.forward * 3f);
+            camera.currentState=CameraController.CameraState.IdleState;
         }
         
     }
