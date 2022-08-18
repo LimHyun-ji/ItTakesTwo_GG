@@ -55,7 +55,8 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
-            stateMachine.Player.isMovable=true;        
+            stateMachine.Player.isMovable=true;  
+            stateMachine.Player.animator.ResetTrigger("Dash");      
         }
         #endregion
    }

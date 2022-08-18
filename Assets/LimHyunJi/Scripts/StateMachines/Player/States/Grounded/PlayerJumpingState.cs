@@ -32,7 +32,7 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
-            //UseGravity(100f);
+            stateMachine.Player.animator.ResetTrigger("Jump");
         }
 
     }

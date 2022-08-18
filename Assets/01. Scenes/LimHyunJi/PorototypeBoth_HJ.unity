@@ -2532,8 +2532,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 806756854}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.2, y: 12.7, z: 8.7}
+  m_LocalRotation: {x: 0.08191782, y: 0, z: -0.000000029802322, w: 0.9966391}
+  m_LocalPosition: {x: 42.8, y: 5.97, z: 5.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2846,7 +2846,7 @@ Terrain:
   m_DrawTreesAndFoliage: 1
   m_StaticShadowCaster: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_MaterialTemplate: {fileID: 2100000, guid: eba9057ad099be14cae2d362e1c19628, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -5438,9 +5438,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7696569176425384298, guid: 08df8c4eb628e26448d020290c656cf0, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: df7f9d1dda11c71499e36b3694171471, type: 2}
+    - target: {fileID: 7696569176425384298, guid: 08df8c4eb628e26448d020290c656cf0, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 1716a2e010fd7fe449f290538731a011, type: 2}
+    - target: {fileID: 9208177679938658711, guid: 08df8c4eb628e26448d020290c656cf0, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 0df1164a70395af459a2e7bcefcf0bce, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08df8c4eb628e26448d020290c656cf0, type: 3}
 --- !u!1001 &8221462516958938329
