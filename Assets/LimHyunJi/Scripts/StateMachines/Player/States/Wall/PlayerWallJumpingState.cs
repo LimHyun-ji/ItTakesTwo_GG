@@ -12,7 +12,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter(); 
-            stateMachine.Player.velocity.y=0f;
+            stateMachine.Player.velocity.y=-1f;
         }
         public override void PhysicsUpdate()
         {
@@ -31,6 +31,7 @@ namespace ItTakesTwo
         public override void Exit()
         {
             wallData.wallJumpCount++;
+            UseGravity(20f);
             base.Exit();
         }
         protected override void AddInputActionsCallBacks()

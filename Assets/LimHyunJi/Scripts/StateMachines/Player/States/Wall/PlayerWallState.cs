@@ -23,17 +23,17 @@ namespace ItTakesTwo
 
             UseGravity(9.8f);
             
-            if(wallData.wallJumpCount!=0)
+            if(wallData.wallJumpCount==0)
             {
 
-                //효율적이지 않음 ㅠㅠ
-                // GameObject wall = GetNearestWall();
-                // wallData.WallJumpDir1=GetJumpDirection1(wall);//첫번째 점프는 가까운 벽 아래 일정 지점으로 보내기
-                // wallData.WallJumpDir2=GetJumpDirection2(wallData.WallJumpDir1);
-            }
+            //     //효율적이지 않음 ㅠㅠ
+            //     GameObject wall = GetNearestWall();
+            //     wallData.WallJumpDir1=GetJumpDirection1(wall);//첫번째 점프는 가까운 벽 아래 일정 지점으로 보내기
+            //     wallData.WallJumpDir2=GetJumpDirection2(wallData.WallJumpDir1);
+            // }
 
-            if(wallData.wallJumpCount==1)
-            {
+            // if(wallData.wallJumpCount==1)
+            // {
                 //camera.CameraLookTransform.forward= -stateMachine.Player.transform.right;
 
                 GameObject wall = GetNearestWall();
@@ -53,6 +53,7 @@ namespace ItTakesTwo
         public override void OnTriggerEnter(Collider collider)
         {
             base.OnTriggerEnter(collider);
+            Debug.Log("TriggerEnter");
             UseGravity(20f);
 
             if(((1 << collider.gameObject.layer) & stateMachine.Player.GroundLayers) != 0)
@@ -66,7 +67,6 @@ namespace ItTakesTwo
         {
             base.OnTriggerExit(collider);
             UseGravity(9.8f);
-
         }
 
         //벽에 닿았는지 체크

@@ -20,6 +20,8 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();    
+            stateMachine.Player.animator.SetTrigger("Dash");
+            
             stateMachine.Player.isMovable=false;   
             if(!stateMachine.ReusableData.isGrounded)   
             {

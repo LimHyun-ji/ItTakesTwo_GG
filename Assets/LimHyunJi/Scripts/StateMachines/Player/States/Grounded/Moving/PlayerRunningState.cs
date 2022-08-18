@@ -15,6 +15,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.animator.SetBool("IsRunning", true);
 
             stateMachine.ReusableData.SpeedModifier=movementData.RunData.speedModifier;
         }
@@ -25,6 +26,7 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
+            stateMachine.Player.animator.SetBool("IsRunning", false);
         }
         #endregion
     }

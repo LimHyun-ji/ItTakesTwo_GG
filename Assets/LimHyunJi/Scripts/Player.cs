@@ -28,6 +28,8 @@ namespace ItTakesTwo
         public GameObject interactableObject;
         public PlayerInput Input{get; protected set;}
         public PlayerMovementStateMachine movementStateMachine;
+        [HideInInspector]
+        public Animator animator;
 
 
         protected virtual void Awake() 
@@ -35,12 +37,9 @@ namespace ItTakesTwo
             characterController=GetComponent<CharacterController>();
             rigidBody =GetComponent<Rigidbody>();
             Input=GetComponent<PlayerInput>();
-
-            ITest iInput = GetComponent<Player1Input>();
-            //iInput.getPlayerAction().Jump
            
             movementStateMachine=new PlayerMovementStateMachine(this);
-            //mainCameraTransform=Camera.main.transform;
+            animator=GetComponentInChildren<Animator>();
         }
         protected virtual void Start() 
         {

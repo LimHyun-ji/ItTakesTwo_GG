@@ -41,4 +41,6 @@ MonoBehaviour:
   <wallData>k__BackingField:
     <SpeedModifier>k__BackingField: 2
     <wallIdleTime>k__BackingField: 1
-    wallJumpCount: 354
+    wallJumpCount: 0
+    WallJumpDir1: {x: 0.51313627, y: -0, z: -0.8583072}
+    WallJumpDir2: {x: -0.51313627, y: 0, z: 0.8583072}

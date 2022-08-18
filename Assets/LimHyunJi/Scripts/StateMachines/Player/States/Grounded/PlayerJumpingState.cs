@@ -14,6 +14,8 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.animator.SetTrigger("Jump");
+
             stateMachine.Player.velocity.y=0f;            
             if(!stateMachine.ReusableData.isGrounded)
             {

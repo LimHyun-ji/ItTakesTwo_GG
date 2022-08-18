@@ -14,7 +14,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             currentTime=0f;
-            stateMachine.Player.velocity.y=0f;
+            stateMachine.Player.velocity.y=-1f;
 
         }
         public override void PhysicsUpdate()

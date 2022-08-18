@@ -1,0 +1,98 @@
+# Blender MTL File: 'ScreenModels.blend'
+# Material Count: 8
+
+newmtl Cody_Bottom
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump Bottom_mat_C2.png
+map_Kd Bottom_mat_C1.png
+
+newmtl Cody_Detail
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump Detail_mat_C2.png
+map_Kd Detail_mat_C1.png
+
+newmtl Cody_Eye
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd Cody_Eyes_BaseColor.png
+
+newmtl Cody_Head
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump Head_mat_C2.png
+map_Kd Head_mat_C1.png
+
+newmtl Cody_HeadDetail
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump HeadDetail_mat_C2.png
+map_Kd HeadDetail_mat_C1.png
+
+newmtl Cody_Top
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump Top_mat_C2.png
+map_Kd Top_mat_C1.png
+
+newmtl Rope
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump Rope_C2.png
+map_Kd Rope_C1.png
+
+newmtl Thread
+Ns 225.000000
+Ka 0.100000 0.100000 0.100000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump Thread_C2.png
+map_Kd Thread_C1.png
+map_d Thread_C5.png

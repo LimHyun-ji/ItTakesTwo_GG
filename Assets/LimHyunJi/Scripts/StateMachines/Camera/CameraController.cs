@@ -33,7 +33,8 @@ namespace ItTakesTwo
         private Vector3 fixedPoint;
         float mouseX;
         float mouseY;
-        
+        Vector2 mouseInput=Vector2.zero;       
+
         public enum CameraType{camera1, camera2};
         public CameraType cameraName;
         public Transform target;
@@ -41,6 +42,9 @@ namespace ItTakesTwo
         private int  wallStateCount;
         private int idleStateCount;
         private Vector3 desiredDir;
+        private PlayerInput Input;
+        private Player player;
+
 
         // CameraMovementStateMachine movementStateMachine;
 
@@ -48,14 +52,14 @@ namespace ItTakesTwo
         //그래야 나중에 virtual camera쓸때 다시 원래값으로 돌아올 수 있음
         void Start()
         {            
-            // movementStateMachine=new CameraMovementStateMachine(this);
-            // movementStateMachine.ChangeState(movementStateMachine.BaseState);
             initCamLocalPos=transform.localPosition;
             initCamLocalPos.z=-baseDistance;
             offset = baseOffset;
             CameraLookTransform.position=target.position + offset;
 
             currentState=CameraState.IdleState;
+            Input=target.GetComponent<PlayerInput>();
+            player= target.GetComponent<Player>();
         }
         private void Update() 
         {
@@ -64,7 +68,6 @@ namespace ItTakesTwo
         }
         void LateUpdate()
         {
-            //movementStateMachine.LateUpdate();
             if(currentState ==CameraState.IdleState || currentState == CameraState.RidingState)
                 Look();
         }
@@ -94,23 +97,16 @@ namespace ItTakesTwo
 
         protected void IdleFixedUpdate()
         {
-            wallStateCount=0;
             idleStateCount++;
-
-            if(idleStateCount==1)
-            {
-                desiredDir=(CameraLookTransform.position- transform.position).normalized;
-            }
+            wallStateCount=0;
 
             smoothSpeed=baseSmoothSpeed;
 
             isObstacle=CheckIsObstacle();
             
-            //transform.forward=
-            //transform.forward=SetCameraRotation(transform.forward, desiredDir);
+            transform.forward=(CameraLookTransform.position- transform.position).normalized;
             if(isObstacle)
             {
-                //CameraLookTransform.position= target.position;
                 transform.position = SetCameraPosition(transform.position, fixedPoint, baseOffset);
             }
             else
@@ -141,7 +137,6 @@ namespace ItTakesTwo
             //측면 보기
             //CameraLookTransform.forward=CameraLookTransform.right;
             //transform.forward=CameraLookTransform.forward;
-
         }
         protected void MagnetFixedUpdate()
         {
@@ -160,9 +155,28 @@ namespace ItTakesTwo
         
         //마우스돌려서 시점 바꾸기
         private void Look()
-        {            
-            mouseX += UnityEngine.Input.GetAxis("Mouse X")*mouseSpeed;
-            mouseY += UnityEngine.Input.GetAxis("Mouse Y")*mouseSpeed;
+        {   
+            if(wallStateCount>0)//초기화
+            {
+                float x=CameraLookTransform.eulerAngles.x;
+                float y=CameraLookTransform.eulerAngles.y;
+
+                if(CameraLookTransform.eulerAngles.x>180)
+                    x-=360;
+                if(CameraLookTransform.eulerAngles.y>180)
+                    y-=360;
+                mouseX=y;
+                mouseY= -x;
+            }  
+            //mouse 값 받기
+            if(player.playerName==Player.PlayerType.player1)
+                mouseInput= Input.Player1Actions.Look.ReadValue<Vector2>();
+            else if(player.playerName==Player.PlayerType.player2)
+                mouseInput= Input.Player2Actions.Look.ReadValue<Vector2>();
+
+
+            mouseX += mouseInput.x*mouseSpeed*Time.deltaTime;// UnityEngine.Input.GetAxis("Mouse X")*mouseSpeed;
+            mouseY +=mouseInput.y*mouseSpeed*Time.deltaTime;// UnityEngine.Input.GetAxis("Mouse Y")*mouseSpeed;
             mouseY=Mathf.Clamp(mouseY, -60f, 60f);
 
             CameraLookTransform.eulerAngles =new Vector3(-mouseY, mouseX, 0);

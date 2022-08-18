@@ -19,7 +19,12 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.animator.SetBool("IsSprinting", true);
             stateMachine.ReusableData.SpeedModifier=sprintData.speedModifier;
+        }
+        public override void Exit()
+        {
+            stateMachine.Player.animator.SetBool("IsSprinting", false);
         }
         
         #region Reusable Methods
