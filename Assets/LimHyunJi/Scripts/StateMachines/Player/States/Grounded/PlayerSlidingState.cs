@@ -25,6 +25,7 @@ namespace ItTakesTwo
             isInput=false;
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
             slideSpeed=10f;
+            stateMachine.Player.animator.SetBool("IsSliding", true);
         }
         public override void PhysicsUpdate()
         {
@@ -34,6 +35,7 @@ namespace ItTakesTwo
         public override void Exit()
         {
             environmentDir=Vector3.zero;
+            stateMachine.Player.animator.SetBool("IsSliding", false);
             base.Exit();
         }
         protected override void Move()//재정의

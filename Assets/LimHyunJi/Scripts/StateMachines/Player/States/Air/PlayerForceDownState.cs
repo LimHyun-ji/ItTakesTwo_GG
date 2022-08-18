@@ -16,6 +16,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.animator.SetTrigger("ForceDown");
             stateMachine.Player.isMovable=false;
             stateMachine.Player.velocity.y += 10f;
         }
