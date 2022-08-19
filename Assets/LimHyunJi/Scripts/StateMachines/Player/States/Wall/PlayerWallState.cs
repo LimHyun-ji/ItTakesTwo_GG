@@ -8,7 +8,7 @@ namespace ItTakesTwo
     {
         protected PlayerWallData wallData;
         float wallJumpHeight=1.5f;
-        List<GameObject> walls= new List<GameObject>();
+        GameObject[] walls= new GameObject[2];
         CameraController camera;
 
         public PlayerWallState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
@@ -18,6 +18,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.animator.SetBool("IsWall", true);
             camera=stateMachine.Player.mainCameraTransform.gameObject.GetComponent<CameraController>();
             camera.currentState=CameraController.CameraState.WallState;
 
@@ -25,25 +26,16 @@ namespace ItTakesTwo
             
             if(wallData.wallJumpCount==0)
             {
-
-            //     //효율적이지 않음 ㅠㅠ
-            //     GameObject wall = GetNearestWall();
-            //     wallData.WallJumpDir1=GetJumpDirection1(wall);//첫번째 점프는 가까운 벽 아래 일정 지점으로 보내기
-            //     wallData.WallJumpDir2=GetJumpDirection2(wallData.WallJumpDir1);
-            // }
-
-            // if(wallData.wallJumpCount==1)
-            // {
-                //camera.CameraLookTransform.forward= -stateMachine.Player.transform.right;
-
+                //왼쪽 벽부터
                 GameObject wall = GetNearestWall();
-                wallData.WallJumpDir1= -GetDirection();
-                wallData.WallJumpDir2 = GetDirection();
+                wallData.WallJumpDir1= GetDirection();
+                wallData.WallJumpDir2 = GetJumpDirection2(wallData.WallJumpDir1);
             }            
         }
         public override void Exit()
         {
             base.Exit();
+            stateMachine.Player.animator.SetBool("IsWall", false);
             camera.currentState=CameraController.CameraState.IdleState;
         }
         public override void PhysicsUpdate()
@@ -81,7 +73,7 @@ namespace ItTakesTwo
         }
         protected Vector3 GetDirection()
         {
-            Vector3 dir= walls[1].transform.position-walls[0].transform.position;
+            Vector3 dir= walls[0].transform.position-walls[1].transform.position;
             dir.Normalize();
             return dir;
         }
@@ -127,9 +119,12 @@ namespace ItTakesTwo
             
             foreach (Collider obj in coll)
             {
-                walls.Add(obj.gameObject);
-                
-                Debug.Log("Wall"+obj.gameObject);
+                if(obj.gameObject.tag=="Wall1")//왼쪽벽
+                    walls[0]=obj.gameObject;
+                else if(obj.gameObject.tag =="Wall2")//오른 벽
+                    walls[1]=(obj.gameObject);
+                Debug.Log("Walls[0] "+walls[0]);
+                Debug.Log("Walls[1] "+walls[1]);
                 float distance = Vector3.Distance(stateMachine.Player.transform.position, obj.gameObject.transform.position);
     
                 if (distance < minDistance) // 위에서 잡은 기준으로 거리 재기

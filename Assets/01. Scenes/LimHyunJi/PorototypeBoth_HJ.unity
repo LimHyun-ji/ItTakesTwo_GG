@@ -2742,6 +2742,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 1716a2e010fd7fe449f290538731a011, type: 2}
+    - target: {fileID: 115311511786424599, guid: cfa29e3801f0ab0469074f66af0ba4d1, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6303218554052727661, guid: cfa29e3801f0ab0469074f66af0ba4d1, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -4974,7 +4978,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   CameraLookTransform: {fileID: 1224974030}
-  smoothSpeed: 0.3
+  smoothSpeed: 0.1
   baseSmoothSpeed: 0.3
   ridingSmoothSpeed: 0.1
   mouseSpeed: 10
@@ -5049,7 +5053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 733101034235920054, guid: a255b6bc04da2f14b8c65660deaf905d, type: 3}
       propertyPath: m_TagString
-      value: Wall
+      value: Wall1
       objectReference: {fileID: 0}
     - target: {fileID: 733101034235920055, guid: a255b6bc04da2f14b8c65660deaf905d, type: 3}
       propertyPath: m_LocalScale.y
@@ -5065,7 +5069,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 733101034280829365, guid: a255b6bc04da2f14b8c65660deaf905d, type: 3}
       propertyPath: m_TagString
-      value: Wall
+      value: Wall2
       objectReference: {fileID: 0}
     - target: {fileID: 733101034280829366, guid: a255b6bc04da2f14b8c65660deaf905d, type: 3}
       propertyPath: m_LocalScale.y

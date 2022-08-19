@@ -12,6 +12,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter(); 
+            stateMachine.Player.animator.SetTrigger("WallJump");
             stateMachine.Player.velocity.y=-1f;
         }
         public override void PhysicsUpdate()
@@ -32,6 +33,7 @@ namespace ItTakesTwo
         {
             wallData.wallJumpCount++;
             UseGravity(20f);
+            stateMachine.Player.animator.ResetTrigger("WallJump");
             base.Exit();
         }
         protected override void AddInputActionsCallBacks()
@@ -48,11 +50,11 @@ namespace ItTakesTwo
             Vector3 dir;
             if(wallData.wallJumpCount %2 ==0)
             {
-                dir=wallData.WallJumpDir2;
+                dir=wallData.WallJumpDir1;
             }
             else
             {
-                dir=wallData.WallJumpDir1;
+                dir=wallData.WallJumpDir2;
             }
             
             //부드럽게 돌기(추가할 사항)

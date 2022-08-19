@@ -29,6 +29,9 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.animator.SetTrigger("Swing");
+            stateMachine.Player.animator.SetBool("IsSwing", true);
+
             interactableObject=stateMachine.Player.interactableObject;
             
             GameObject rope= GameObject.FindGameObjectWithTag("Rope");
@@ -51,6 +54,10 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
+
+            stateMachine.Player.animator.ResetTrigger("Swing");
+            stateMachine.Player.animator.SetBool("IsSwing", false);
+
             stateMachine.Player.gameObject.transform.SetParent(null);
             stateMachine.Player.characterController.enabled=true;
             stateMachine.Player.characterController.Move(interactableObject.transform.forward* 7f);

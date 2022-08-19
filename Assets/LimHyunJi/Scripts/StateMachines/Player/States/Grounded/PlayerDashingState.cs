@@ -39,7 +39,6 @@ namespace ItTakesTwo
             //대시는 다른 방식으로 수정할 것
             base.PhysicsUpdate();
             
-            Debug.Log(stateMachine.Player.characterController.velocity.y);
             currentDashTime +=Time.deltaTime;
             
             stateMachine.Player.characterController.Move(Time.deltaTime * stateMachine.Player.transform.forward* GetMovementSpeed() + Vector3.down * downForce*Time.deltaTime);
