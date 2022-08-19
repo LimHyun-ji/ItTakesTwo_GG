@@ -25,7 +25,7 @@ MonoBehaviour:
       <speedModifier>k__BackingField: 2
       <DashDistance>k__BackingField: 1.26
       <DashDrag>k__BackingField: {x: 1, y: 1, z: 10}
-      <DashTime>k__BackingField: 0.4
+      <DashTime>k__BackingField: 0.8
       <SprintTime>k__BackingField: 3
       airDashCount: 0
     <JumpData>k__BackingField:
@@ -38,3 +38,9 @@ MonoBehaviour:
   <ForceDownData>k__BackingField:
     <GravityScale>k__BackingField: 1000
     ForceDownDelayTime: 0.3
+  <wallData>k__BackingField:
+    <SpeedModifier>k__BackingField: 2
+    <wallIdleTime>k__BackingField: 1
+    wallJumpCount: 0
+    WallJumpDir1: {x: 0.51313627, y: -0, z: -0.8583072}
+    WallJumpDir2: {x: -0.51313627, y: 0, z: 0.8583072}

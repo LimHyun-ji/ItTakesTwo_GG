@@ -9,6 +9,10 @@ TagManager:
   - Rope
   - Hook
   - RollerCoaster
+  - Wall
+  - Hakim
+  - Wall1
+  - Wall2
   layers:
   - Default
   - TransparentFX
@@ -32,8 +36,8 @@ TagManager:
   - 
   - Interactable
   - Player
-  - 
-  - 
+  - Wall
+  - WallArea
   - 
   - 
   - 

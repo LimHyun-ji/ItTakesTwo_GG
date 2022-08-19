@@ -9,6 +9,7 @@ namespace ItTakesTwo
     {
         [field: SerializeField] public PlayerGroundedData GroundedData{get; private set;}
         [field: SerializeField] public PlayerForceDownData ForceDownData{get; private set;}
+        [field: SerializeField] public PlayerWallData wallData{get; private set;}
 
     }
 }
