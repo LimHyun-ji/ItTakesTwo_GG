@@ -44,7 +44,7 @@ namespace ItTakesTwo
         void Start()
         {
             player = GetComponentInParent<Player>();
-            trailRends = GameObject.Find("LaserEffects").GetComponentsInChildren<TrailRenderer>();
+            // trailRends = GameObject.Find("LaserEffects").GetComponentsInChildren<TrailRenderer>();
             
             buttonE = GameObject.Find("Player1").GetComponent<ButtonE>();
             buttonO = GameObject.Find("Player2").GetComponent<ButtonO>();
@@ -63,7 +63,7 @@ namespace ItTakesTwo
             // print("col " + col);
             // print("canJump " + canJump);
             // print(cc.isGrounded);
-            print("trailRends: " + trailRends.Length);
+            // print("trailRends: " + trailRends.Length);
         }
 
         private void OnTriggerStay(Collider other)
@@ -151,7 +151,7 @@ namespace ItTakesTwo
                     col = null;
                     push = false;
                     pull = false;
-                    EnableTrailR(false);
+                    // EnableTrailR(false);
                 }
             }
         }
@@ -177,7 +177,7 @@ namespace ItTakesTwo
             {
                 if (col.gameObject.name.Contains("JumpPad"))
                 {
-                    EnableTrailR(true);
+                    // EnableTrailR(true);
                     player.velocity.y += 10;
                 }
             }
@@ -190,7 +190,7 @@ namespace ItTakesTwo
                 if (col.gameObject.name.Contains("CeilingPad"))
                 {
                     print("Ceiling-push");
-                    EnableTrailR(true);
+                    // EnableTrailR(true);
                     player.velocity.y = col.gameObject.transform.position.y;
                 }
             }
