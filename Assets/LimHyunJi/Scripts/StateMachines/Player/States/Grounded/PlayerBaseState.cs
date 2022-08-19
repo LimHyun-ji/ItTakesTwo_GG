@@ -23,7 +23,7 @@ namespace ItTakesTwo
         }
         public virtual void Enter()
         {
-            // Debug.Log("State"+ GetType().Name);
+            Debug.Log("State"+ GetType().Name);
             AddInputActionsCallBacks();
         }
         public virtual void PhysicsUpdate()
@@ -31,6 +31,7 @@ namespace ItTakesTwo
         }
         public virtual void Update()
         {
+            
         }
         
         public void LateUpdate(){}//여기서는 안씀
@@ -47,19 +48,19 @@ namespace ItTakesTwo
         public virtual void OnTriggerEnter(Collider collider)
         {
             if(collider.gameObject.tag == "Player") return;
-            if(1<<collider.gameObject.layer == LayerMask.GetMask("WallArea"))
+            if((1<<collider.gameObject.layer) == LayerMask.GetMask("WallArea"))
             {
                 stateMachine.ReusableData.isWallArea = true;
             }
 
-
+            TriggerSavePoint(collider);
         }
 
         public virtual void OnTriggerExit(Collider collider)
         {
             //if(((1 << collider.gameObject.layer) & LayerMask.NameToLayer("Magnet")) == 0) return;
             //벽 사이에 있는지 트리거 체크
-            if(1<<collider.gameObject.layer == LayerMask.GetMask("WallArea"))
+            if((1<<collider.gameObject.layer) == LayerMask.GetMask("WallArea"))
             {
                 stateMachine.ReusableData.isWallArea = false; 
             }
@@ -71,9 +72,9 @@ namespace ItTakesTwo
         #region Main Methods
         private void ReadMovementInput()
         {
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
                 stateMachine.ReusableData.MovementInput=stateMachine.Player.Input.Player1Actions.Movement.ReadValue<Vector2>();
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
                 stateMachine.ReusableData.MovementInput=stateMachine.Player.Input.Player2Actions.Movement.ReadValue<Vector2>();
 
         }
@@ -82,28 +83,29 @@ namespace ItTakesTwo
         #region ReusableMethods
         protected virtual void AddInputActionsCallBacks()
         {
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed += OnJump;
-                //stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
+                stateMachine.Player.Input.Player1Actions.TestForSave.performed += TestForSavePoint;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed += OnJump;
+                stateMachine.Player.Input.Player2Actions.TestForSave.performed += TestForSavePoint;
                 //stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
             }
         }
         protected virtual void RemoveInputActionsCallBacks()
         {
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed -= OnJump;
-                //stateMachine.Player.Input.Player1Actions.Interact.performed -= OnInteract;
+                stateMachine.Player.Input.Player1Actions.TestForSave.performed -= TestForSavePoint;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed -= OnJump;
-                //stateMachine.Player.Input.Player1Actions.Interact.performed -= OnInteract;
+                stateMachine.Player.Input.Player2Actions.TestForSave.performed -= TestForSavePoint;
                 
             }
         }
@@ -168,14 +170,39 @@ namespace ItTakesTwo
         {
             stateMachine.ChangeState(stateMachine.FallingState);
         }
-        // protected void OnInteract(InputAction.CallbackContext obj)
-        // {
-        //     if("")
-        //     OnActivateDialog();
-        // }
+
         protected void OnActivateDialog()
         {
 
+        }
+
+
+        protected void TriggerSavePoint(Collider other)
+        {
+            if( (1<<other.gameObject.layer) == LayerMask.GetMask("SavePoint"))
+            {
+                if(other.gameObject.tag == stateMachine.Player.playerName.ToString())
+                {
+                    stateMachine.Player.savePoint = stateMachine.Player.transform.position;
+                    other.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        protected void TestForSavePoint(InputAction.CallbackContext context)
+        {
+            Debug.Log("GoBack Clear");
+            stateMachine.Player.characterController.enabled=false;
+            stateMachine.Player.transform.position=stateMachine.Player.savePoint;
+            stateMachine.Player.characterController.enabled=true;
+        }
+
+        protected void IsDie()
+        {
+            if(stateMachine.Player.velocity.y <-50f)
+            {
+                //Dies
+            }
         }
         #endregion
 

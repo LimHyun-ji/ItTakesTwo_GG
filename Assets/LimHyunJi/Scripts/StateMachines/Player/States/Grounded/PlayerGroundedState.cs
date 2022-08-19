@@ -35,13 +35,13 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Movement.canceled += OnMovementCanceled;
                 stateMachine.Player.Input.Player1Actions.SprintToggle.started +=OnSprintToggle;
                 stateMachine.Player.Input.Player1Actions.Slide.performed += OnSlideHold;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Movement.canceled += OnMovementCanceled;
                 stateMachine.Player.Input.Player2Actions.SprintToggle.performed +=OnSprintToggle;
@@ -52,13 +52,13 @@ namespace ItTakesTwo
         protected override void RemoveInputActionsCallBacks()
         {
             base.RemoveInputActionsCallBacks();
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Movement.canceled -= OnMovementCanceled;
                 stateMachine.Player.Input.Player1Actions.SprintToggle.started -=OnSprintToggle;
                 stateMachine.Player.Input.Player1Actions.Slide.performed -= OnSlideHold;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Movement.canceled -= OnMovementCanceled;
                 stateMachine.Player.Input.Player2Actions.SprintToggle.started -=OnSprintToggle;
@@ -101,9 +101,15 @@ namespace ItTakesTwo
         {
             //isJumping return false;
             RaycastHit hit;
-            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2.0f* movementData.SlopeData.slopeForceRayLength))
-                if(hit.normal != Vector3.up)
+            int layer = stateMachine.Player.GroundLayers;
+            if(Physics.Raycast(stateMachine.Player.transform.position, Vector3.down, out hit, stateMachine.Player.characterController.height/2.0f* movementData.SlopeData.slopeForceRayLength, layer))
+            {
+                //기울기가 10 이상일 때만 슬라이딩 가능하다
+                float angle = Vector3.Angle(hit.normal, Vector3.up);
+                if(angle>10)
                     return true;
+
+            }
             return false;
         }
         #endregion
@@ -122,8 +128,8 @@ namespace ItTakesTwo
         }
         protected virtual void OnSlideHold(InputAction.CallbackContext obj)
         {
-            //shouldSlide = true;
-            stateMachine.ChangeState(stateMachine.SlidingState);
+            if(OnSlope())
+                stateMachine.ChangeState(stateMachine.SlidingState);
         }
         #endregion
     }

@@ -19,6 +19,7 @@ namespace ItTakesTwo
 
         float slideSpeed;
         float moveSpeed;
+        float currentTime=0f;
         public override void Enter()
         {
             base.Enter();
@@ -36,13 +37,12 @@ namespace ItTakesTwo
         {
             environmentDir=Vector3.zero;
             stateMachine.Player.animator.SetBool("IsSliding", false);
+            ResetPlayerRotation();
             base.Exit();
         }
         protected override void Move()//재정의
         {
             environmentDir=GetSlopeDirection();
-            //stateMachine.Player.characterController.Move(movementDir*slideSpeed*Time.deltaTime);
-            //base.Move(movementDir,slideSpeed);
             Vector3 inputDir = stateMachine.Player.transform.right * stateMachine.ReusableData.MovementInput.x
                                 + stateMachine.Player.transform.forward * stateMachine.ReusableData.MovementInput.y;
             newEnvironmentForce = Mathf.Lerp(newEnvironmentForce, slideSpeed, Time.deltaTime);
@@ -75,32 +75,15 @@ namespace ItTakesTwo
                     //if(speed<0) speed=0f;
                 }
             }
+            // float targetRotationYAngle = Rotate(movementDirection);
+
+            // Vector3 targetRotationDirection = GetTargetRotationDirection(targetRotationYAngle);
             Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
 
+            SetPlayerRotation(movementDirection);
             stateMachine.Player.characterController.Move(Time.deltaTime* movementDirection* moveSpeed - currentPlayerHorizontalVelocity);
 
         }
-        
-        // protected override void AddInputActionsCallBacks()
-        // {
-            
-        //     if(stateMachine.Player.playerName == Player.PlayerType.player1)
-        //         stateMachine.Player.Input.Player1Actions.Slide.performed += OnExitSlide;
-        //     else if(stateMachine.Player.playerName == Player.PlayerType.player2)
-        //         stateMachine.Player.Input.Player2Actions.Slide.performed += OnExitSlide;
-        // }
-        // protected override void RemoveInputActionsCallBacks()
-        // {
-        //     if(stateMachine.Player.playerName == Player.PlayerType.player1)
-        //         stateMachine.Player.Input.Player1Actions.Slide.performed -= OnExitSlide;
-        //     else if(stateMachine.Player.playerName == Player.PlayerType.player2)
-        //         stateMachine.Player.Input.Player2Actions.Slide.performed -= OnExitSlide;
-        // }
-        // protected void OnExitSlide(InputAction.CallbackContext obj)
-        // {
-        //     // shouldSlide=false;
-        //     // stateMachine.ChangeState(stateMachine.IdlingState);
-        // }
         private Vector3 GetSlopeDirection()
         {
             
@@ -123,11 +106,11 @@ namespace ItTakesTwo
         }        
          protected override void AddInputActionsCallBacks()
         {
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Slide.performed += OnSlideHold;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Slide.performed += OnSlideHold;
             }
@@ -135,11 +118,11 @@ namespace ItTakesTwo
 
         protected override void RemoveInputActionsCallBacks()
         {
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Slide.performed -= OnSlideHold;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Slide.performed -= OnSlideHold;
             }
@@ -154,16 +137,20 @@ namespace ItTakesTwo
 
     
         //나중에 수정할 것
+        
         private void SetPlayerRotation(Vector3 dir)
         {
+            currentTime+=Time.deltaTime;
 
-            // float x= Mathf.Lerp(stateMachine.Player.transform.up.x, dir.x, Time.deltaTime);
-            // float y= Mathf.Lerp(stateMachine.Player.transform.up.x, dir.y, Time.deltaTime);
-            // float z= Mathf.Lerp(stateMachine.Player.transform.up.x, dir.z, Time.deltaTime);
+            Vector3 lookDir =stateMachine.Player.transform.forward;
 
-            //stateMachine.Player.transform.up=new Vector3(x, y, z);
-
-            stateMachine.Player.transform.up= dir;    
+            lookDir = Vector3.Lerp(lookDir, dir, 1/currentTime);
+            stateMachine.Player.transform.forward= lookDir;    
+            stateMachine.Player.transform.eulerAngles= new Vector3(0,stateMachine.Player.transform.eulerAngles.y, stateMachine.Player.transform.eulerAngles.z);
+        }
+        private void ResetPlayerRotation()
+        {
+            stateMachine.Player.transform.eulerAngles= new Vector3(0,stateMachine.Player.transform.eulerAngles.y, stateMachine.Player.transform.eulerAngles.z);
         }
     }
 }

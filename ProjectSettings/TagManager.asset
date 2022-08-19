@@ -13,6 +13,8 @@ TagManager:
   - Hakim
   - Wall1
   - Wall2
+  - Player1
+  - Player2
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - UI
   - Magnet
   - Player
-  - 
+  - Dummy
   - 
   - 
   - 
@@ -38,7 +40,7 @@ TagManager:
   - Player
   - Wall
   - WallArea
-  - 
+  - SavePoint
   - 
   - 
   - 

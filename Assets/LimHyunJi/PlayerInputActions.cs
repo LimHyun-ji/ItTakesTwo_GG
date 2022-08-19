@@ -30,7 +30,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Movement"",
                     ""type"": ""Value"",
-                    ""id"": ""7f549888-a301-4405-9a64-655f565b54e784"",
+                    ""id"": ""7f549888-a301-4405-9a64-655f565be784"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -124,6 +124,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TestForSave"",
+                    ""type"": ""Button"",
+                    ""id"": ""216979e2-9a20-4b23-bfb7-d0ed406f5bf1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -292,6 +301,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4efb8ed8-a42a-478f-98d8-83ba431cd708"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TestForSave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -396,6 +416,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TestForSave"",
+                    ""type"": ""Button"",
+                    ""id"": ""263148d0-a62e-4911-8a33-26d0b2f2ed73"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -641,6 +670,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a79bab3-9bd1-4864-8d4f-2337a0ba61c6"",
+                    ""path"": ""<Keyboard>/numpadPeriod"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TestForSave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -660,6 +700,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player1_MouseY = m_Player1.FindAction("Mouse Y", throwIfNotFound: true);
         m_Player1_Look = m_Player1.FindAction("Look", throwIfNotFound: true);
         m_Player1_Interact = m_Player1.FindAction("Interact", throwIfNotFound: true);
+        m_Player1_TestForSave = m_Player1.FindAction("TestForSave", throwIfNotFound: true);
         // Player2
         m_Player2 = asset.FindActionMap("Player2", throwIfNotFound: true);
         m_Player2_Movement = m_Player2.FindAction("Movement", throwIfNotFound: true);
@@ -673,6 +714,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player2_MouseY = m_Player2.FindAction("Mouse Y", throwIfNotFound: true);
         m_Player2_Look = m_Player2.FindAction("Look", throwIfNotFound: true);
         m_Player2_Interact = m_Player2.FindAction("Interact", throwIfNotFound: true);
+        m_Player2_TestForSave = m_Player2.FindAction("TestForSave", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -743,6 +785,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player1_MouseY;
     private readonly InputAction m_Player1_Look;
     private readonly InputAction m_Player1_Interact;
+    private readonly InputAction m_Player1_TestForSave;
     public struct Player1Actions
     {
         private @PlayerInputActions m_Wrapper;
@@ -758,6 +801,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @MouseY => m_Wrapper.m_Player1_MouseY;
         public InputAction @Look => m_Wrapper.m_Player1_Look;
         public InputAction @Interact => m_Wrapper.m_Player1_Interact;
+        public InputAction @TestForSave => m_Wrapper.m_Player1_TestForSave;
         public InputActionMap Get() { return m_Wrapper.m_Player1; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -800,6 +844,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_Player1ActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_Player1ActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_Player1ActionsCallbackInterface.OnInteract;
+                @TestForSave.started -= m_Wrapper.m_Player1ActionsCallbackInterface.OnTestForSave;
+                @TestForSave.performed -= m_Wrapper.m_Player1ActionsCallbackInterface.OnTestForSave;
+                @TestForSave.canceled -= m_Wrapper.m_Player1ActionsCallbackInterface.OnTestForSave;
             }
             m_Wrapper.m_Player1ActionsCallbackInterface = instance;
             if (instance != null)
@@ -837,6 +884,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @TestForSave.started += instance.OnTestForSave;
+                @TestForSave.performed += instance.OnTestForSave;
+                @TestForSave.canceled += instance.OnTestForSave;
             }
         }
     }
@@ -856,6 +906,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player2_MouseY;
     private readonly InputAction m_Player2_Look;
     private readonly InputAction m_Player2_Interact;
+    private readonly InputAction m_Player2_TestForSave;
     public struct Player2Actions
     {
         private @PlayerInputActions m_Wrapper;
@@ -871,6 +922,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @MouseY => m_Wrapper.m_Player2_MouseY;
         public InputAction @Look => m_Wrapper.m_Player2_Look;
         public InputAction @Interact => m_Wrapper.m_Player2_Interact;
+        public InputAction @TestForSave => m_Wrapper.m_Player2_TestForSave;
         public InputActionMap Get() { return m_Wrapper.m_Player2; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -913,6 +965,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnInteract;
+                @TestForSave.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnTestForSave;
+                @TestForSave.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnTestForSave;
+                @TestForSave.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnTestForSave;
             }
             m_Wrapper.m_Player2ActionsCallbackInterface = instance;
             if (instance != null)
@@ -950,6 +1005,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @TestForSave.started += instance.OnTestForSave;
+                @TestForSave.performed += instance.OnTestForSave;
+                @TestForSave.canceled += instance.OnTestForSave;
             }
         }
     }
@@ -967,6 +1025,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMouseY(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnTestForSave(InputAction.CallbackContext context);
     }
     public interface IPlayer2Actions
     {
@@ -981,5 +1040,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMouseY(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnTestForSave(InputAction.CallbackContext context);
     }
 }

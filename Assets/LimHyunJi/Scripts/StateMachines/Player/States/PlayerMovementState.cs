@@ -66,7 +66,6 @@ namespace ItTakesTwo
 
         protected virtual void Move()
         {
-            //Debug.Log("Velocity" +stateMachine.Player.characterController.velocity.y);
             if(stateMachine.Player.isMovable)
             {
                 Vector3 movementDirection;
@@ -89,7 +88,7 @@ namespace ItTakesTwo
             }            
         }
        
-        private float Rotate(Vector3 inputDir)
+        protected float Rotate(Vector3 inputDir)
         {
             float directionAngle = UpdateTargetRotation(inputDir);
 
@@ -126,12 +125,12 @@ namespace ItTakesTwo
         protected override void AddInputActionsCallBacks()
         {
             base.AddInputActionsCallBacks();
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Dash.started += OnDashStarted;
                 stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Dash.started += OnDashStarted;
                 stateMachine.Player.Input.Player2Actions.Interact.performed += OnInteract;
@@ -140,12 +139,12 @@ namespace ItTakesTwo
         protected override void RemoveInputActionsCallBacks()
         {
             base.RemoveInputActionsCallBacks();
-            if(stateMachine.Player.playerName == Player.PlayerType.player1)
+            if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Dash.started -= OnDashStarted;
                 stateMachine.Player.Input.Player1Actions.Interact.performed -= OnInteract;
             }
-            else if(stateMachine.Player.playerName == Player.PlayerType.player2)
+            else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Dash.started -= OnDashStarted;
                 stateMachine.Player.Input.Player2Actions.Interact.performed -= OnInteract;

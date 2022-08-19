@@ -34,7 +34,7 @@ MonoBehaviour:
     <SlopeData>k__BackingField:
       <SlopeForce>k__BackingField: 1
       <slopeForceRayLength>k__BackingField: 1.5
-      <speedModifier>k__BackingField: 1
+      <speedModifier>k__BackingField: 2
   <ForceDownData>k__BackingField:
     <GravityScale>k__BackingField: 1000
     ForceDownDelayTime: 0.3

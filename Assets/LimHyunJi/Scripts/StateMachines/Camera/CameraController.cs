@@ -50,7 +50,7 @@ namespace ItTakesTwo
         private Vector3 originPos;
         
 
-
+        public GameObject otherDummy;
         // CameraMovementStateMachine movementStateMachine;
 
         //transform position z값을 -20으로 설정해두기
@@ -65,11 +65,15 @@ namespace ItTakesTwo
             currentState=CameraState.IdleState;
             Input=target.GetComponent<PlayerInput>();
             player= target.GetComponent<Player>();
+
+            
         }
         private void Update() 
         {
             // movementStateMachine.HandleInput();
             // movementStateMachine.Update();
+            // 카메라에서 상대방에게 Ray 쏘기
+            
         }
         void LateUpdate()
         {
@@ -174,9 +178,9 @@ namespace ItTakesTwo
                 mouseY= -x;
             }  
             //mouse 값 받기
-            if(player.playerName==Player.PlayerType.player1)
+            if(player.playerName==Player.PlayerType.Player1)
                 mouseInput= Input.Player1Actions.Look.ReadValue<Vector2>();
-            else if(player.playerName==Player.PlayerType.player2)
+            else if(player.playerName==Player.PlayerType.Player2)
                 mouseInput= Input.Player2Actions.Look.ReadValue<Vector2>();
 
 
@@ -184,7 +188,7 @@ namespace ItTakesTwo
             mouseY +=mouseInput.y*mouseSpeed*Time.deltaTime;// UnityEngine.Input.GetAxis("Mouse Y")*mouseSpeed;
             mouseY=Mathf.Clamp(mouseY, -60f, 60f);
 
-            CameraLookTransform.eulerAngles =new Vector3(-mouseY, mouseX, 0);
+            CameraLookTransform.eulerAngles =new Vector3(mouseY, mouseX, 0);
             
         }
 
@@ -273,6 +277,32 @@ namespace ItTakesTwo
                 yield return null;
             }
             ShakeStop();
+        }
+
+        private void SilhouetteTestCode()
+        {
+            Vector3 dir = otherDummy.transform.position = transform.position;
+            Ray ray = new Ray(transform.position, dir);
+            RaycastHit hitInfo;
+            if(Physics.Raycast(ray, out hitInfo))
+            {
+                // 만약 상대방이 아니면 상대방의 Dummy 활성화
+                if(hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    otherDummy.SetActive(true);
+                }
+                else
+                {
+                    otherDummy.SetActive(false);
+
+                }
+                // 그렇지 않으면 Dummy 비활성화       
+            }
+            else
+            {
+                otherDummy.SetActive(false);
+
+            }
         }
     }
 

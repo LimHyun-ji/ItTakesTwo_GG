@@ -10,7 +10,7 @@ namespace ItTakesTwo
         [field: Header("References")]
         [field: SerializeField] public PlayerSO Data {get; private set;}
         
-        public enum PlayerType {player1, player2};
+        public enum PlayerType {Player1, Player2};
         public PlayerType playerName;
 
         [HideInInspector]
@@ -30,6 +30,8 @@ namespace ItTakesTwo
         public PlayerMovementStateMachine movementStateMachine;
         [HideInInspector]
         public Animator animator;
+        //[HideInInspector]
+        public Vector3 savePoint;
 
 
         protected virtual void Awake() 
@@ -43,6 +45,8 @@ namespace ItTakesTwo
         }
         protected virtual void Start() 
         {
+            savePoint= transform.position;
+
             Input=GetComponent<PlayerInput>();
             movementStateMachine.ChangeState(movementStateMachine.IdlingState);
             cameraLookPoint=transform.Find("CameraLookPoint");
