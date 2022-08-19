@@ -13,7 +13,7 @@ namespace ItTakesTwo
             IdleState,
             RidingState,
             WallState, 
-            MagnetState
+            MagnetState, 
         }
         public CameraState currentState;
 
@@ -26,6 +26,9 @@ namespace ItTakesTwo
         public float minDistance=3f;
         public float baseDistance =20f;
         public float maxDistance =30f;
+        public float amplitude =15f;
+        public float shakePlayTime=1.0f;
+
         private Vector3 initCamLocalPos;
         public Vector3 baseOffset;
         private Vector3 offset;
@@ -44,6 +47,8 @@ namespace ItTakesTwo
         private Vector3 desiredDir;
         private PlayerInput Input;
         private Player player;
+        private Vector3 originPos;
+        
 
 
         // CameraMovementStateMachine movementStateMachine;
@@ -237,9 +242,38 @@ namespace ItTakesTwo
 
             return currRot;
         }
+        private void InitPos(Vector3 originPos)
+        {
+            this.originPos=originPos;
+        }
 
+        private void ShakeCamera()
+        {
+            transform.position = originPos+ UnityEngine.Random.insideUnitSphere * amplitude;
+        }
+        private void ShakeStop()
+        {
+            transform.position=originPos;
+        }
 
-        
+        public void Play()
+        {
+            InitPos(transform.position);
+            StopAllCoroutines();
+            StartCoroutine(IPlay());
+        }
+        private IEnumerator IPlay()
+        {
+            float currentTime=0f;
+
+            while(currentTime<shakePlayTime)
+            {
+                ShakeCamera();
+                currentTime+= Time.deltaTime;
+                yield return null;
+            }
+            ShakeStop();
+        }
     }
 
 }

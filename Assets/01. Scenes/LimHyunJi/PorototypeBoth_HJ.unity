@@ -405,6 +405,8 @@ MonoBehaviour:
   minDistance: 0
   baseDistance: -20
   maxDistance: -30
+  amplitude: 0.05
+  shakePlayTime: 0.3
   baseOffset: {x: 0, y: 2, z: 0}
   cameraName: 0
   target: {fileID: 675656594}
@@ -4642,6 +4644,8 @@ MonoBehaviour:
   minDistance: 3
   baseDistance: 20
   maxDistance: 30
+  amplitude: 15
+  shakePlayTime: 1
   baseOffset: {x: 0, y: 0, z: 0}
   cameraName: 0
   target: {fileID: 0}
@@ -4733,6 +4737,8 @@ MonoBehaviour:
   minDistance: 3
   baseDistance: 20
   maxDistance: 30
+  amplitude: 15
+  shakePlayTime: 1
   baseOffset: {x: 0, y: 0, z: 0}
   cameraName: 0
   target: {fileID: 0}
@@ -4986,6 +4992,8 @@ MonoBehaviour:
   minDistance: 0
   baseDistance: -20
   maxDistance: -30
+  amplitude: 0.05
+  shakePlayTime: 0.3
   baseOffset: {x: 0, y: 2, z: 0}
   cameraName: 0
   target: {fileID: 471122111}

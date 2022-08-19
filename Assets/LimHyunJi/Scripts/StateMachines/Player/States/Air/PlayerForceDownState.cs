@@ -8,6 +8,8 @@ namespace ItTakesTwo
     {
         PlayerForceDownData forceDownData; 
         private float currentTime;
+        CameraController camera;
+
         public PlayerForceDownState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
             forceDownData= stateMachine.Player.Data.ForceDownData;
@@ -16,7 +18,9 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            camera=stateMachine.Player.mainCameraTransform.gameObject.GetComponent<CameraController>();
             stateMachine.Player.animator.SetTrigger("ForceDown");
+
             stateMachine.Player.isMovable=false;
             stateMachine.Player.velocity.y += 10f;
         }
@@ -33,6 +37,8 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
+            
+            camera.Play();
             stateMachine.Player.isMovable=true;
             currentTime=0f;
         }
