@@ -184,7 +184,7 @@ namespace ItTakesTwo
             mouseY +=mouseInput.y*mouseSpeed*Time.deltaTime;// UnityEngine.Input.GetAxis("Mouse Y")*mouseSpeed;
             mouseY=Mathf.Clamp(mouseY, -60f, 60f);
 
-            CameraLookTransform.eulerAngles =new Vector3(-mouseY, mouseX, 0);
+            CameraLookTransform.eulerAngles =new Vector3(mouseY, mouseX, 0);
             
         }
 

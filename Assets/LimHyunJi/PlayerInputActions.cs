@@ -30,7 +30,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Movement"",
                     ""type"": ""Value"",
-                    ""id"": ""7f549888-a301-4405-9a64-655f565b54e784"",
+                    ""id"": ""7f549888-a301-4405-9a64-655f565be784"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
