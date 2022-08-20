@@ -13,7 +13,7 @@ namespace ItTakesTwo
 
         public PlayerWallState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
-            wallData=stateMachine.Player.Data.wallData;
+            wallData=stateMachine.Player.Data.WallData;
         }
         public override void Enter()
         {

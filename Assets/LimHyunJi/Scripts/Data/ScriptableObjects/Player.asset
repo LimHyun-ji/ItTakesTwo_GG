@@ -38,9 +38,12 @@ MonoBehaviour:
   <ForceDownData>k__BackingField:
     <GravityScale>k__BackingField: 1000
     ForceDownDelayTime: 0.3
-  <wallData>k__BackingField:
+  <WallData>k__BackingField:
     <SpeedModifier>k__BackingField: 2
-    <wallIdleTime>k__BackingField: 1
+    <wallIdleTime>k__BackingField: 2
     wallJumpCount: 0
-    WallJumpDir1: {x: 0.51313627, y: -0, z: -0.8583072}
-    WallJumpDir2: {x: -0.51313627, y: 0, z: 0.8583072}
+    WallJumpDir1: {x: 0, y: 0, z: 0}
+    WallJumpDir2: {x: 0, y: 0, z: 0}
+  <DieData>k__BackingField:
+    DieVelocityY: -30
+    SaveDelayTime: 1

@@ -14,6 +14,7 @@ namespace ItTakesTwo
             RidingState,
             WallState, 
             MagnetState, 
+            CineMachineState
         }
         public CameraState currentState;
 
@@ -81,6 +82,7 @@ namespace ItTakesTwo
                 Look();
         }
 
+        //cineMachine State일 때는 cinemachine brain이 제어해서 상관없음
         void FixedUpdate()
         {
             if(!target) return;
@@ -167,15 +169,7 @@ namespace ItTakesTwo
         {   
             if(wallStateCount>0)//초기화
             {
-                float x=CameraLookTransform.eulerAngles.x;
-                float y=CameraLookTransform.eulerAngles.y;
-
-                if(CameraLookTransform.eulerAngles.x>180)
-                    x-=360;
-                if(CameraLookTransform.eulerAngles.y>180)
-                    y-=360;
-                mouseX=y;
-                mouseY= -x;
+                SetMouseRotationInit(CameraLookTransform);
             }  
             //mouse 값 받기
             if(player.playerName==Player.PlayerType.Player1)
@@ -191,6 +185,7 @@ namespace ItTakesTwo
             CameraLookTransform.eulerAngles =new Vector3(mouseY, mouseX, 0);
             
         }
+
 
 
         //장애물 있는지 판별
@@ -239,13 +234,23 @@ namespace ItTakesTwo
         {
             currRot=Vector3.Lerp(currRot, targetRot, Time.deltaTime);
             float distance=Vector3.Distance(currRot, targetRot);
-            // if(distance<0.1f)
-            // {
-            //     currRot = targetRot;
-            // }
 
             return currRot;
         }
+        public void SetMouseRotationInit(Transform transform)
+        {
+            float x=transform.eulerAngles.x;
+                float y=transform.eulerAngles.y;
+
+                if(transform.eulerAngles.x>180)
+                    x-=360;
+                if(transform.eulerAngles.y>180)
+                    y-=360;
+                mouseX=y;
+                mouseY= -x;
+        }
+
+        #region CameraShake
         private void InitPos(Vector3 originPos)
         {
             this.originPos=originPos;
@@ -278,7 +283,7 @@ namespace ItTakesTwo
             }
             ShakeStop();
         }
-
+        #endregion
         private void SilhouetteTestCode()
         {
             Vector3 dir = otherDummy.transform.position = transform.position;

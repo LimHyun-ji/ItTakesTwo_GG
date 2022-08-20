@@ -13,13 +13,14 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-            stateMachine.Player.Data.wallData.wallJumpCount=0;
+            stateMachine.Player.Data.WallData.wallJumpCount=0;
             movementData.JumpData.airJumpCount=0;
             movementData.DashData.airDashCount=0;
             stateMachine.ReusableData.SpeedModifier =0f;
         }
         public override void PhysicsUpdate()
         {
+            stateMachine.Player.velocity.y=-1f;//use gravity 에서 땅판정 잘 못해서 계속 음수되는 것 방지
             base.PhysicsUpdate();
             // if(shouldSlide)
             // {

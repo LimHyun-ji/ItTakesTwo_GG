@@ -57,12 +57,14 @@ namespace ItTakesTwo
                 if(stateMachine.ReusableData.MovementInput != Vector2.zero) 
                 {
                     isInput=true;
+                    // inputDir.Normalize();
+                    // environmentDir.Normalize();
                     if(Vector3.Dot(inputDir, environmentDir)>1)//환경 방향이 같은 경우
                     {
                         moveSpeed = GetMovementSpeed()/2+ newEnvironmentForce;//*Time.deltaTime ;
                         addExternalSpeed=GetMovementSpeed()/2;
                     }
-                    else if(Vector3.Dot(inputDir, environmentDir)<-1)
+                    else if(Vector3.Dot(inputDir, environmentDir)<=-1)
                     {
                         moveSpeed = -GetMovementSpeed() +newEnvironmentForce;//*Time.deltaTime;//환경 방향이 다른 경우
                         addExternalSpeed = -GetMovementSpeed();

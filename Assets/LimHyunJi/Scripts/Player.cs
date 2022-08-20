@@ -30,8 +30,11 @@ namespace ItTakesTwo
         public PlayerMovementStateMachine movementStateMachine;
         [HideInInspector]
         public Animator animator;
-        //[HideInInspector]
+        [HideInInspector]
         public Vector3 savePoint;
+        [HideInInspector]
+        public bool isJumpPad;
+        public GameObject model;
 
 
         protected virtual void Awake() 

@@ -28,6 +28,7 @@ namespace ItTakesTwo
         }
         public virtual void PhysicsUpdate()
         {
+            CheckIsDie();
         }
         public virtual void Update()
         {
@@ -86,12 +87,12 @@ namespace ItTakesTwo
             if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed += OnJump;
-                stateMachine.Player.Input.Player1Actions.TestForSave.performed += TestForSavePoint;
+                stateMachine.Player.Input.Player1Actions.TestForSave.performed += GoToSavePoint;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed += OnJump;
-                stateMachine.Player.Input.Player2Actions.TestForSave.performed += TestForSavePoint;
+                stateMachine.Player.Input.Player2Actions.TestForSave.performed += GoToSavePoint;
                 //stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
             }
         }
@@ -100,12 +101,12 @@ namespace ItTakesTwo
             if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed -= OnJump;
-                stateMachine.Player.Input.Player1Actions.TestForSave.performed -= TestForSavePoint;
+                stateMachine.Player.Input.Player1Actions.TestForSave.performed -= GoToSavePoint;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed -= OnJump;
-                stateMachine.Player.Input.Player2Actions.TestForSave.performed -= TestForSavePoint;
+                stateMachine.Player.Input.Player2Actions.TestForSave.performed -= GoToSavePoint;
                 
             }
         }
@@ -189,7 +190,7 @@ namespace ItTakesTwo
             }
         }
 
-        protected void TestForSavePoint(InputAction.CallbackContext context)
+        protected void GoToSavePoint(InputAction.CallbackContext context)
         {
             Debug.Log("GoBack Clear");
             stateMachine.Player.characterController.enabled=false;
@@ -197,11 +198,20 @@ namespace ItTakesTwo
             stateMachine.Player.characterController.enabled=true;
         }
 
-        protected void IsDie()
+        protected void GoToSavePoint()
         {
-            if(stateMachine.Player.velocity.y <-50f)
+            Debug.Log("GoBack Clear");
+            stateMachine.Player.characterController.enabled=false;
+            stateMachine.Player.transform.position=stateMachine.Player.savePoint;
+            stateMachine.Player.characterController.enabled=true;
+        }
+
+
+        protected void CheckIsDie()
+        {
+            if(stateMachine.Player.velocity.y <stateMachine.Player.Data.DieData.DieVelocityY)
             {
-                //Dies
+                stateMachine.ChangeState(stateMachine.DyingSate);
             }
         }
         #endregion

@@ -1,50 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-
+using UnityEngine. SceneManagement;
 
 namespace ItTakesTwo
 {
     public class GameManager : MonoBehaviour
     {
-
-        Image startImage;
-        Image fadeImage;
-        public Sequence sequenceFadeIn;
-
-        void Start()
+        private static GameManager _instance;
+        public static GameManager Instance()
         {
-            startImage = GameObject.Find("Canvas").transform.Find("StartImage").GetComponent<Image>();
-            fadeImage =GameObject.Find("Canvas").transform.Find("FadeImage").GetComponent<Image>();
-
-            startImage.enabled=false;
-            //fadeImage.gameObject.SetActive(false);
-
-            DOTween.Init();
-
-            sequenceFadeIn=DOTween.Sequence()
-            .SetAutoKill(false)
-            //.AppendCallback(()=>{startImage.color=Color.black;startImage.gameObject.SetActive(true);})
-            .Append(startImage.DOFade(0.0f, 1f))
-            .Pause();
-            
+            return _instance;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Awake() 
         {
-            if(Input.GetMouseButtonDown(0))
+            if(_instance==null)
             {
-               sequenceFadeIn.Rewind();
-               sequenceFadeIn.Play();
+                _instance=this;
+                DontDestroyOnLoad(this.gameObject);
             }
         }
 
-        private void FadeIn()
+
+        void OnEnable()
         {
-            startImage.DOFade(0f, 1f);
+            // 씬 매니저의 sceneLoaded에 체인을 건다.
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
+
+        // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            Debug.Log("OnSceneLoaded: " + scene.name);
+            Debug.Log(mode);
+            if(scene.buildIndex == 1)//MainScene
+            {
+                CameraManager.Instance().ActivateCineMachine(true);
+            }
+        }
+
+        void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+        void Start()
+        {
+        
+        }
+
+        void Update()
+        {
+        
+        }
+        
     }
 }
