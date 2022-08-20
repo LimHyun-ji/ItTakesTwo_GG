@@ -29,6 +29,8 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.velocity.y=-1f;
+
             stateMachine.Player.animator.SetTrigger("Swing");
             stateMachine.Player.animator.SetBool("IsSwing", true);
 

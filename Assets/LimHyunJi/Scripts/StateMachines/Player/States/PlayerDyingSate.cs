@@ -14,6 +14,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.interactableObject=null;
             dieData=stateMachine.Player.Data.DieData;
             stateMachine.Player.model.SetActive(false);
         }

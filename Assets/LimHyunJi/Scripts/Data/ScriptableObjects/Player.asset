@@ -45,5 +45,5 @@ MonoBehaviour:
     WallJumpDir1: {x: 0, y: 0, z: 0}
     WallJumpDir2: {x: 0, y: 0, z: 0}
   <DieData>k__BackingField:
-    DieVelocityY: -30
+    DieVelocityY: -20
     SaveDelayTime: 1

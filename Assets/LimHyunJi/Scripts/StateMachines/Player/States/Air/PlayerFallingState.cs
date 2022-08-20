@@ -18,6 +18,10 @@ namespace ItTakesTwo
         {
             base.PhysicsUpdate();
             UseGravity(45f);
+            if(stateMachine.ReusableData.isGrounded)
+            {
+                stateMachine.ChangeState(stateMachine.IdlingState);
+            }
         }
         public override void Exit()
         {

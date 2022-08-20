@@ -64,7 +64,7 @@ namespace ItTakesTwo
 
             dir+=Vector3.up;
             dir.Normalize();
-            stateMachine.Player.characterController.Move(dir*12f*Time.deltaTime);
+            stateMachine.Player.characterController.Move(dir*15f*Time.deltaTime);
         }
         //앞 방향으로 레이 쏴서 벽(Ground)가 있는지 확인하기
         protected bool WallCheck()

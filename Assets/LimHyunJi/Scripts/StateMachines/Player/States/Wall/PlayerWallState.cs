@@ -27,7 +27,7 @@ namespace ItTakesTwo
             if(wallData.wallJumpCount==0)
             {
                 //왼쪽 벽부터
-                GameObject wall = GetNearestWall();
+                //GameObject wall = GetNearestWall();
                 wallData.WallJumpDir1= GetDirection();
                 wallData.WallJumpDir2 = GetJumpDirection2(wallData.WallJumpDir1);
             }            
@@ -73,7 +73,8 @@ namespace ItTakesTwo
         }
         protected Vector3 GetDirection()
         {
-            Vector3 dir= walls[0].transform.position-walls[1].transform.position;
+            //wall[o] 왼벽 wall[1]오른벽
+            Vector3 dir= stateMachine.Player.wall_0.transform.position-stateMachine.Player.wall_1.transform.position;
             dir.Normalize();
             return dir;
         }

@@ -135,7 +135,7 @@ namespace ItTakesTwo
             wallStateCount++;
             if(wallStateCount==1)
             {
-                desiredDir= -target.transform.right;
+                desiredDir= target.transform.right;
             }
             CameraLookTransform.forward=SetCameraRotation(CameraLookTransform.forward, desiredDir);
 
@@ -196,10 +196,10 @@ namespace ItTakesTwo
             Vector3 rayDir=(transform.position-CameraLookTransform.position).normalized;
             RaycastHit hitInfo;
             
-            int layerMask = ((1 << LayerMask.NameToLayer("Player")));// | (1 << LayerMask.NameToLayer("Interactable")));  // Everything에서 Player,GUN 레이어만 제외하고 충돌 체크함
-            layerMask  = ~layerMask ;
+            int layerMask = ((1 << LayerMask.NameToLayer("Ground")));// | (1 << LayerMask.NameToLayer("Interactable")));  // Everything에서 Player,GUN 레이어만 제외하고 충돌 체크함
+            //layerMask  = ~layerMask ;
             //레이어 마스크로 사용하도록 코드 수정할 것
-            if(Physics.Raycast(CameraLookTransform.position, rayDir, out hitInfo, 20f))
+            if(Physics.Raycast(CameraLookTransform.position, rayDir, out hitInfo, 20f, layerMask))
             {
                 //ray가 닿은 경우
                 if(!((hitInfo.transform.gameObject.tag == "Player") || hitInfo.transform.gameObject.tag== "Hook"))//장애물에 닿은 경우

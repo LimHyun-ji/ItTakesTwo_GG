@@ -16,6 +16,8 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.interactableObject=null;
+            stateMachine.Player.velocity.y=-1f;
             camera=stateMachine.Player.mainCameraTransform.gameObject.GetComponent<CameraController>();
             camera.currentState=CameraController.CameraState.RidingState;
 

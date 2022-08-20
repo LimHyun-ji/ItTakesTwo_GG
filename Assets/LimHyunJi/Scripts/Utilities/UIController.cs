@@ -13,7 +13,10 @@ namespace ItTakesTwo
         public Image startImage;
         Image fadeImage;
         public bool isStartClicked=false;
-        
+        GameObject upperImage;
+        GameObject lowerImage;
+        float dialogHeight=100f;
+
         private static UIController _instance;
         public static UIController Instance()
         {
@@ -28,6 +31,12 @@ namespace ItTakesTwo
             }
             startImage = GameObject.Find("StartImage").GetComponent<Image>();
             fadeImage =GameObject.Find("FadeImage").GetComponent<Image>();
+
+            upperImage=GameObject.Find("ImageUpper");
+            lowerImage=GameObject.Find("ImageLower");
+
+            upperImage.SetActive(false);
+            lowerImage.SetActive(false);
         }
 
         void OnEnable()
@@ -102,5 +111,40 @@ namespace ItTakesTwo
             SceneManager.LoadScene(1);
             startImage.gameObject.SetActive(false);
         }
+
+        public void SetDialogHeight(bool isCineActive)
+        {
+            if(isCineActive)
+            {
+                upperImage.SetActive(isCineActive);
+                lowerImage.SetActive(isCineActive);
+
+                upperImage.GetComponent<RectTransform>().sizeDelta= new Vector2(0, dialogHeight);
+                lowerImage.GetComponent<RectTransform>().sizeDelta= new Vector2(0, dialogHeight);
+            }
+            else
+            {
+                //시네머신 끝날때
+                StartCoroutine(ISetDialogHeight(upperImage));
+                StartCoroutine(ISetDialogHeight(lowerImage));
+            }
+        }
+        public IEnumerator ISetDialogHeight(GameObject obj)
+        {
+            
+            Vector2 tempHeight= obj.GetComponent<RectTransform>().sizeDelta;
+            while(obj.GetComponent<RectTransform>().sizeDelta.y>0)
+            {
+                Debug.Log("Sizeing");
+                tempHeight.y -= Time.deltaTime*100;
+                obj.GetComponent<RectTransform>().sizeDelta=tempHeight;
+                yield return new WaitForEndOfFrame();
+            }
+            obj.GetComponent<RectTransform>().sizeDelta=new Vector2(0,0);
+            obj.SetActive(false);
+
+        }
+        
+
     }
 }

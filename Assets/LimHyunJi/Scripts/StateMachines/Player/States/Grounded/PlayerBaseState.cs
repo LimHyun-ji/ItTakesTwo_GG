@@ -203,6 +203,7 @@ namespace ItTakesTwo
             Debug.Log("GoBack Clear");
             stateMachine.Player.characterController.enabled=false;
             stateMachine.Player.transform.position=stateMachine.Player.savePoint;
+            stateMachine.Player.transform.eulerAngles=new Vector3(0, stateMachine.Player.transform.eulerAngles.y, 0);
             stateMachine.Player.characterController.enabled=true;
         }
 

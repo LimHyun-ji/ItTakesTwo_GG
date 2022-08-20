@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/01. Scenes/LimHyunJi/01 StartScene.unity
+    path: Assets/01. Scenes/01 StartScene.unity
     guid: 193925d2ff5e02f498895cddda33e546
   - enabled: 1
-    path: Assets/01. Scenes/LimHyunJi/PorototypeBoth_HJ.unity
-    guid: b31097e4cd1135545a24992829ff3519
+    path: Assets/01. Scenes/Alpha_Both.unity
+    guid: 456ce88a4ae4b6c4dacec56534f85798
   m_configObjects: {}

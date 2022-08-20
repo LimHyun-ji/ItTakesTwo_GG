@@ -52,6 +52,9 @@ namespace ItTakesTwo
 
         public void ActivateCineMachine(bool isActive)
         {
+            if(UIController.Instance())
+                    UIController.Instance().SetDialogHeight(isActive);
+            //CineMachine Manager 는 게임 오브젝트 껏다가 이때 켜기
             //화면 비율 1개 카메라로
             if(isActive)
                 mainCamera.rect=cineViewPort;
@@ -63,6 +66,8 @@ namespace ItTakesTwo
                 mainCamera.gameObject.GetComponent<CameraController>().SetMouseRotationInit(virtualCamera.transform);
                 secondCamera.gameObject.GetComponent<CameraController>().CameraLookTransform.eulerAngles=virtualCamera.transform.eulerAngles;
                 secondCamera.gameObject.GetComponent<CameraController>().SetMouseRotationInit(virtualCamera.transform);
+
+                
             }
 
             cineBrain.enabled=isActive;
@@ -71,7 +76,6 @@ namespace ItTakesTwo
         //시네머신 끝날 때
         private void SetCamWidth(Rect viewPort)
         {
-            StopAllCoroutines();
             StartCoroutine(ISetCamWidth(gameViewPort));
         }
 

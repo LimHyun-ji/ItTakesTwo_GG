@@ -36,7 +36,9 @@ namespace ItTakesTwo
             Debug.Log(mode);
             if(scene.buildIndex == 1)//MainScene
             {
+                //임시로 설정 처음 씬 시작시 시네머신 활성화되도록
                 CameraManager.Instance().ActivateCineMachine(true);
+
             }
         }
 
