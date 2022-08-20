@@ -133,7 +133,7 @@ namespace ItTakesTwo
 
         protected void UseGravity(float gravity)
         {
-            stateMachine.ReusableData.isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers();
+            stateMachine.ReusableData.isGrounded=stateMachine.Player.characterController.isGrounded || CheckGroundLayers();            
             //Debug.Log("velocity : "+stateMachine.Player.velocity.y);
 
             stateMachine.Player.velocity.y += -Time.deltaTime*gravity;
