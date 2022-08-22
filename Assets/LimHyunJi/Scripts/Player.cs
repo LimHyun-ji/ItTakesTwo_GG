@@ -35,9 +35,12 @@ namespace ItTakesTwo
         [HideInInspector]
         public bool isJumpPad;
         public GameObject model;
+        public GameObject magnet;
         //임시
         public GameObject wall_0;
         public GameObject wall_1;
+        [HideInInspector]
+        public bool isForceDown;
 
 
         protected virtual void Awake() 
