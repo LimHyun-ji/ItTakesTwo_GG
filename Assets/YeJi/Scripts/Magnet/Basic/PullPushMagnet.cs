@@ -7,6 +7,8 @@ using UnityEditor;
 using UnityEditor.PackageManager;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UIElements;
+
 namespace ItTakesTwo
 {
     // 캐릭터컨트롤러로 가져오고 완료
@@ -24,6 +26,8 @@ namespace ItTakesTwo
         // private GameObject may;
         // private GameObject cody;
         private Player player;
+        private GameObject player1;
+        private GameObject player2;
         private ButtonE buttonE;
         private ButtonO buttonO;
         #endregion
@@ -33,22 +37,45 @@ namespace ItTakesTwo
         private GameObject col;
         private float rot;
         private GameObject lever;
+        private bool jump;
         #endregion
 
+        #region magent
         private bool magnetNearby;
         private Vector3 rayDir;
         private TrailRenderer[] trailRends;
+        private GameObject sideN;
+        private GameObject sideS;
+        private bool sidePushN;
+        private bool sidePushS;
+        Vector3 dirN;
+        Vector3 dirS;
+        #endregion
+        
+        #region button
+        private bool buttonNearby;
+        public bool forceDown;
+        private Vector3 fstPos;
+        private GameObject entrance;
+        #endregion
+
         // [SerializeField] private LineRenderer lineRend;
         
         // Start is called before the first frame update
         void Start()
         {
             player = GetComponentInParent<Player>();
+            player1 = GameObject.Find("Player1");
+            player2 = GameObject.Find("Player2");
             // trailRends = GameObject.Find("LaserEffects").GetComponentsInChildren<TrailRenderer>();
             
             buttonE = GameObject.Find("Player1").GetComponent<ButtonE>();
             buttonO = GameObject.Find("Player2").GetComponent<ButtonO>();
-
+            
+            sideN = GameObject.Find("SidePadN");
+            sideS = GameObject.Find("SidePadS");
+            
+            entrance = GameObject.Find("Entrance");
             // lineRend = GetComponent<LineRenderer>();
         }
 
@@ -61,21 +88,27 @@ namespace ItTakesTwo
             // print("push " + push);
             // print("pull " + pull);
             // print("col " + col);
+            // print("player: " + player);
             // print("canJump " + canJump);
             // print(cc.isGrounded);
             // print("trailRends: " + trailRends.Length);
+
+            SidePadDetect();
+            SidePadMove();
         }
 
         private void OnTriggerStay(Collider other)
         {
             MagnetDetect(other);
             PoleDetect(other);
-            
+            ButtonDetect(other);
+
             // Let collider move
             SawMove();
             JumpPadMove();
             CeilingPadMove();
             LeverMove();
+            ButtonOn();
             // RingBell(other);
         }
 
@@ -87,11 +120,17 @@ namespace ItTakesTwo
                 {
                     // e/9 버튼 범위
                     magnetNearby = false;
+                    buttonNearby = false;
                     player.velocity.z = 0;
+                }
+
+                if (other.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
+                {
+                    col = null;
+                    forceDown = false;
                 }
             }
         }
-        
         
         private void MagnetDetect(Collider other)
         {
@@ -104,9 +143,38 @@ namespace ItTakesTwo
                     magnetNearby = true;
                 }
             }
+        }        
+        private void ButtonDetect(Collider other)
+        {
+            // 버튼주변 - tag: button
+            // 버튼자체 - tag: button / layer = magnet 
+            if (other.gameObject.tag.Contains("Button"))
+            {
+                if (col == null)
+                {
+                    col = other.transform.gameObject;
+                    buttonNearby = true;
+                    print("buttonNearby: " + buttonNearby);
+                }
+            }
         }
 
-        
+
+        private void ButtonOn()
+        {
+            // player 상태 == PlayerForceDownState (추후 현지한테 요청)
+            if (forceDown)
+            {
+                fstPos = col.transform.position;
+                // Button 내려간다
+                if (col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
+                {
+                    col.transform.position += col.transform.up * 1.0f * Time.deltaTime;
+                    entrance.transform.position += Vector3.up * 5.0f * Time.deltaTime;
+                }
+            }
+        }
+
         private void PoleDetect(Collider other)
         {
             rayDir = other.transform.position - transform.position;
@@ -151,6 +219,8 @@ namespace ItTakesTwo
                     col = null;
                     push = false;
                     pull = false;
+                    sidePushN = false;
+                    sidePushS = false;
                     // EnableTrailR(false);
                 }
             }
@@ -165,7 +235,7 @@ namespace ItTakesTwo
                     if(col.gameObject.transform.parent.name == "Saw")
                     {
                         dir = col.gameObject.transform.forward + Vector3.forward;
-                        col.transform.root.position += dir * 2.0f * Time.deltaTime;
+                        col.transform.root.position += dir * 6.0f * Time.deltaTime;
                     }
                 }
             }
@@ -177,8 +247,9 @@ namespace ItTakesTwo
             {
                 if (col.gameObject.name.Contains("JumpPad"))
                 {
+                    print("Jump Success");
+                    player.velocity.y = 5;
                     // EnableTrailR(true);
-                    player.velocity.y += 10;
                     //player.movementStateMachine.ChangeState(JumpPadState)
                 }
             }
@@ -197,17 +268,67 @@ namespace ItTakesTwo
             }
         }
 
-        private void SidePadMove(Collider other)
+        private void SidePadDetect()
         {
-            if (pull && col != null)
+            // sidePad를 찾는다
+            
+            
+            
+            // sidePad의 거리가 일정거리이하면
+            if (dirS.magnitude < 30)
             {
-                if (other.gameObject.name.Contains("SidePad"))
+                if (buttonE.eHolding)
                 {
-                    print("Side-push");
-                    player.velocity.z = other.gameObject.transform.position.z;
+                    sidePushS = true;
+                    dirS = sideS.transform.position - player1.transform.position;
+                }
+                else
+                {
+                    sidePushS = false;
+                }
+            }
+            // sidePad의 거리가 일정거리이하면
+            if (dirN.magnitude < 30)
+            {
+                if (buttonO.oHolding)
+                {
+                    if (sidePushN == false)
+                    {
+                        dirN = sideN.transform.position - player2.transform.position;
+                    }
+                    sidePushN = true;
+                    
+                }
+                else
+                {
+                    sidePushN = false;
                 }
             }
         }
+
+        private void SidePadMove()
+        {
+            print("dirN: " + dirN.normalized);
+            Debug.DrawLine(player2.transform.position,sideN.transform.position, Color.green);
+            if (sidePushN)
+            {
+                print("player2 sidepad move");
+                
+                // 현지코드로 변경
+                player2.GetComponent<Player>().characterController.Move(dirN.normalized * 20 * Time.deltaTime);
+                // player2.GetComponent<Player>().velocity = sideN.transform.position;
+            }
+            if (sidePushS)
+            {
+                                
+                // 현지코드로 변경
+                player1.GetComponent<Player>().characterController.enabled = false;
+                player1.transform.position += dirS.normalized * 20 * Time.deltaTime;
+                // print("player1 sidepad move");
+                // player1.transform.position += dirS.normalized * 20 * Time.deltaTime;
+            }
+        }
+
         private void LeverMove()
         {
             if (pull && col != null )
@@ -224,7 +345,6 @@ namespace ItTakesTwo
                             col.transform.root.eulerAngles += new Vector3(rot, 0, 0);
                         }
                     }
-
                 }
             }
             if (!buttonO.oHolding && lever != null)

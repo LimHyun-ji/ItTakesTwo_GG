@@ -23,6 +23,7 @@ namespace ItTakesTwo
             }
             if (Input.GetKeyDown(KeyCode.Keypad9))
             {
+                print("buttonO");
                 oOnce = true;
             }
             if (Input.GetKeyUp(KeyCode.Keypad9))
