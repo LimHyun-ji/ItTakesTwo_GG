@@ -33,7 +33,7 @@ namespace ItTakesTwo
         [HideInInspector]
         public Vector3 savePoint;
         [HideInInspector]
-        public bool isJumpPad;
+        public bool isJumppedPad;
         public GameObject model;
         public GameObject magnet;
         //임시

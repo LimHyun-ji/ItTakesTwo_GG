@@ -10,10 +10,14 @@ namespace ItTakesTwo
         protected PlayerMovementStateMachine stateMachine;        
 
         protected PlayerGroundedData movementData;
+        protected CameraController camera;
+
+
         public PlayerBaseState(PlayerMovementStateMachine playerMovementStateMachine)
         {
             stateMachine=playerMovementStateMachine;
             movementData=stateMachine.Player.Data.GroundedData;
+            camera=stateMachine.Player.mainCameraTransform.gameObject.GetComponent<CameraController>();
 
             InitializedData();
         }
@@ -28,7 +32,6 @@ namespace ItTakesTwo
         }
         public virtual void PhysicsUpdate()
         {
-            CheckIsDie();
         }
         public virtual void Update()
         {
@@ -55,6 +58,7 @@ namespace ItTakesTwo
             }
 
             TriggerSavePoint(collider);
+            CheckIsDie(collider);
         }
 
         public virtual void OnTriggerExit(Collider collider)
@@ -208,11 +212,11 @@ namespace ItTakesTwo
         }
 
 
-        protected void CheckIsDie()
+        protected void CheckIsDie(Collider collider)
         {
-            if(stateMachine.Player.velocity.y <stateMachine.Player.Data.DieData.DieVelocityY)
+            if(1<<collider.gameObject.layer == LayerMask.GetMask("DeadZone"))
             {
-                //stateMachine.ChangeState(stateMachine.DyingSate);
+                stateMachine.ChangeState(stateMachine.DyingSate);
             }
         }
         #endregion

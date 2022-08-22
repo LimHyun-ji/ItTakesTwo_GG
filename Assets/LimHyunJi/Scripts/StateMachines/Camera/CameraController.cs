@@ -13,7 +13,7 @@ namespace ItTakesTwo
             IdleState,
             RidingState,
             WallState, 
-            MagnetState, 
+            MagnetJumpPadState, 
             CineMachineState
         }
         public CameraState currentState;
@@ -99,7 +99,7 @@ namespace ItTakesTwo
                 case CameraState.WallState:
                     WallFixedUpdate();
                     break;
-                case CameraState.MagnetState:
+                case CameraState.MagnetJumpPadState:
                     MagnetFixedUpdate();
                     break;
             }
@@ -152,6 +152,9 @@ namespace ItTakesTwo
         protected void MagnetFixedUpdate()
         {
             //자석패드에 붙을 때 Shake
+            smoothSpeed=0f;
+            Vector3 nearCamPos =new Vector3(0, 0, -minDistance);
+            transform.localPosition = SetCameraPosition(transform.localPosition, nearCamPos, Vector3.zero);
 
         }
 

@@ -13,6 +13,8 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            camera.currentState =CameraController.CameraState.IdleState;
+            stateMachine.Player.isJumppedPad=false;
             stateMachine.Player.Data.WallData.wallJumpCount=0;
             movementData.JumpData.airJumpCount=0;
             movementData.DashData.airDashCount=0;

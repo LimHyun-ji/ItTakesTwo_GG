@@ -74,7 +74,7 @@ namespace ItTakesTwo
                 {
                     return; //not moving
                 }
-                
+
                 movementDirection=GetMovementInputDirection();
                  
                 float speed = GetMovementSpeed();
@@ -85,7 +85,7 @@ namespace ItTakesTwo
                 Vector3 currentPlayerHorizontalVelocity = GetPlayerHorizontalVelocity();
                 //Debug.Log(speed);
                 stateMachine.Player.characterController.Move(Time.deltaTime* targetRotationDirection* speed - currentPlayerHorizontalVelocity);
-            }            
+            }
         }
        
         protected float Rotate(Vector3 inputDir)

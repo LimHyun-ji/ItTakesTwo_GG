@@ -640,6 +640,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ceb0c368-5d56-43be-98c3-ae0cf42666e5",
+                    "path": "<DualShockGamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "953f5c3f-81e3-42b0-8aa9-fb91a99d0a4d",
                     "path": "<Keyboard>/numpad3",
                     "interactions": "",

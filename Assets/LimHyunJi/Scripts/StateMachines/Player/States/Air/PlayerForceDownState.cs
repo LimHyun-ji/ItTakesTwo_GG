@@ -8,7 +8,6 @@ namespace ItTakesTwo
     {
         PlayerForceDownData forceDownData; 
         private float currentTime;
-        CameraController camera;
 
         public PlayerForceDownState(PlayerMovementStateMachine playerMovementStateMachine) : base(playerMovementStateMachine)
         {
@@ -18,7 +17,6 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
-            camera=stateMachine.Player.mainCameraTransform.gameObject.GetComponent<CameraController>();
             stateMachine.Player.animator.SetTrigger("ForceDown");
 
             stateMachine.Player.isMovable=false;

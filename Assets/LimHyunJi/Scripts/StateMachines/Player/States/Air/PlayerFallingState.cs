@@ -13,6 +13,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.animator.SetBool("IsFalling", true);
+            stateMachine.ReusableData.SpeedModifier= 1f;
         }
         public override void PhysicsUpdate()
         {

@@ -96,6 +96,9 @@ namespace ItTakesTwo
             SidePadDetect();
             SidePadMove();
         }
+        private void OnTriggerEnter(Collider other)
+        {
+        }
 
         private void OnTriggerStay(Collider other)
         {
@@ -247,16 +250,16 @@ namespace ItTakesTwo
         {
             if (push && col != null)
             {
-                if (col.gameObject.name.Contains("JumpPad"))
+                if (col.gameObject.name.Contains("JumpPad") && !player.isJumppedPad)
                 {
                     print("Jump Success");
                     //여기에 점프 패드 변수 가져오기
-                    player.isJumpPad=true;
-                    //player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
+                    //문제 1. 근처에 있을때 계속 뜀
+                    player.isJumppedPad=true;
+                    player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
                     
-                    player.velocity.y = 5;
+                    player.velocity.y = 30;
                     // EnableTrailR(true);
-                    //player.movementStateMachine.ChangeState(JumpPadState)
                 }
             }
         }
@@ -315,8 +318,6 @@ namespace ItTakesTwo
 
         private void SidePadMove()
         {
-            //print("dirN: " + dirN.normalized);
-            Debug.DrawLine(player2.transform.position,sideN.transform.position, Color.green);
             if (sidePushN)
             {
                 print("player2 sidepad move");
