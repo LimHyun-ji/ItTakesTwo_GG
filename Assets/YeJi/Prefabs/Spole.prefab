@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 8066059930257270882}
   - component: {fileID: 8066059930257270884}
   - component: {fileID: 8066059930257270886}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spole
-  m_TagString: Spole
+  m_TagString: Npole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 563420f78d90dfc40a0ced3fadc4ddf5, type: 2}
+  - {fileID: 2100000, guid: 6250d7b45b6a0d94ea25238d2922b06c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -129,3 +129,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   push: 0
   pull: 0
+  forceDown: 0

@@ -128,6 +128,7 @@ namespace ItTakesTwo
                 {
                     col = null;
                     forceDown = false;
+                    player.isForceDown=false;
                 }
             }
         }
@@ -162,12 +163,13 @@ namespace ItTakesTwo
 
         private void ButtonOn()
         {
+            forceDown = player.isForceDown;
             // player 상태 == PlayerForceDownState (추후 현지한테 요청)
             if (forceDown)
             {
                 fstPos = col.transform.position;
                 // Button 내려간다
-                if (col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
+                //if (col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
                 {
                     col.transform.position += col.transform.up * 1.0f * Time.deltaTime;
                     entrance.transform.position += Vector3.up * 5.0f * Time.deltaTime;
@@ -248,6 +250,10 @@ namespace ItTakesTwo
                 if (col.gameObject.name.Contains("JumpPad"))
                 {
                     print("Jump Success");
+                    //여기에 점프 패드 변수 가져오기
+                    player.isJumpPad=true;
+                    //player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
+                    
                     player.velocity.y = 5;
                     // EnableTrailR(true);
                     //player.movementStateMachine.ChangeState(JumpPadState)
@@ -272,10 +278,11 @@ namespace ItTakesTwo
         {
             // sidePad를 찾는다
             
-            
-            
+            float distanceS = Vector3.Distance(sideS.transform.position , player1.transform.position);
+            float distanceN = Vector3.Distance(sideN.transform.position , player2.transform.position);
+
             // sidePad의 거리가 일정거리이하면
-            if (dirS.magnitude < 30)
+            if (distanceS < 30)
             {
                 if (buttonE.eHolding)
                 {
@@ -288,7 +295,7 @@ namespace ItTakesTwo
                 }
             }
             // sidePad의 거리가 일정거리이하면
-            if (dirN.magnitude < 30)
+            if (distanceN < 30)
             {
                 if (buttonO.oHolding)
                 {
@@ -308,7 +315,7 @@ namespace ItTakesTwo
 
         private void SidePadMove()
         {
-            print("dirN: " + dirN.normalized);
+            //print("dirN: " + dirN.normalized);
             Debug.DrawLine(player2.transform.position,sideN.transform.position, Color.green);
             if (sidePushN)
             {

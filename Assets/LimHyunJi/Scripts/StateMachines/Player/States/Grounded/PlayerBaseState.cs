@@ -212,7 +212,7 @@ namespace ItTakesTwo
         {
             if(stateMachine.Player.velocity.y <stateMachine.Player.Data.DieData.DieVelocityY)
             {
-                stateMachine.ChangeState(stateMachine.DyingSate);
+                //stateMachine.ChangeState(stateMachine.DyingSate);
             }
         }
         #endregion
