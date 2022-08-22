@@ -190,6 +190,7 @@ namespace ItTakesTwo
                 {
                     if (Physics.Raycast(ray, out hitInfo, 100, 1 << LayerMask.NameToLayer("Magnet")))
                     {
+                        print("hitInfo: " + hitInfo.transform.gameObject.name);
                         Debug.DrawRay (ray.origin, ray.direction * 2f, Color.red, 100f, false);
                         // 2 N/S 극인지 체크
                         // 3 pull / push 여부 결정
@@ -299,11 +300,8 @@ namespace ItTakesTwo
             {
                 if (buttonO.oHolding)
                 {
-                    if (sidePushN == false)
-                    {
-                        dirN = sideN.transform.position - player2.transform.position;
-                    }
                     sidePushN = true;
+                    dirN = sideN.transform.position - player2.transform.position;
                     
                 }
                 else
@@ -316,9 +314,9 @@ namespace ItTakesTwo
         private void SidePadMove()
         {
             //print("dirN: " + dirN.normalized);
-            Debug.DrawLine(player2.transform.position,sideN.transform.position, Color.green);
             if (sidePushN)
             {
+                Debug.DrawLine(player2.transform.position,sideN.transform.position, Color.green);
                 print("player2 sidepad move");
                 
                 // 현지코드로 변경
@@ -329,8 +327,7 @@ namespace ItTakesTwo
             {
                                 
                 // 현지코드로 변경
-                player1.GetComponent<Player>().characterController.enabled = false;
-                player1.transform.position += dirS.normalized * 20 * Time.deltaTime;
+                player1.GetComponent<Player>().characterController.Move(dirS.normalized * 20 * Time.deltaTime);
                 // print("player1 sidepad move");
                 // player1.transform.position += dirS.normalized * 20 * Time.deltaTime;
             }
@@ -338,16 +335,17 @@ namespace ItTakesTwo
 
         private void LeverMove()
         {
-            if (pull && col != null )
+            if (pull && col != null)
             {
                 if (col.gameObject.name.Contains("SpoonLever"))
                 {
                     if (col.gameObject.transform.parent.name == "Lever")
                     {
+                        print("down!!!!!!!!!!!!!!!1");
                         lever = col.transform.parent.gameObject;
-                        rot = 20;
+                        rot = 500;
                         rot = Mathf.Lerp(0, rot, Time.deltaTime);
-                        if (col.transform.root.eulerAngles.x <= 20)
+                        if (col.transform.root.eulerAngles.x <= 500)
                         {
                             col.transform.root.eulerAngles += new Vector3(rot, 0, 0);
                         }
@@ -356,7 +354,6 @@ namespace ItTakesTwo
             }
             if (!buttonO.oHolding && lever != null)
             {
-                print("11111111111111");
                 print("lever.transform.eulerAngles: " + lever.transform.eulerAngles);
                 
                 lever.transform.eulerAngles = Vector3.Lerp(lever.transform.eulerAngles, new Vector3(0, lever.transform.eulerAngles.y, lever.transform.eulerAngles.z), Time.deltaTime*15);
@@ -364,7 +361,7 @@ namespace ItTakesTwo
                 // 지렛대가 올라가면
                 // 지렛대에 있는 플레이어가
                 // 포물선 방향으로 날아간다
-                if (player.gameObject.name == "Player1")
+                if (player.gameObject.name == "player2")
                 {
                     player.velocity.y += 15;
                     player.velocity.z += 40;
