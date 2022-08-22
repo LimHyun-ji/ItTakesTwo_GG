@@ -17,6 +17,8 @@ namespace ItTakesTwo
             stateMachine.Player.interactableObject=null;
             dieData=stateMachine.Player.Data.DieData;
             stateMachine.Player.model.SetActive(false);
+            stateMachine.Player.magnet.SetActive(false);
+
         }
         public override void PhysicsUpdate()
         {
@@ -25,6 +27,7 @@ namespace ItTakesTwo
             if(currentTime > dieData.SaveDelayTime)
             {
                 stateMachine.Player.model.SetActive(true);
+                stateMachine.Player.magnet.SetActive(true);
                 GoToSavePoint();
                 stateMachine.ChangeState(stateMachine.IdlingState);
                 currentTime=0f;

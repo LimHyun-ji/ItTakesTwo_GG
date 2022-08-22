@@ -21940,7 +21940,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 4194312
+    m_Bits: 4194376
   groundPivot: {fileID: 934692970}
   mainCameraTransform: {fileID: 2112321285}
   cameraLookPoint: {fileID: 0}
@@ -21949,8 +21949,10 @@ MonoBehaviour:
   savePoint: {x: 0, y: 0, z: 0}
   isJumpPad: 0
   model: {fileID: 428105189}
+  magnet: {fileID: 0}
   wall_0: {fileID: 1826897707}
   wall_1: {fileID: 556206062}
+  isForceDown: 0
 --- !u!114 &471122107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32017,7 +32019,7 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 4194376
   groundPivot: {fileID: 1534278264}
   mainCameraTransform: {fileID: 46667696}
   cameraLookPoint: {fileID: 0}
@@ -32026,8 +32028,10 @@ MonoBehaviour:
   savePoint: {x: 0, y: 0, z: 0}
   isJumpPad: 0
   model: {fileID: 1445994153}
+  magnet: {fileID: 0}
   wall_0: {fileID: 1826897707}
   wall_1: {fileID: 556206062}
+  isForceDown: 0
 --- !u!114 &675656596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36781,10 +36785,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 675656594}
     m_Modifications:
-    - target: {fileID: 6986976637486729924, guid: 2d74e99f35cd4ee49b83dfd28184fb9e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 6250d7b45b6a0d94ea25238d2922b06c, type: 2}
     - target: {fileID: 6986976637486729927, guid: 2d74e99f35cd4ee49b83dfd28184fb9e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -56674,10 +56674,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 471122111}
     m_Modifications:
-    - target: {fileID: 8066059930257270883, guid: c1fd8da64fe33e448a3fdc96db6a96a8, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 563420f78d90dfc40a0ced3fadc4ddf5, type: 2}
     - target: {fileID: 8066059930257270885, guid: c1fd8da64fe33e448a3fdc96db6a96a8, type: 3}
       propertyPath: m_RootOrder
       value: 3

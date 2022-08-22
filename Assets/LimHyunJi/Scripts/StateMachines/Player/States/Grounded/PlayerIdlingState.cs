@@ -20,7 +20,8 @@ namespace ItTakesTwo
         }
         public override void PhysicsUpdate()
         {
-            stateMachine.Player.velocity.y=-1f;//use gravity 에서 땅판정 잘 못해서 계속 음수되는 것 방지
+            //stateMachine.Player.velocity.y=-1f;//use gravity 에서 땅판정 잘 못해서 계속 음수되는 것 방지
+            
             base.PhysicsUpdate();
             // if(shouldSlide)
             // {

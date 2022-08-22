@@ -23,6 +23,7 @@ namespace ItTakesTwo
 
             stateMachine.Player.isMovable=false;
             stateMachine.Player.velocity.y += 10f;
+            stateMachine.Player.isForceDown=true;
         }
         public override void PhysicsUpdate()
         {
@@ -37,6 +38,7 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
+            stateMachine.Player.isForceDown=false;
             
             camera.Play();
             stateMachine.Player.isMovable=true;
