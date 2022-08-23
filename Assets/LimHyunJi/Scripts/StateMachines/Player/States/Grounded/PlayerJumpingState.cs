@@ -24,7 +24,7 @@ namespace ItTakesTwo
             if(stateMachine.Player.isJumppedPad)
             {
                 //camera.Play();
-                camera.currentState =CameraController.CameraState.MagnetJumpPadState;
+                //camera.currentState =CameraController.CameraState.MagnetJumpPadState;
             }
             
             stateMachine.Player.velocity.y += Mathf.Sqrt(jumpHeight * -2f *-9.8f);

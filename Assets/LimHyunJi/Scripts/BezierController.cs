@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEditor;
 
@@ -61,32 +60,32 @@ namespace ItTakesTwo
         }
 
     }
-    [CanEditMultipleObjects]
-    [CustomEditor(typeof(BezierController))]
-    public class BezierController_Editor : Editor
-    {
-        private void OnSceneGUI()
-        {
-            BezierController Generator = (BezierController)target;
+    // [CanEditMultipleObjects]
+    // [CustomEditor(typeof(BezierController))]
+    // public class BezierController_Editor : Editor
+    // {
+    //     private void OnSceneGUI()
+    //     {
+    //         BezierController Generator = (BezierController)target;
 
-            Generator.P1 = Handles.PositionHandle(Generator.P1, Quaternion.identity);
-            Generator.P2 = Handles.PositionHandle(Generator.P2, Quaternion.identity);
-            Generator.P3 = Handles.PositionHandle(Generator.P3, Quaternion.identity);
-            Generator.P4 = Handles.PositionHandle(Generator.P4, Quaternion.identity);
+    //         Generator.P1 = Handles.PositionHandle(Generator.P1, Quaternion.identity);
+    //         Generator.P2 = Handles.PositionHandle(Generator.P2, Quaternion.identity);
+    //         Generator.P3 = Handles.PositionHandle(Generator.P3, Quaternion.identity);
+    //         Generator.P4 = Handles.PositionHandle(Generator.P4, Quaternion.identity);
 
-            Handles.DrawLine(Generator.P1, Generator.P2);
-            Handles.DrawLine(Generator.P3, Generator.P4);
+    //         Handles.DrawLine(Generator.P1, Generator.P2);
+    //         Handles.DrawLine(Generator.P3, Generator.P4);
 
-            for(float i =0; i<50; i++)
-            {
-                float value_Before=i/50;
-                Vector3 Before=Generator.BezierTest(Generator.P1, Generator.P2, Generator.P3, Generator.P4, value_Before);
-                float value_After=(i+1)/50;
-                Vector3 After= Generator.BezierTest(Generator.P1, Generator.P2, Generator.P3, Generator.P4, value_After);
+    //         for(float i =0; i<50; i++)
+    //         {
+    //             float value_Before=i/50;
+    //             Vector3 Before=Generator.BezierTest(Generator.P1, Generator.P2, Generator.P3, Generator.P4, value_Before);
+    //             float value_After=(i+1)/50;
+    //             Vector3 After= Generator.BezierTest(Generator.P1, Generator.P2, Generator.P3, Generator.P4, value_After);
                 
-                Handles.DrawLine(Before, After);
-            }
-        }
-    }
+    //             Handles.DrawLine(Before, After);
+    //         }
+    //     }
+    // }
 
 }

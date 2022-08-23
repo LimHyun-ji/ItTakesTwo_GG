@@ -1,11 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cinemachine.Utility;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.PackageManager;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -125,13 +120,17 @@ namespace ItTakesTwo
                     magnetNearby = false;
                     buttonNearby = false;
                     player.velocity.z = 0;
+                    player.isJumppedPad=false;
+                    push=false;
+                    pull=false;
+
                 }
 
                 if (other.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
                 {
-                    col = null;
-                    forceDown = false;
                     player.isForceDown=false;
+                    forceDown = false;
+                    col = null;
                 }
             }
         }
@@ -170,9 +169,9 @@ namespace ItTakesTwo
             // player 상태 == PlayerForceDownState (추후 현지한테 요청)
             if (forceDown)
             {
-                fstPos = col.transform.position;
+                //fstPos = col.transform.position;
                 // Button 내려간다
-                //if (col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
+                if ( col != null && col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
                 {
                     col.transform.position += col.transform.up * 1.0f * Time.deltaTime;
                     entrance.transform.position += Vector3.up * 5.0f * Time.deltaTime;
@@ -240,7 +239,7 @@ namespace ItTakesTwo
                     if(col.gameObject.transform.parent.name == "Saw")
                     {
                         dir = col.gameObject.transform.forward + Vector3.forward;
-                        col.transform.root.position += dir * 6.0f * Time.deltaTime;
+                        col.transform.root.position += dir * 1.2f * Time.deltaTime;
                     }
                 }
             }
@@ -324,16 +323,21 @@ namespace ItTakesTwo
                 
                 // 현지코드로 변경
                 player2.GetComponent<Player>().characterController.Move(dirN.normalized * 20 * Time.deltaTime);
+                player2.GetComponent<Player>().velocity.y=0f;
                 // player2.GetComponent<Player>().velocity = sideN.transform.position;
             }
             if (sidePushS)
             {
                                 
                 // 현지코드로 변경
-                player1.GetComponent<Player>().characterController.enabled = false;
-                player1.transform.position += dirS.normalized * 20 * Time.deltaTime;
+                // player1.GetComponent<Player>().characterController.enabled = false;
+                // player1.transform.position += dirS.normalized * 20 * Time.deltaTime;
                 // print("player1 sidepad move");
                 // player1.transform.position += dirS.normalized * 20 * Time.deltaTime;
+
+                player1.GetComponent<Player>().characterController.Move(dirS.normalized * 20 * Time.deltaTime);
+                player1.GetComponent<Player>().velocity.y=0f;
+
             }
         }
 
@@ -346,9 +350,9 @@ namespace ItTakesTwo
                     if (col.gameObject.transform.parent.name == "Lever")
                     {
                         lever = col.transform.parent.gameObject;
-                        rot = 20;
+                        rot = 500;
                         rot = Mathf.Lerp(0, rot, Time.deltaTime);
-                        if (col.transform.root.eulerAngles.x <= 20)
+                        if (col.transform.root.eulerAngles.x <= 300)
                         {
                             col.transform.root.eulerAngles += new Vector3(rot, 0, 0);
                         }
@@ -365,7 +369,7 @@ namespace ItTakesTwo
                 // 지렛대가 올라가면
                 // 지렛대에 있는 플레이어가
                 // 포물선 방향으로 날아간다
-                if (player.gameObject.name == "Player1")
+                if (player.gameObject.name == "Player2")
                 {
                     player.velocity.y += 15;
                     player.velocity.z += 40;

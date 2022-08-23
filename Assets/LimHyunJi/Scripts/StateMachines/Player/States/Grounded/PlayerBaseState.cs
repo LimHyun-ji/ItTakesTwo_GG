@@ -96,8 +96,7 @@ namespace ItTakesTwo
             else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed += OnJump;
-                stateMachine.Player.Input.Player2Actions.TestForSave.performed += GoToSavePoint;
-                //stateMachine.Player.Input.Player1Actions.Interact.performed += OnInteract;
+                //stateMachine.Player.Input.Player2Actions.TestForSave.performed += GoToSavePoint;
             }
         }
         protected virtual void RemoveInputActionsCallBacks()
@@ -110,7 +109,7 @@ namespace ItTakesTwo
             else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed -= OnJump;
-                stateMachine.Player.Input.Player2Actions.TestForSave.performed -= GoToSavePoint;
+                //stateMachine.Player.Input.Player2Actions.TestForSave.performed -= GoToSavePoint;
                 
             }
         }

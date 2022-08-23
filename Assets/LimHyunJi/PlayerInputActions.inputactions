@@ -397,12 +397,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "TestForSave",
+                    "name": "MagnetOn",
                     "type": "Button",
-                    "id": "263148d0-a62e-4911-8a33-26d0b2f2ed73",
+                    "id": "33f4be95-8631-47f3-9d13-0aaa80653767",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MagnetOff",
+                    "type": "Button",
+                    "id": "9e245478-e50c-49dc-a9b2-2884492db484",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 }
             ],
@@ -662,12 +671,23 @@
                 },
                 {
                     "name": "",
-                    "id": "6a79bab3-9bd1-4864-8d4f-2337a0ba61c6",
-                    "path": "<Keyboard>/numpadPeriod",
+                    "id": "faefecea-8b01-4757-bdd0-d3537153ff4f",
+                    "path": "<DualShockGamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "TestForSave",
+                    "action": "MagnetOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82449ccc-a65a-4a1a-a452-7bcd518842b7",
+                    "path": "<DualShockGamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MagnetOff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -419,12 +419,21 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""TestForSave"",
+                    ""name"": ""MagnetOn"",
                     ""type"": ""Button"",
-                    ""id"": ""263148d0-a62e-4911-8a33-26d0b2f2ed73"",
+                    ""id"": ""33f4be95-8631-47f3-9d13-0aaa80653767"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MagnetOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e245478-e50c-49dc-a9b2-2884492db484"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -684,12 +693,23 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6a79bab3-9bd1-4864-8d4f-2337a0ba61c6"",
-                    ""path"": ""<Keyboard>/numpadPeriod"",
+                    ""id"": ""faefecea-8b01-4757-bdd0-d3537153ff4f"",
+                    ""path"": ""<DualShockGamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""TestForSave"",
+                    ""action"": ""MagnetOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82449ccc-a65a-4a1a-a452-7bcd518842b7"",
+                    ""path"": ""<DualShockGamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MagnetOff"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -725,7 +745,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player2_MouseY = m_Player2.FindAction("Mouse Y", throwIfNotFound: true);
         m_Player2_Look = m_Player2.FindAction("Look", throwIfNotFound: true);
         m_Player2_Interact = m_Player2.FindAction("Interact", throwIfNotFound: true);
-        m_Player2_TestForSave = m_Player2.FindAction("TestForSave", throwIfNotFound: true);
+        m_Player2_MagnetOn = m_Player2.FindAction("MagnetOn", throwIfNotFound: true);
+        m_Player2_MagnetOff = m_Player2.FindAction("MagnetOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -917,7 +938,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player2_MouseY;
     private readonly InputAction m_Player2_Look;
     private readonly InputAction m_Player2_Interact;
-    private readonly InputAction m_Player2_TestForSave;
+    private readonly InputAction m_Player2_MagnetOn;
+    private readonly InputAction m_Player2_MagnetOff;
     public struct Player2Actions
     {
         private @PlayerInputActions m_Wrapper;
@@ -933,7 +955,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @MouseY => m_Wrapper.m_Player2_MouseY;
         public InputAction @Look => m_Wrapper.m_Player2_Look;
         public InputAction @Interact => m_Wrapper.m_Player2_Interact;
-        public InputAction @TestForSave => m_Wrapper.m_Player2_TestForSave;
+        public InputAction @MagnetOn => m_Wrapper.m_Player2_MagnetOn;
+        public InputAction @MagnetOff => m_Wrapper.m_Player2_MagnetOff;
         public InputActionMap Get() { return m_Wrapper.m_Player2; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -976,9 +999,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnInteract;
-                @TestForSave.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnTestForSave;
-                @TestForSave.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnTestForSave;
-                @TestForSave.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnTestForSave;
+                @MagnetOn.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMagnetOn;
+                @MagnetOn.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMagnetOn;
+                @MagnetOn.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMagnetOn;
+                @MagnetOff.started -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMagnetOff;
+                @MagnetOff.performed -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMagnetOff;
+                @MagnetOff.canceled -= m_Wrapper.m_Player2ActionsCallbackInterface.OnMagnetOff;
             }
             m_Wrapper.m_Player2ActionsCallbackInterface = instance;
             if (instance != null)
@@ -1016,9 +1042,12 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @TestForSave.started += instance.OnTestForSave;
-                @TestForSave.performed += instance.OnTestForSave;
-                @TestForSave.canceled += instance.OnTestForSave;
+                @MagnetOn.started += instance.OnMagnetOn;
+                @MagnetOn.performed += instance.OnMagnetOn;
+                @MagnetOn.canceled += instance.OnMagnetOn;
+                @MagnetOff.started += instance.OnMagnetOff;
+                @MagnetOff.performed += instance.OnMagnetOff;
+                @MagnetOff.canceled += instance.OnMagnetOff;
             }
         }
     }
@@ -1051,6 +1080,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMouseY(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnTestForSave(InputAction.CallbackContext context);
+        void OnMagnetOn(InputAction.CallbackContext context);
+        void OnMagnetOff(InputAction.CallbackContext context);
     }
 }
