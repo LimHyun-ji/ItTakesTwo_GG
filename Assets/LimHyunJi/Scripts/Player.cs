@@ -30,6 +30,7 @@ namespace ItTakesTwo
         public PlayerMovementStateMachine movementStateMachine;
         [HideInInspector]
         public Animator animator;
+        public Animator dummyAnimator;
         [HideInInspector]
         public Vector3 savePoint;
         [HideInInspector]
@@ -41,6 +42,8 @@ namespace ItTakesTwo
         public GameObject wall_1;
         [HideInInspector]
         public bool isForceDown;
+        [HideInInspector]
+        public  Vector3 cameraDir;
 
 
         protected virtual void Awake() 

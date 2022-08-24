@@ -34,6 +34,9 @@ namespace ItTakesTwo
             stateMachine.Player.animator.SetTrigger("Swing");
             stateMachine.Player.animator.SetBool("IsSwing", true);
 
+            stateMachine.Player.dummyAnimator.SetTrigger("Swing");
+            stateMachine.Player.dummyAnimator.SetBool("IsSwing", true);
+
             interactableObject=stateMachine.Player.interactableObject;
             
             GameObject rope= GameObject.FindGameObjectWithTag("Rope");
@@ -59,6 +62,9 @@ namespace ItTakesTwo
 
             stateMachine.Player.animator.ResetTrigger("Swing");
             stateMachine.Player.animator.SetBool("IsSwing", false);
+
+            stateMachine.Player.dummyAnimator.ResetTrigger("Swing");
+            stateMachine.Player.dummyAnimator.SetBool("IsSwing", false);
 
             stateMachine.Player.gameObject.transform.SetParent(null);
             stateMachine.Player.characterController.enabled=true;

@@ -203,6 +203,7 @@ namespace ItTakesTwo
             if(canInteract && stateMachine.Player.interactableObject.tag == "RollerCoaster")
             {
                 Debug.Log("Arir Interact Roller"+ stateMachine.Player.interactableObject);
+                
                 stateMachine.ChangeState(stateMachine.RidingState);
                 //interactableObject.GetComponent<SphereCollider>().enabled=false;
             }

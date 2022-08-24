@@ -39,7 +39,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6093602939469723629}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd87e25bac2717845b2ee48616d33cac, type: 3}
   m_Name: 
@@ -50,4 +50,4 @@ MonoBehaviour:
   P1: {x: 161, y: 28.927275, z: 173}
   P2: {x: 161, y: 22.419117, z: 173}
   P3: {x: 161, y: 26.131924, z: 235}
-  P4: {x: 161, y: 27.51237, z: 230}
+  P4: {x: 161, y: 27.51237, z: 235}

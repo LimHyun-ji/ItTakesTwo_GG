@@ -16,6 +16,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.animator.SetBool("IsRunning", true);
+            stateMachine.Player.dummyAnimator.SetBool("IsRunning", true);
 
             stateMachine.ReusableData.SpeedModifier=movementData.RunData.speedModifier;
         }
@@ -27,6 +28,7 @@ namespace ItTakesTwo
         {
             base.Exit();
             stateMachine.Player.animator.SetBool("IsRunning", false);
+            stateMachine.Player.dummyAnimator.SetBool("IsRunning", false);
         }
         #endregion
     }

@@ -27,6 +27,7 @@ namespace ItTakesTwo
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
             slideSpeed=10f;
             stateMachine.Player.animator.SetBool("IsSliding", true);
+            stateMachine.Player.dummyAnimator.SetBool("IsSliding", true);
         }
         public override void PhysicsUpdate()
         {
@@ -37,6 +38,7 @@ namespace ItTakesTwo
         {
             environmentDir=Vector3.zero;
             stateMachine.Player.animator.SetBool("IsSliding", false);
+            stateMachine.Player.dummyAnimator.SetBool("IsSliding", false);
             ResetPlayerRotation();
             base.Exit();
         }

@@ -27,7 +27,7 @@ TagManager:
   - UI
   - Magnet
   - ButtonOn
-  - Dummy
+  - 
   - 
   - 
   - 
@@ -45,8 +45,8 @@ TagManager:
   - WallArea
   - SavePoint
   - DeadZone
-  - 
-  - 
+  - Dummy1
+  - Dummy2
   - 
   - 
   - 

@@ -18,6 +18,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.animator.SetBool("IsAir", true);
+            stateMachine.Player.dummyAnimator.SetBool("IsAir", true);
         }
         public override void Exit()
         {

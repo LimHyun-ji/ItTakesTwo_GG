@@ -15,6 +15,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.animator.SetTrigger("Jump");
+            stateMachine.Player.dummyAnimator.SetTrigger("Jump");
 
             stateMachine.Player.velocity.y=0f;            
             if(!stateMachine.ReusableData.isGrounded)
@@ -37,7 +38,8 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
-            stateMachine.Player.animator.ResetTrigger("Jump");                
+            stateMachine.Player.animator.ResetTrigger("Jump");
+            stateMachine.Player.dummyAnimator.ResetTrigger("Jump");                
         }
 
     }
