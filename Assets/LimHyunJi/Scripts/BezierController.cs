@@ -25,13 +25,15 @@ namespace ItTakesTwo
         public List<GameObject> Points = new List<GameObject>();
         public List<Vector3> points=new List<Vector3>();
         
+        public List<Vector3> pointsForEditor=new List<Vector3>();
+        
         private void Start()
         {
             GetPoints(Points, points);
         }
         void Update()
         {
-            GetPosition();
+            //GetPosition();
         }
 
         private void FixedUpdate()
@@ -39,11 +41,12 @@ namespace ItTakesTwo
             
         }
 
-        //재귀로 구현하기
-        // public Vector3 BezierTest(List<Vector3> pointList)
-        // {
-        //     //for(int i=0; )
-        // } 
+        //생성자
+        public BezierController(List<GameObject> Points)
+        {
+            this.Points=Points;
+            GetPoints(Points, points);
+        }
 
         //n차 베지어 곡선
         public Vector3 BezierTest(Vector3 P_1, Vector3 P_2, Vector3 P_3, Vector3 P_4, float value)
@@ -72,26 +75,24 @@ namespace ItTakesTwo
         public Vector3 BezierTest(List<Vector3> points, float value, int n)
         {
             Vector3 movingPoint=Vector3.zero;
-            if(!flag)
-            {
-                
-            }
+    
             for(int i=0; i< n+1; i++)//0부터 n까지
             {
-                Debug.Log("Count");
+                //Debug.Log("Points" + points[i]);
                 //계수
-                int c=1;
+                float c=1;
                 //계수 구하기
                 for(int j=0; j< i; j++ )
                 {
-                    c *= (n-j)/(j+1);
+                    c *= (float)(n-j)/(float)(j+1);
                 }
-                movingPoint += points[i] * c * Mathf.Pow(value, i) * Mathf.Pow((1-value), n-i);
+                movingPoint += c * points[i] * Mathf.Pow(value, i) * Mathf.Pow((1-value), n-i);
             }
             return movingPoint;
         }
         public void GetPoints(List<GameObject> Points, List<Vector3> points)
         {
+            points.Clear();
             for(int i=0; i< Points.Count; i++)
             {   
                 points.Add(Points[i].transform.position);
@@ -116,36 +117,6 @@ namespace ItTakesTwo
             return finalPoint;
         }
 
-    }
-
-
-    //Editor에서 편집하기
-    [CanEditMultipleObjects]
-    [CustomEditor(typeof(BezierController))]
-    public class BezierController_Editor : Editor
-    {
-        private void OnSceneGUI()
-        {
-            BezierController Generator = (BezierController)target;
-
-            Generator.p1 = Generator.P1.position;// Handles.PositionHandle(Generator.p1, Quaternion.identity);
-            Generator.p2 = Generator.P2.position;// Handles.PositionHandle(Generator.p2, Quaternion.identity);
-            Generator.p3 = Generator.P3.position;// Handles.PositionHandle(Generator.p3, Quaternion.identity);
-            Generator.p4 = Generator.P4.position;// Handles.PositionHandle(Generator.p4, Quaternion.identity);
-
-            Handles.DrawLine(Generator.p1, Generator.p2);
-            Handles.DrawLine(Generator.p3, Generator.p4);
-
-            for(float i =0; i<50; i++)
-            {
-                float value_Before=i/50;
-                Vector3 Before=Generator.BezierTest(Generator.p1, Generator.p2, Generator.p3, Generator.p4, value_Before);
-                float value_After=(i+1)/50;
-                Vector3 After= Generator.BezierTest(Generator.p1, Generator.p2, Generator.p3, Generator.p4, value_After);
-                
-                Handles.DrawLine(Before, After);
-            }
-        }
     }
 
 }

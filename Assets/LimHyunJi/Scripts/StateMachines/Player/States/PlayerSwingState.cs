@@ -39,10 +39,7 @@ namespace ItTakesTwo
 
             interactableObject=stateMachine.Player.interactableObject;
             
-            GameObject rope= GameObject.FindGameObjectWithTag("Rope");
-            ropeRenderer= rope.GetComponent<RopeRenderer>();
-            lineRenderer =rope.GetComponent<LineRenderer>();
-            lineRenderer.enabled=true;
+            ropeRenderer= stateMachine.Player.rope.GetComponent<RopeRenderer>();
             stateMachine.Player.characterController.enabled=false;
 
             movementData.JumpData.airJumpCount=0;
@@ -69,7 +66,6 @@ namespace ItTakesTwo
             stateMachine.Player.gameObject.transform.SetParent(null);
             stateMachine.Player.characterController.enabled=true;
             stateMachine.Player.characterController.Move(interactableObject.transform.forward* 7f);
-            lineRenderer.enabled=false;
         }
 
         private void ResetLocalTransform(float distance)

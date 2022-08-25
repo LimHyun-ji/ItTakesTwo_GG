@@ -42,6 +42,7 @@ namespace ItTakesTwo
 
         private void OnLand()
         {
+            AudioPlay(movementData.landSound, false, 0.2f);
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
 

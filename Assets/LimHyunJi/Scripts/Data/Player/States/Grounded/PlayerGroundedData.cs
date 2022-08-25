@@ -10,6 +10,10 @@ namespace ItTakesTwo
         [field: SerializeField] [field: Range(0f, 3f)]  public float groundCheckRadius{get; private set;}=2f;
         [field: SerializeField] [field: Range(0f, 5f)]  public float FlyCheckRadius{get; private set;}=4f;
         [field: SerializeField] [field: Range(0f, 3f)]  public float waterCheckRadius{get; private set;}=1f;
+        [field: SerializeField] public AudioClip walkSound;
+        [field: SerializeField] public AudioClip slideSound;
+        [field: SerializeField] public AudioClip landSound;
+
 
         
         [field: SerializeField]  public PlayerRotationData BaseRotationData{get; private set;}

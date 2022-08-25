@@ -17,6 +17,9 @@ MonoBehaviour:
     <groundCheckRadius>k__BackingField: 0.028
     <FlyCheckRadius>k__BackingField: 4
     <waterCheckRadius>k__BackingField: 1
+    walkSound: {fileID: 8300000, guid: a51151559c5efb549a4296170879238e, type: 3}
+    slideSound: {fileID: 8300000, guid: bc4c961b5650ca44f91d9509c5fcfa01, type: 3}
+    landSound: {fileID: 8300000, guid: 250b4167bac30604dbdccee49c18607e, type: 3}
     <BaseRotationData>k__BackingField:
       <targetRotationReachTime>k__BackingField: {x: 0, y: 0.14, z: 0}
     <RunData>k__BackingField:
@@ -42,8 +45,8 @@ MonoBehaviour:
     <SpeedModifier>k__BackingField: 2
     <wallIdleTime>k__BackingField: 2
     wallJumpCount: 0
-    WallJumpDir1: {x: 0, y: 0, z: 0}
-    WallJumpDir2: {x: 0, y: 0, z: 0}
+    WallJumpDir1: {x: -1, y: 0, z: 0}
+    WallJumpDir2: {x: 1, y: 0, z: 0}
   <DieData>k__BackingField:
     DieVelocityY: -20
     SaveDelayTime: 1

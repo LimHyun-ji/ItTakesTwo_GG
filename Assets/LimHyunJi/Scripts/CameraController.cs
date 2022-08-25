@@ -315,13 +315,11 @@ namespace ItTakesTwo
             //닿은게 Player나 magnet,  Dummy이면 , 혹은 안 닿았으면 비활성화       
             else
             {
-                //플레이어인데 자기면 장애물이라고 판단?
-                // if(hitInfo.transform.gameObject != target)
-                //     otherDummy.SetActive(true); 
+                //플레이어인데 자기면 장애물이라고 판단? 
                 otherDummy.SetActive(false);
             }
 
-            Debug.DrawLine(transform.position, otherTarget.transform.position, Color.red);
+            //Debug.DrawLine(transform.position, otherTarget.transform.position, Color.red);
         }
     }
 

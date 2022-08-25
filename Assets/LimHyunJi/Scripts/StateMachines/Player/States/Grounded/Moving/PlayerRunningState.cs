@@ -15,10 +15,13 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            
             stateMachine.Player.animator.SetBool("IsRunning", true);
             stateMachine.Player.dummyAnimator.SetBool("IsRunning", true);
 
             stateMachine.ReusableData.SpeedModifier=movementData.RunData.speedModifier;
+
+            AudioPlay(movementData.walkSound, true, 0.2f);
         }
         #endregion
 
@@ -29,7 +32,12 @@ namespace ItTakesTwo
             base.Exit();
             stateMachine.Player.animator.SetBool("IsRunning", false);
             stateMachine.Player.dummyAnimator.SetBool("IsRunning", false);
+
+            stateMachine.Player.audioSource.Stop();
         }
         #endregion
+
+
+        
     }
 }

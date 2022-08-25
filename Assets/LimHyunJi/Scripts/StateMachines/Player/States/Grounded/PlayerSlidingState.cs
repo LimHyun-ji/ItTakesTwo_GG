@@ -28,6 +28,8 @@ namespace ItTakesTwo
             slideSpeed=10f;
             stateMachine.Player.animator.SetBool("IsSliding", true);
             stateMachine.Player.dummyAnimator.SetBool("IsSliding", true);
+
+            AudioPlay(movementData.slideSound, true, 0.2f);
         }
         public override void PhysicsUpdate()
         {
@@ -41,6 +43,8 @@ namespace ItTakesTwo
             stateMachine.Player.dummyAnimator.SetBool("IsSliding", false);
             ResetPlayerRotation();
             base.Exit();
+
+            stateMachine.Player.audioSource.Stop();
         }
         protected override void Move()//재정의
         {

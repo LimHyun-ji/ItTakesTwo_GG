@@ -220,5 +220,13 @@ namespace ItTakesTwo
         }
         #endregion
 
+        protected void AudioPlay(AudioClip clip, bool isLoop, float volume)
+        {
+            stateMachine.Player.audioSource.Stop();
+            stateMachine.Player.audioSource.clip=clip;
+            stateMachine.Player.audioSource.loop=isLoop;
+            stateMachine.Player.audioSource.volume=volume;
+            stateMachine.Player.audioSource.Play();
+        }
     }
 }
