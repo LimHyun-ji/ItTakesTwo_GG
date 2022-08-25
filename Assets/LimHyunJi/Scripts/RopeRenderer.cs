@@ -10,7 +10,7 @@ namespace ItTakesTwo
        int count=10;
        void Start()
        {
-            rope =GetComponent<LineRenderer>();
+            rope = gameObject.GetComponent<LineRenderer>();
             rope.positionCount= count;
        }
        

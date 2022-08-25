@@ -13,6 +13,7 @@ namespace ItTakesTwo
         {
             base.Enter(); 
             stateMachine.Player.animator.SetTrigger("WallJump");
+            stateMachine.Player.dummyAnimator.SetTrigger("WallJump");
             stateMachine.Player.velocity.y=-1f;
         }
         public override void PhysicsUpdate()
@@ -34,6 +35,7 @@ namespace ItTakesTwo
             wallData.wallJumpCount++;
             UseGravity(20f);
             stateMachine.Player.animator.ResetTrigger("WallJump");
+            stateMachine.Player.dummyAnimator.ResetTrigger("WallJump");
             base.Exit();
         }
         protected override void AddInputActionsCallBacks()

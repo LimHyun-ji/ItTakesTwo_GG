@@ -30,6 +30,7 @@ namespace ItTakesTwo
         public PlayerMovementStateMachine movementStateMachine;
         [HideInInspector]
         public Animator animator;
+        public Animator dummyAnimator;
         [HideInInspector]
         public Vector3 savePoint;
         [HideInInspector]
@@ -41,6 +42,12 @@ namespace ItTakesTwo
         public GameObject wall_1;
         [HideInInspector]
         public bool isForceDown;
+        [HideInInspector]
+        public  Vector3 cameraDir;
+        [HideInInspector]
+        public AudioSource audioSource;
+        [HideInInspector]
+        public GameObject rope;
 
 
         protected virtual void Awake() 
@@ -51,6 +58,9 @@ namespace ItTakesTwo
            
             movementStateMachine=new PlayerMovementStateMachine(this);
             animator=GetComponentInChildren<Animator>();
+            audioSource =GetComponent<AudioSource>();
+
+            rope= Instantiate(Resources.Load<GameObject>("Prefabs_HJ/Rope"));
         }
         protected virtual void Start() 
         {

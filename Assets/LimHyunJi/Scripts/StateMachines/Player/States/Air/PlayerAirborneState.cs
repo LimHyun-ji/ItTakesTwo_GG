@@ -18,6 +18,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.animator.SetBool("IsAir", true);
+            stateMachine.Player.dummyAnimator.SetBool("IsAir", true);
         }
         public override void Exit()
         {
@@ -41,6 +42,7 @@ namespace ItTakesTwo
 
         private void OnLand()
         {
+            AudioPlay(movementData.landSound, false, 0.2f);
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
 

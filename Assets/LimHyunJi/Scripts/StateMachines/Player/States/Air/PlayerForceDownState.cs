@@ -18,6 +18,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.animator.SetTrigger("ForceDown");
+            stateMachine.Player.dummyAnimator.SetTrigger("ForceDown");
 
             stateMachine.Player.isMovable=false;
             stateMachine.Player.velocity.y += 10f;

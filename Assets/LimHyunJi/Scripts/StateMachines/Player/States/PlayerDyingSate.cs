@@ -17,6 +17,7 @@ namespace ItTakesTwo
             stateMachine.Player.interactableObject=null;
             dieData=stateMachine.Player.Data.DieData;
             stateMachine.Player.model.SetActive(false);
+            camera.otherDummy.SetActive(false);
             stateMachine.Player.magnet.SetActive(false);
 
         }
@@ -27,6 +28,7 @@ namespace ItTakesTwo
             if(currentTime > dieData.SaveDelayTime)
             {
                 stateMachine.Player.model.SetActive(true);
+                camera.otherDummy.SetActive(true);
                 stateMachine.Player.magnet.SetActive(true);
                 GoToSavePoint();
                 stateMachine.ChangeState(stateMachine.IdlingState);

@@ -20,6 +20,7 @@ namespace ItTakesTwo
         {
             base.Enter();
             stateMachine.Player.animator.SetBool("IsAir", false);
+            stateMachine.Player.dummyAnimator.SetBool("IsAir", false);
         }
         public override void PhysicsUpdate()
         {

@@ -21,6 +21,7 @@ namespace ItTakesTwo
         {
             base.Enter();    
             stateMachine.Player.animator.SetTrigger("Dash");
+            stateMachine.Player.dummyAnimator.SetTrigger("Dash");
             
             stateMachine.Player.isMovable=false;   
             if(!stateMachine.ReusableData.isGrounded)   
@@ -55,7 +56,8 @@ namespace ItTakesTwo
         {
             base.Exit();
             stateMachine.Player.isMovable=true;  
-            stateMachine.Player.animator.ResetTrigger("Dash");      
+            stateMachine.Player.animator.ResetTrigger("Dash");
+            stateMachine.Player.dummyAnimator.ResetTrigger("Dash");      
         }
         #endregion
    }
