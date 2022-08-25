@@ -97,16 +97,16 @@ namespace ItTakesTwo
 
         private void OnTriggerStay(Collider other)
         {
-            MagnetDetect(other);
-            PoleDetect(other);
-            ButtonDetect(other);
+            // MagnetDetect(other);
+            // PoleDetect(other);
+            // ButtonDetect(other);
 
             // Let collider move
-            SawMove();
-            JumpPadMove();
+            // SawMove();
+            // JumpPadMove();
             CeilingPadMove();
             LeverMove();
-            ButtonOn();
+            // ButtonOn();
             // RingBell(other);
         }
 
@@ -146,37 +146,6 @@ namespace ItTakesTwo
                     magnetNearby = true;
                 }
             }
-        }        
-        private void ButtonDetect(Collider other)
-        {
-            // 버튼주변 - tag: button
-            // 버튼자체 - tag: button / layer = magnet 
-            if (other.gameObject.tag.Contains("Button"))
-            {
-                if (col == null)
-                {
-                    col = other.transform.gameObject;
-                    buttonNearby = true;
-                    print("buttonNearby: " + buttonNearby);
-                }
-            }
-        }
-
-
-        private void ButtonOn()
-        {
-            forceDown = player.isForceDown;
-            // player 상태 == PlayerForceDownState (추후 현지한테 요청)
-            if (forceDown)
-            {
-                //fstPos = col.transform.position;
-                // Button 내려간다
-                if ( col != null && col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
-                {
-                    col.transform.position += col.transform.up * 1.0f * Time.deltaTime;
-                    entrance.transform.position += Vector3.up * 5.0f * Time.deltaTime;
-                }
-            }
         }
 
         private void PoleDetect(Collider other)
@@ -188,7 +157,7 @@ namespace ItTakesTwo
             if (magnetNearby)
             {
                 // Sphere detect
-                if (buttonE.eHolding || buttonO.oHolding)
+                if (buttonE.holding || buttonO.holding)
                 {
                     if (Physics.Raycast(ray, out hitInfo, 100, 1 << LayerMask.NameToLayer("Magnet")))
                     {
@@ -226,6 +195,38 @@ namespace ItTakesTwo
                     sidePushN = false;
                     sidePushS = false;
                     // EnableTrailR(false);
+                }
+            }
+        }
+
+        private void ButtonDetect(Collider other)
+        {
+            // 버튼주변 - tag: button
+            // 버튼자체 - tag: button / layer = magnet 
+            if (other.gameObject.tag.Contains("Button"))
+            {
+                if (col == null)
+                {
+                    col = other.transform.gameObject;
+                    buttonNearby = true;
+                    print("buttonNearby: " + buttonNearby);
+                }
+            }
+        }
+
+
+        private void ButtonOn()
+        {
+            forceDown = player.isForceDown;
+            // player 상태 == PlayerForceDownState (추후 현지한테 요청)
+            if (forceDown)
+            {
+                //fstPos = col.transform.position;
+                // Button 내려간다
+                if ( col != null && col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
+                {
+                    col.transform.position += col.transform.up * 1.0f * Time.deltaTime;
+                    entrance.transform.position += Vector3.up * 5.0f * Time.deltaTime;
                 }
             }
         }
@@ -286,7 +287,7 @@ namespace ItTakesTwo
             // sidePad의 거리가 일정거리이하면
             if (distanceS < 30)
             {
-                if (buttonE.eHolding)
+                if (buttonE.holding)
                 {
                     sidePushS = true;
                     dirS = sideS.transform.position - player1.transform.position;
@@ -299,7 +300,7 @@ namespace ItTakesTwo
             // sidePad의 거리가 일정거리이하면
             if (distanceN < 30)
             {
-                if (buttonO.oHolding)
+                if (buttonO.holding)
                 {
                     if (sidePushN == false)
                     {
@@ -359,7 +360,7 @@ namespace ItTakesTwo
                     }
                 }
             }
-            if (!buttonO.oHolding && lever != null)
+            if (!buttonO.holding && lever != null)
             {
                 print("11111111111111");
                 print("lever.transform.eulerAngles: " + lever.transform.eulerAngles);

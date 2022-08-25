@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6986976637486729924}
   - component: {fileID: 6986976637486729925}
   - component: {fileID: 6986976637486729926}
-  - component: {fileID: 6986976637486729927}
   m_Layer: 6
   m_Name: Npole
   m_TagString: Spole
@@ -115,18 +114,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 3}
---- !u!114 &6986976637486729927
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6986976637486729929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1829466397d1f14fb7ce54727861128, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  push: 0
-  pull: 0
-  forceDown: 0

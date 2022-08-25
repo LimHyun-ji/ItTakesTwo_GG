@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.WindowsMR.Input;
 
 namespace ItTakesTwo
 {
-    public class ButtonO : MonoBehaviour
+    public class ButtonO : ButtonBase
     {
-        public bool oHolding=false;
-        public bool oOnce;
         Player player;
         
+        void Start()
+        {
+            input = KeyCode.Keypad9; 
+        }
+
         // Start is called before the first frame update
         void Awake()
         {
             player = GetComponentInParent<Player>();
-
         }
         void OnEnable()
         {
@@ -27,28 +30,13 @@ namespace ItTakesTwo
         }
 
         // Update is called once per frame
-        void Update()
-        {
-            // if (Input.GetKey(KeyCode.Keypad9) || Input.GetButton("Fire1"))
-            // {
-            //     oHolding = true;
-            // }
-            // if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetButton("Fire1"))
-            // {
-            //     print("buttonO");
-            //     oOnce = true;
-            // }
-            // if (Input.GetKeyUp(KeyCode.Keypad9)|| Input.GetButton("Fire1"))
-            // {
-            //     oHolding = false;
-            // }
-        }
         public void MagnetOn(InputAction.CallbackContext context)
         {
             Debug.Log("MagnetOff");
             //oHolding = true;
-            oOnce = true;
-            oHolding = !oHolding;
+            // oOnce = true;
+            once = !once;
+            holding = !holding;
         }
     }
 }
