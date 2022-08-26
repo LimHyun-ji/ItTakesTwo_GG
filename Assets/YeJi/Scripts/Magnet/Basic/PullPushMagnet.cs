@@ -255,8 +255,10 @@ namespace ItTakesTwo
                     print("Jump Success");
                     //여기에 점프 패드 변수 가져오기
                     //문제 1. 근처에 있을때 계속 뜀
+
                     player.isJumppedPad=true;
                     player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
+                    
                     
                     player.velocity.y = 30;
                     // EnableTrailR(true);

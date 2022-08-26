@@ -112,6 +112,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MagnetOn",
+                    "type": "Button",
+                    "id": "3c528e3b-ac63-4563-8d0b-16b13d9ea4a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -290,6 +299,17 @@
                     "action": "TestForSave",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3341205c-cb52-4b22-bad2-86b1e866960f",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MagnetOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -403,15 +423,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press(behavior=2)",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "MagnetOff",
-                    "type": "Button",
-                    "id": "9e245478-e50c-49dc-a9b2-2884492db484",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 }
             ],
@@ -682,12 +693,12 @@
                 },
                 {
                     "name": "",
-                    "id": "82449ccc-a65a-4a1a-a452-7bcd518842b7",
-                    "path": "<DualShockGamepad>/leftShoulder",
+                    "id": "6df10994-6bd9-49ea-a2e3-dd1725f7d804",
+                    "path": "<Keyboard>/numpad9",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MagnetOff",
+                    "action": "MagnetOn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

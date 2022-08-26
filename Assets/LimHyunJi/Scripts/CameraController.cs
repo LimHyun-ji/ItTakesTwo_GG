@@ -77,7 +77,7 @@ namespace ItTakesTwo
         }
         void LateUpdate()
         {
-            if(currentState ==CameraState.IdleState || currentState == CameraState.RidingState)
+            if(currentState ==CameraState.IdleState)
                 Look();
         }
 
@@ -127,6 +127,11 @@ namespace ItTakesTwo
         protected void RidingFixedUpdate()
         {
             smoothSpeed=ridingSmoothSpeed;
+            Vector3 camPos= new Vector3(0, 0, -10f); 
+            transform.localPosition = SetCameraPosition(transform.localPosition, camPos, baseOffset);
+
+            CameraLookTransform.forward=player.transform.forward;
+
         }
         protected void WallFixedUpdate()
         {

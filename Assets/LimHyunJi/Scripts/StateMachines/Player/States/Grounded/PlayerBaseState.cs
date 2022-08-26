@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 namespace ItTakesTwo
 {
@@ -11,6 +13,7 @@ namespace ItTakesTwo
 
         protected PlayerGroundedData movementData;
         protected CameraController camera;
+        protected bool isMagnet;
 
 
         public PlayerBaseState(PlayerMovementStateMachine playerMovementStateMachine)
@@ -92,10 +95,13 @@ namespace ItTakesTwo
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed += OnJump;
                 stateMachine.Player.Input.Player1Actions.TestForSave.performed += GoToSavePoint;
+                stateMachine.Player.Input.Player1Actions.MagnetOn.performed += MagnetOn;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed += OnJump;
+                stateMachine.Player.Input.Player2Actions.MagnetOn.performed += MagnetOn;
+
                 //stateMachine.Player.Input.Player2Actions.TestForSave.performed += GoToSavePoint;
             }
         }
@@ -105,14 +111,34 @@ namespace ItTakesTwo
             {
                 stateMachine.Player.Input.Player1Actions.Jump.performed -= OnJump;
                 stateMachine.Player.Input.Player1Actions.TestForSave.performed -= GoToSavePoint;
+                stateMachine.Player.Input.Player1Actions.MagnetOn.performed -= MagnetOn;
             }
             else if(stateMachine.Player.playerName == Player.PlayerType.Player2)
             {
                 stateMachine.Player.Input.Player2Actions.Jump.performed -= OnJump;
+                stateMachine.Player.Input.Player2Actions.MagnetOn.performed -= MagnetOn;
+
                 //stateMachine.Player.Input.Player2Actions.TestForSave.performed -= GoToSavePoint;
                 
             }
         }
+
+        private void MagnetOn(InputAction.CallbackContext obj)
+        {
+            isMagnet= !isMagnet;
+
+            if(isMagnet)
+            {
+                //마그넷 돌려서 앞으로
+                ActiveMagnet();
+            }
+            else
+            {
+                //마그넷 돌려서 뒤로
+                InactiveMagnet();
+            }
+        }
+
         protected Vector3 GetMovementInputDirection()
         {
             return new Vector3(stateMachine.ReusableData.MovementInput.x, 0f,stateMachine.ReusableData.MovementInput.y);
@@ -196,9 +222,9 @@ namespace ItTakesTwo
         protected void GoToSavePoint(InputAction.CallbackContext context)
         {
             Debug.Log("GoBack Clear");
-            stateMachine.Player.characterController.enabled=false;
-            stateMachine.Player.transform.position=stateMachine.Player.savePoint;
-            stateMachine.Player.characterController.enabled=true;
+            // stateMachine.Player.characterController.enabled=false;
+            // stateMachine.Player.transform.position=stateMachine.Player.savePoint;
+            // stateMachine.Player.characterController.enabled=true;
         }
 
         protected void GoToSavePoint()
@@ -228,5 +254,27 @@ namespace ItTakesTwo
             stateMachine.Player.audioSource.volume=volume;
             stateMachine.Player.audioSource.Play();
         }
+
+        public void ActiveMagnet()
+        {
+            // stateMachine.Player.magnet.transform.DORotate(new Vector3(-180,0,-180),1f,RotateMode.Fast)
+            //          .SetEase(Ease.OutCirc);
+            // stateMachine.Player.magnet.transform.DOMove(stateMachine.Player.transform.forward+stateMachine.Player.magnet.transform.position, 1.0f)
+            //         .SetEase(Ease.OutCirc);
+
+            //stateMachine.Player.magnet.transform.RotateAround(stateMachine.Player.transform.position, Vector3.up, 180);
+            stateMachine.Player.ActiveMagnet(20);
+        }
+        public void InactiveMagnet()
+        {
+            // stateMachine.Player.magnet.transform.DORotate(new Vector3(360,0,0),1f,RotateMode.FastBeyond360)
+            //          .SetEase(Ease.OutCirc);
+            // stateMachine.Player.magnet.transform.DOMove(-stateMachine.Player.transform.forward+stateMachine.Player.magnet.transform.position, 1.0f)
+            //         .SetEase(Ease.OutCirc);
+            stateMachine.Player.ActiveMagnet(-20);
+        }
+        
+
+        
     }
 }

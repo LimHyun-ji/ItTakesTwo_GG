@@ -50,6 +50,7 @@ namespace ItTakesTwo
         public GameObject rope;
 
 
+
         protected virtual void Awake() 
         {
             characterController=GetComponent<CharacterController>();
@@ -90,6 +91,21 @@ namespace ItTakesTwo
         private void OnTriggerExit(Collider collider)
         {
             movementStateMachine.OnTriggerExit(collider);
+        }
+
+        public void ActiveMagnet(float angle)
+        {
+            StartCoroutine(IActiveMagnet(angle));
+        }
+
+        IEnumerator IActiveMagnet(float angle)
+        {
+            float currentTime=0f;
+            while(currentTime<1f)
+            {
+                magnet.transform.RotateAround(transform.position, Vector3.right, angle *Time.deltaTime);
+                yield return new WaitForEndOfFrame();
+            }
         }
 
 
