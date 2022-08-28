@@ -7,14 +7,18 @@ namespace ItTakesTwo
     public class InteractableUI : MonoBehaviour
     {
         GameObject ropeUI;
-        GameObject magnetUI;
-        public GameObject[] players;
-        GameObject myUI;
+        GameObject magnetUI_N;
+        GameObject magnetUI_S;
+        private GameObject[] players;
+        private GameObject myUI;
+        public float minDis=3;
+        public float maxDis=15;
 
         private void Awake() 
         {
             ropeUI = Resources.Load<GameObject>("Prefabs_HJ/RopeUI");
-            magnetUI=Resources.Load<GameObject>("Prefabs_HJ/MagnetUI");
+            magnetUI_N=Resources.Load<GameObject>("Prefabs_HJ/MagnetUI_N");
+            magnetUI_S=Resources.Load<GameObject>("Prefabs_HJ/MagnetUI_S");
 
             players=GameObject.FindGameObjectsWithTag("Player");
 
@@ -24,8 +28,13 @@ namespace ItTakesTwo
             }
             else if( 1 << gameObject.layer ==LayerMask.GetMask("Magnet"))
             {
-                myUI=Instantiate(magnetUI);
+                if(gameObject.tag =="Spole")
+                    myUI=Instantiate(magnetUI_S);
+                if(gameObject.tag =="Npole")
+                    myUI=Instantiate(magnetUI_N);
             }
+            //if(myUI)
+                myUI.SetActive(false);
         }
 
         private void Update() 
@@ -33,10 +42,11 @@ namespace ItTakesTwo
             //03순서 중요
             float distance1 =Vector3.Distance(this.gameObject.transform.position, players[0].transform.position);
             float distance2 =Vector3.Distance(this.gameObject.transform.position, players[3].transform.position);
-            if(distance1 <10 || distance2<10)
+            if((distance1 <maxDis && distance1>minDis)|| (distance2<maxDis && distance2>maxDis))
             {
                 myUI.SetActive(true);
-                myUI.transform.position=transform.position + -myUI.transform.forward/2;
+                myUI.transform.position=transform.position ;//+ -myUI.transform.forward/2;
+                myUI.transform.eulerAngles= transform.eulerAngles;
             }
             else
             {

@@ -17,6 +17,8 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            stateMachine.Player.animator.SetBool("IsRiding", true);
+            stateMachine.Player.animator.SetTrigger("Riding");
             stateMachine.Player.velocity.y=-1f;
             camera=stateMachine.Player.mainCameraTransform.gameObject.GetComponent<CameraController>();
             camera.currentState=CameraController.CameraState.RidingState;
@@ -36,7 +38,7 @@ namespace ItTakesTwo
         }
         public override void PhysicsUpdate()
         {
-            value += Time.deltaTime /2f;
+            value += Time.deltaTime / Mathf.Sqrt(bezierController.points.Count);//Mathf.Lerp(value, 1, Time.deltaTime);//
             if(value>1)
             {
                 OnFall();
@@ -46,9 +48,9 @@ namespace ItTakesTwo
             bezierController.BezierTest(bezierController.points, value,bezierController.points.Count-1 );
             stateMachine.Player.transform.forward= (bezierController.BezierTest(bezierController.points, value+Time.deltaTime, bezierController.points.Count-1)- bezierController.BezierTest(bezierController.points, value, bezierController.points.Count-1)).normalized;
             //(bezierController.BezierTest(bezierController.p1,bezierController.p2, bezierController.p3, bezierController.p4, value+Time.deltaTime)- bezierController.BezierTest(bezierController.p1,bezierController.p2, bezierController.p3, bezierController.p4, value)).normalized
-            if(Vector3.Distance(stateMachine.Player.transform.position, bezierController.p4)<0.1)
+            if(Vector3.Distance(stateMachine.Player.transform.position, bezierController.points[bezierController.points.Count-1])<0.1)
             {
-                //bezierController.enabled=false;
+                stateMachine.Player.transform.eulerAngles=new Vector3(0, stateMachine.Player.transform.eulerAngles.y, stateMachine.Player.transform.eulerAngles.z);
                 OnFall();
             }
         }
@@ -56,6 +58,11 @@ namespace ItTakesTwo
         public override void Exit()
         {
             base.Exit();
+
+            stateMachine.Player.animator.SetBool("IsRiding", false);
+            stateMachine.Player.animator.ResetTrigger("Riding");
+
+
             //bezierController.enabled=false;
             //stateMachine.Player.characterController.Move(stateMachine.Player.transform.forward * 3f);
             camera.currentState=CameraController.CameraState.IdleState;

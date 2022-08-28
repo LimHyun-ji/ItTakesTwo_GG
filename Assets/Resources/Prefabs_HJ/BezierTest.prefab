@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6093602939469723603}
   - component: {fileID: 6093602939469723628}
+  - component: {fileID: 6692064755048256194}
   m_Layer: 0
   m_Name: BezierTest
   m_TagString: Untagged
@@ -61,3 +62,15 @@ MonoBehaviour:
   - {fileID: 0}
   points: []
   pointsForEditor: []
+--- !u!114 &6692064755048256194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6093602939469723629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281d205a1c67d2d4ca8fc5379415e7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -85,7 +85,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SnowTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d10d0b5fba1f32b4094caad5f9293eed, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Splat:

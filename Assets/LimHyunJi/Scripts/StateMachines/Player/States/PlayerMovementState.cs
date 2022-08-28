@@ -193,7 +193,7 @@ namespace ItTakesTwo
         
         protected void OnInteract(InputAction.CallbackContext obj)
         {
-                Debug.Log("Arir Interact Hook"+ stateMachine.Player.interactableObject);
+            Debug.Log("Arir Interact Hook"+ stateMachine.Player.interactableObject);
             if(!stateMachine.Player.interactableObject) return;
             if(canInteract && stateMachine.Player.interactableObject.tag == "Hook")
             {
