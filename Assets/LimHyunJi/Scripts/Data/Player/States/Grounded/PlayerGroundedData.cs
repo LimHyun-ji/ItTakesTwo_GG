@@ -14,6 +14,7 @@ namespace ItTakesTwo
         [field: SerializeField] public AudioClip slideSound;
         [field: SerializeField] public AudioClip landSound;
 
+        [field: SerializeField] public AudioClip ridingSound;
 
         
         [field: SerializeField]  public PlayerRotationData BaseRotationData{get; private set;}

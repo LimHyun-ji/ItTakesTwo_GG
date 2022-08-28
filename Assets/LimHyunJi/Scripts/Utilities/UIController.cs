@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Video;
+using System;
 
 namespace ItTakesTwo
 {
@@ -15,7 +16,14 @@ namespace ItTakesTwo
         public bool isStartClicked=false;
         GameObject upperImage;
         GameObject lowerImage;
-        float dialogHeight=100f;
+        GameObject videoPlayerObj;
+        VideoPlayer videoPlayer;
+        GameObject videoImage;
+
+        VideoClip startVideo;
+        VideoClip endingVideo;
+        
+        float dialogHeight=130f;
 
         private static UIController _instance;
         public static UIController Instance()
@@ -35,25 +43,40 @@ namespace ItTakesTwo
             upperImage=GameObject.Find("ImageUpper");
             lowerImage=GameObject.Find("ImageLower");
 
+
+            videoImage=GameObject.Find("Video");
+            videoPlayerObj=GameObject.Find("Video Player");
+            videoPlayer=videoPlayerObj.GetComponent<VideoPlayer>();
+
+            startVideo= Resources.Load<VideoClip>("Videos/StartVideo");
+            endingVideo=Resources.Load<VideoClip>("Videos/EndVideo");
+
             upperImage.SetActive(false);
             lowerImage.SetActive(false);
+            //videoPlayerImage.SetActive(false);
         }
 
         void OnEnable()
         {
             // 씬 매니저의 sceneLoaded에 체인을 건다.
             SceneManager.sceneLoaded += OnSceneLoaded;
+            videoPlayer.loopPointReached += CheckIsVideoEnd;
         }
 
         // 체인을 걸어서 이 함수는 매 씬마다 호출된다.
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             FadeOut();
+            if(scene.buildIndex ==1)//MainScene
+            {
+                PlayVideo(startVideo);
+            }
         }
 
         void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            //videoPlayer.loopPointReached -= CheckIsVideoEnd;
         }
 
 
@@ -61,7 +84,7 @@ namespace ItTakesTwo
         {
             
         }
-
+        
         // Update is called once per frame
         void Update()
         {
@@ -144,7 +167,31 @@ namespace ItTakesTwo
             obj.SetActive(false);
 
         }
-        
+
+        public void ActivateEndingScene()
+        {
+
+        }
+        public void PlayVideo(VideoClip videoClip)
+        {
+            videoPlayer.clip = videoClip;
+            videoPlayer.Prepare();
+        }
+        void OnVideoPrepared(VideoPlayer source)
+        {
+            videoPlayer.Play();
+            videoImage.SetActive(true);
+            videoPlayerObj.SetActive(true);
+        }
+        private void CheckIsVideoEnd(UnityEngine.Video.VideoPlayer vp)
+        {
+            videoPlayerObj.SetActive(false);
+            videoImage.SetActive(false);
+            if(videoPlayer.clip==endingVideo)
+            {
+                SceneManager.LoadScene(2);
+            }
+        }
 
     }
 }

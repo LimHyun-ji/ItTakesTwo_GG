@@ -10,7 +10,7 @@ namespace ItTakesTwo
     {
         Text dialog;
         List<string> stringList=new List<string>();
-        int count=5;
+        int count=0;
         void Start()
         {
             dialog=GameObject.Find("DialogBox").GetComponent<Text>();

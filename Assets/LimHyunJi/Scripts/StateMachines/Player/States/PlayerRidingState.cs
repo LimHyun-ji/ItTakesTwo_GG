@@ -35,6 +35,8 @@ namespace ItTakesTwo
             bezierController =new BezierController(PointList);
             
             stateMachine.Player.interactableObject=null;
+
+            AudioPlay(movementData.ridingSound, true, 02f);
         }
         public override void PhysicsUpdate()
         {
@@ -66,6 +68,8 @@ namespace ItTakesTwo
             //bezierController.enabled=false;
             //stateMachine.Player.characterController.Move(stateMachine.Player.transform.forward * 3f);
             camera.currentState=CameraController.CameraState.IdleState;
+            stateMachine.Player.audioSource.Stop();
+            AudioPlay(movementData.landSound, false, 0.2f);
         }
 
         //interactable Object 베지어 곡선 자식들을 베지어 스크립트 Points로 넣기

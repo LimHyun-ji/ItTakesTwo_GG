@@ -20,6 +20,7 @@ MonoBehaviour:
     walkSound: {fileID: 8300000, guid: a51151559c5efb549a4296170879238e, type: 3}
     slideSound: {fileID: 8300000, guid: bc4c961b5650ca44f91d9509c5fcfa01, type: 3}
     landSound: {fileID: 8300000, guid: 250b4167bac30604dbdccee49c18607e, type: 3}
+    ridingSound: {fileID: 8300000, guid: 5b9bb9e09f1cebf4a802e5594b20a446, type: 3}
     <BaseRotationData>k__BackingField:
       <targetRotationReachTime>k__BackingField: {x: 0, y: 0.14, z: 0}
     <RunData>k__BackingField:
