@@ -43,7 +43,10 @@ namespace ItTakesTwo
         {
             base.Exit();
             stateMachine.Player.animator.ResetTrigger("Jump");
-            stateMachine.Player.dummyAnimator.ResetTrigger("Jump");                
+            stateMachine.Player.dummyAnimator.ResetTrigger("Jump");    
+
+            camera.currentState =CameraController.CameraState.IdleState;//거리 조정
+            
         }
 
     }

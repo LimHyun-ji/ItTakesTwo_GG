@@ -21,7 +21,7 @@ namespace ItTakesTwo
 
             stateMachine.ReusableData.SpeedModifier=movementData.RunData.speedModifier;
 
-            AudioPlay(movementData.walkSound, true, 0.2f);
+            AudioPlay(movementData.walkSound, true, 0.4f);
         }
         #endregion
 

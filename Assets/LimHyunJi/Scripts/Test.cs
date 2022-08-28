@@ -17,12 +17,8 @@ namespace ItTakesTwo
             
         void Update()
         {
-            Debug.Log(_controller.isGrounded);
             Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            _controller.Move(move * Time.deltaTime * speed);
-
-            // _velocity.y += -9.8f * Time.deltaTime;
-            //  _controller.Move(_velocity * Time.deltaTime);
+            transform .position += (move * Time.deltaTime * speed);
         }
 
     }

@@ -48,6 +48,10 @@ namespace ItTakesTwo
         public AudioSource audioSource;
         [HideInInspector]
         public GameObject rope;
+        private Vector3 initMagnetPos;
+        [HideInInspector]
+        public bool isMagnet;
+
 
 
 
@@ -70,6 +74,7 @@ namespace ItTakesTwo
             Input=GetComponent<PlayerInput>();
             movementStateMachine.ChangeState(movementStateMachine.IdlingState);
             cameraLookPoint=transform.Find("CameraLookPoint");
+            initMagnetPos=magnet.transform.localPosition;
 
             isMovable=true;
         }
@@ -93,18 +98,33 @@ namespace ItTakesTwo
             movementStateMachine.OnTriggerExit(collider);
         }
 
-        public void ActiveMagnet(float angle)
+        public void ActiveMagnet(float angle, bool isActive)
         {
-            StartCoroutine(IActiveMagnet(angle));
+            StopAllCoroutines();
+            StartCoroutine(IActiveMagnet(angle, isActive));
         }
 
-        IEnumerator IActiveMagnet(float angle)
+        IEnumerator IActiveMagnet(float angle, bool isActive)
         {
-            float currentTime=0f;
-            while(currentTime<1f)
+            if(isActive)
             {
-                magnet.transform.RotateAround(transform.position, Vector3.right, angle *Time.deltaTime);
-                yield return new WaitForEndOfFrame();
+                while(magnet.transform.eulerAngles.x<180)
+                {
+                    magnet.transform.RotateAround(transform.position, transform.right, angle *Time.deltaTime);
+                    yield return new WaitForEndOfFrame();
+                }
+                magnet.transform.localEulerAngles=new Vector3(180,0,0);
+            }
+            else
+            {
+                while(magnet.transform.eulerAngles.x<=180)// || magnet.transform.eulerAngles.x)
+                {
+                    magnet.transform.RotateAround(transform.position, transform.right, angle *Time.deltaTime);
+                    yield return new WaitForEndOfFrame();
+                }
+                magnet.transform.localEulerAngles=new Vector3(0,0,0);
+                magnet.transform.localPosition= initMagnetPos;
+
             }
         }
 

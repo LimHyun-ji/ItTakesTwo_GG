@@ -21,7 +21,8 @@ namespace ItTakesTwo
         GameObject videoImage;
 
         VideoClip startVideo;
-        VideoClip endingVideo;
+        [HideInInspector]
+        public VideoClip endingVideo;
         
         float dialogHeight=130f;
 
@@ -131,7 +132,7 @@ namespace ItTakesTwo
                 yield return new WaitForEndOfFrame();
             }
             Debug.Log("Load");
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
             startImage.gameObject.SetActive(false);
         }
 
@@ -175,21 +176,27 @@ namespace ItTakesTwo
         public void PlayVideo(VideoClip videoClip)
         {
             videoPlayer.clip = videoClip;
+            videoPlayerObj.SetActive(true);
             videoPlayer.Prepare();
+            videoImage.SetActive(true);
         }
         void OnVideoPrepared(VideoPlayer source)
         {
             videoPlayer.Play();
-            videoImage.SetActive(true);
-            videoPlayerObj.SetActive(true);
         }
         private void CheckIsVideoEnd(UnityEngine.Video.VideoPlayer vp)
         {
-            videoPlayerObj.SetActive(false);
-            videoImage.SetActive(false);
+            
             if(videoPlayer.clip==endingVideo)
             {
-                SceneManager.LoadScene(2);
+                fadeImage.color=Color.black;
+                FadeIn();
+                //SceneManager.LoadScene(2);
+            }
+            else
+            {
+                videoPlayerObj.SetActive(false);
+                videoImage.SetActive(false);
             }
         }
 

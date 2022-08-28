@@ -45,7 +45,7 @@ namespace ItTakesTwo
 
         #region time
         private float currentTime;
-        private float createTime = 2;
+        private float createTime = 0.3f;
         #endregion
 
         protected void Awake()
@@ -256,6 +256,11 @@ namespace ItTakesTwo
 
         private void JumpPadMove()
         {
+            if(isJump)
+            {
+                player.isJumppedPad=true;
+                player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
+            }
             currentTime += Time.deltaTime;
             if (currentTime > createTime)
             {
@@ -265,11 +270,11 @@ namespace ItTakesTwo
                 
                 print("Jump Success");
                 //여기에 점프 패드 변수 가져오기
-                player.isJumppedPad=true;
-                player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
                 
                 player.velocity.y = 30;
                 
+
+                player.isJumppedPad=false;
                 isJump = false;
                 bJumpInput = false;
                 magnetNearby = false;

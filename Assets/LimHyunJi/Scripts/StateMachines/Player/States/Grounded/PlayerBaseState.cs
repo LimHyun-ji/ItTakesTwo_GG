@@ -13,7 +13,6 @@ namespace ItTakesTwo
 
         protected PlayerGroundedData movementData;
         protected CameraController camera;
-        protected bool isMagnet;
 
 
         public PlayerBaseState(PlayerMovementStateMachine playerMovementStateMachine)
@@ -125,9 +124,9 @@ namespace ItTakesTwo
 
         private void MagnetOn(InputAction.CallbackContext obj)
         {
-            isMagnet= !isMagnet;
+            stateMachine.Player.isMagnet= !stateMachine.Player.isMagnet;
 
-            if(isMagnet)
+            if(stateMachine.Player.isMagnet)
             {
                 //마그넷 돌려서 앞으로
                 ActiveMagnet();
@@ -257,24 +256,11 @@ namespace ItTakesTwo
 
         public void ActiveMagnet()
         {
-            // stateMachine.Player.magnet.transform.DORotate(new Vector3(-180,0,-180),1f,RotateMode.Fast)
-            //          .SetEase(Ease.OutCirc);
-            // stateMachine.Player.magnet.transform.DOMove(stateMachine.Player.transform.forward+stateMachine.Player.magnet.transform.position, 1.0f)
-            //         .SetEase(Ease.OutCirc);
-
-            //stateMachine.Player.magnet.transform.RotateAround(stateMachine.Player.transform.position, Vector3.up, 180);
-            stateMachine.Player.ActiveMagnet(20);
+            stateMachine.Player.ActiveMagnet(1000, true);
         }
         public void InactiveMagnet()
         {
-            // stateMachine.Player.magnet.transform.DORotate(new Vector3(360,0,0),1f,RotateMode.FastBeyond360)
-            //          .SetEase(Ease.OutCirc);
-            // stateMachine.Player.magnet.transform.DOMove(-stateMachine.Player.transform.forward+stateMachine.Player.magnet.transform.position, 1.0f)
-            //         .SetEase(Ease.OutCirc);
-            stateMachine.Player.ActiveMagnet(-20);
-        }
-        
-
-        
+            stateMachine.Player.ActiveMagnet(-1000, false);
+        } 
     }
 }

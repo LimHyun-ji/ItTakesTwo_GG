@@ -25,7 +25,7 @@ namespace ItTakesTwo
             base.Enter();
             isInput=false;
             stateMachine.ReusableData.SpeedModifier=movementData.SlopeData.speedModifier;
-            slideSpeed=10f;
+            slideSpeed=20f;
             stateMachine.Player.animator.SetBool("IsSliding", true);
             stateMachine.Player.dummyAnimator.SetBool("IsSliding", true);
 
@@ -111,9 +111,11 @@ namespace ItTakesTwo
                 return environmentDir;
             }
             return Vector3.zero;
-        }        
+        }       
+        
          protected override void AddInputActionsCallBacks()
         {
+            
             if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Slide.performed += OnSlideHold;
@@ -122,10 +124,12 @@ namespace ItTakesTwo
             {
                 stateMachine.Player.Input.Player2Actions.Slide.performed += OnSlideHold;
             }
+            
         }
 
         protected override void RemoveInputActionsCallBacks()
         {
+            
             if(stateMachine.Player.playerName == Player.PlayerType.Player1)
             {
                 stateMachine.Player.Input.Player1Actions.Slide.performed -= OnSlideHold;
@@ -134,14 +138,14 @@ namespace ItTakesTwo
             {
                 stateMachine.Player.Input.Player2Actions.Slide.performed -= OnSlideHold;
             }
-
-
+            
         }
 
         protected override void OnSlideHold(InputAction.CallbackContext obj)
         {
             stateMachine.ChangeState(stateMachine.IdlingState);
         }
+        
 
     
         //나중에 수정할 것

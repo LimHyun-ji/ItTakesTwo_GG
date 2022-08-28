@@ -23,11 +23,16 @@ namespace ItTakesTwo
             stateMachine.Player.dummyAnimator.SetBool("IsSprinting", true);
 
             stateMachine.ReusableData.SpeedModifier=sprintData.speedModifier;
+            AudioPlay(movementData.walkSound, true, 0.4f);
+
         }
         public override void Exit()
         {
             stateMachine.Player.animator.SetBool("IsSprinting", false);
             stateMachine.Player.dummyAnimator.SetBool("IsSprinting", false);
+
+            stateMachine.Player.audioSource.Stop();
+
         }
         
         #region Reusable Methods
