@@ -13,6 +13,7 @@ namespace ItTakesTwo
         
         private void Update()
         {
+            base.Update();
         }
     }
 }

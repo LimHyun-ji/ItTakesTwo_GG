@@ -6,15 +6,11 @@ using UnityEngine;
 
 namespace ItTakesTwo
 {
-    [System.Serializable]
-    public struct PullPushInfo
-    {
-    }
-    
     public class PullPushBase : MonoBehaviour
     {
         #region collider && direction
         public GameObject col;
+        protected Collider detectCol;
         private Vector3 dir;
         public Vector3 rayDir;
         #endregion
@@ -22,10 +18,15 @@ namespace ItTakesTwo
         #region result
         public bool push;
         public bool pull;
+        public bool bJumpInput;
+        public bool bSideInput;
+        private bool isJump;
+        private bool isSide;
         #endregion
 
         #region magnet
         public bool magnetNearby;
+        private bool isUsingMagnet;
         #endregion
 
         #region button
@@ -42,29 +43,51 @@ namespace ItTakesTwo
         private GameObject entrance;
         #endregion
 
+        #region time
+        private float currentTime;
+        private float createTime = 2;
+        #endregion
+
         protected void Awake()
         {
             player = GetComponentInParent<Player>();
             button = player.GetComponent<ButtonBase>();
             entrance = GameObject.Find("Entrance");
             // print("entrance: " + entrance);
-
         }
 
         protected virtual void OnTriggerEnter(Collider other)
         {
             MagnetDetect(other);
             ButtonDetect(other);
+            JumpDetect(other);
+            SideDetect(other);
         }
 
-        protected void OnTriggerStay(Collider other)
+        protected void Update()
         {
-            PoleDetect(other);
+            PoleDetect();
             
             ButtonOn();
             SawMove();
-            JumpPadMove();
+            if (bJumpInput && button.once)
+            {
+                isJump = true;
+            }
+            if(isJump)
+                JumpPadMove();
+
+            if (bSideInput && button.once)
+            {
+                isSide = true;
+                print("isSide: " + isSide);
+            }
+            if (isSide)
+            {
+                SidePadMove();
+            }
         }
+
 
         private void MagnetDetect(Collider other)
         {
@@ -74,13 +97,19 @@ namespace ItTakesTwo
                 {
                     magnetNearby = true;
                     print("magnetNearBy: " + magnetNearby);
+                    detectCol = other;
                 }
             }
         }
 
-        private void PoleDetect(Collider other)
+        private void PoleDetect()
         {
-            rayDir = other.transform.position - transform.position;
+            if (detectCol == null)
+            {
+                return;
+            }
+            
+            rayDir = detectCol.transform.position - transform.position;
             Ray ray = new Ray(transform.position, rayDir);
             RaycastHit hitInfo;
 
@@ -122,11 +151,57 @@ namespace ItTakesTwo
                     col = null;
                     push = false;
                     pull = false;
+                    isUsingMagnet = false;
                     // EnableTrailR(false);
                 }
             }
         }
-        
+
+        private void JumpDetect(Collider other)
+        {
+            rayDir = other.transform.position - transform.position;
+            Ray ray = new Ray(transform.position, rayDir);
+            RaycastHit hitInfo;
+
+            if (magnetNearby)
+            {
+                if (Physics.Raycast(ray, out hitInfo, 100, 1 << LayerMask.NameToLayer("Magnet")))
+                {
+                    Debug.DrawRay(ray.origin, ray.direction * 2f, Color.blue, 100f, false);
+
+                    if (hitInfo.transform.name.Contains("JumpPad") && hitInfo.transform.gameObject.tag == gameObject.tag)
+                    {
+                        bJumpInput = true;
+                    }
+                }
+            }
+        }
+
+        private void SideDetect(Collider other)
+        {
+            if (magnetNearby)
+            {
+                if (other.transform.gameObject.tag != gameObject.tag)
+                {
+                    // sidePad를 찾는다
+                    rayDir = other.transform.position - transform.position;
+                    Ray ray = new Ray(transform.position, rayDir);
+                    RaycastHit hitInfo;
+                    
+                    if (Physics.Raycast(ray, out hitInfo, 100, 1 << LayerMask.NameToLayer("Magnet")))
+                    {
+                        Debug.DrawRay(ray.origin, ray.direction * 2f, Color.blue, 100f, false);
+
+                        if (hitInfo.transform.name.Contains("SidePad"))
+                        {
+                            bSideInput = true;
+                            // print("bSideInput" + bSideInput);
+                        }
+                    }
+                }
+            }
+        }
+
         private void ButtonDetect(Collider other)
         {
             // 버튼주변 - tag: button
@@ -141,7 +216,6 @@ namespace ItTakesTwo
                 }
             }
         }
-        
         
         private void ButtonOn()
         {
@@ -171,28 +245,61 @@ namespace ItTakesTwo
                 {
                     if(col.gameObject.transform.parent.name == "Saw")
                     {
+                        isUsingMagnet = true;
+
                         dir = col.gameObject.transform.forward + Vector3.forward;
                         col.transform.root.position += dir * 1.2f * Time.deltaTime;
                     }
                 }
             }
         }
-        
+
         private void JumpPadMove()
         {
-            if (push && col != null)
+            currentTime += Time.deltaTime;
+            if (currentTime > createTime)
             {
-                if (col.gameObject.name.Contains("JumpPad") && !player.isJumppedPad)
-                {
-                    print("Jump Success");
-                    //여기에 점프 패드 변수 가져오기
-                    player.isJumppedPad=true;
-                    player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
-                    
-                    player.velocity.y = 30;
-                    // EnableTrailR(true);
-                }
+                currentTime = 0;
+                
+                isUsingMagnet = true;
+                
+                print("Jump Success");
+                //여기에 점프 패드 변수 가져오기
+                player.isJumppedPad=true;
+                player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
+                
+                player.velocity.y = 30;
+                
+                isJump = false;
+                bJumpInput = false;
+                magnetNearby = false;
+                // EnableTrailR(true);
             }
+        }
+        
+        private void SidePadMove()
+        {
+            currentTime += Time.deltaTime;
+            if (currentTime > createTime)
+            {
+                // player.isJumppedPad=true;
+                // player.movementStateMachine.ChangeState(player.movementStateMachine.JumpingState);
+                // player.velocity.y = 0;
+                
+                currentTime = 0;
+                bSideInput = false;
+                magnetNearby = false;
+                isSide = false;
+                // player2.GetComponent<Player>().velocity = sideN.transform.position;
+            }
+            else
+            {
+                // 현지코드로 변경
+                player.GetComponent<Player>().characterController.Move(rayDir.normalized * 20 * Time.deltaTime);
+                player.GetComponent<Player>().velocity.y=0f;
+            }
+
+
         }
     }
 }

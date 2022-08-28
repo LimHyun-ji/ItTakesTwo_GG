@@ -395,6 +395,7 @@ namespace ItTakesTwo
                     //     other.gameObject.transform.parent.position.z - 20 <= z &&
                     //     z <= other.gameObject.transform.parent.position.z)
                     // {
+                    
                     x = player.transform.position.x;
                     z = player.transform.position.z;
                     other.gameObject.transform.position =
