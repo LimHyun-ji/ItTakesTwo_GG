@@ -181,8 +181,9 @@ namespace ItTakesTwo
         {
             if (magnetNearby)
             {
-                if (other.transform.gameObject.tag != gameObject.tag)
+                if (other.gameObject.tag != gameObject.tag && other.gameObject.layer==LayerMask.NameToLayer("Magnet"))
                 {
+                    Debug.Log("SidePad tag" +other.gameObject.tag );
                     // sidePad를 찾는다
                     rayDir = other.transform.position - transform.position;
                     Ray ray = new Ray(transform.position, rayDir);
@@ -232,7 +233,7 @@ namespace ItTakesTwo
                 if (col != null && col.gameObject.layer == LayerMask.NameToLayer("ButtonOn"))
                 {
                     col.transform.position += col.transform.up * 1.0f * Time.deltaTime;
-                    entrance.transform.position += Vector3.up * 5.0f * Time.deltaTime;
+                    entrance.transform.position += Vector3.up * 20.0f * Time.deltaTime;
                 }
             }
         }
@@ -295,13 +296,17 @@ namespace ItTakesTwo
                 bSideInput = false;
                 magnetNearby = false;
                 isSide = false;
+                player.characterController.enabled=true;
                 // player2.GetComponent<Player>().velocity = sideN.transform.position;
             }
             else
             {
                 // 현지코드로 변경
-                player.GetComponent<Player>().characterController.Move(rayDir.normalized * 20 * Time.deltaTime);
+                Debug.Log("Move");
+                player.characterController.enabled=false;
+                //player.GetComponent<Player>().characterController.Move(rayDir.normalized * 20 * Time.deltaTime);
                 player.GetComponent<Player>().velocity.y=0f;
+                player.transform.position+= rayDir.normalized * 100 * Time.deltaTime;
             }
 
 

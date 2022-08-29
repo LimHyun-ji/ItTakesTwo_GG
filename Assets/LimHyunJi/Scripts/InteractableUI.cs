@@ -9,7 +9,7 @@ namespace ItTakesTwo
         GameObject ropeUI;
         GameObject magnetUI_N;
         GameObject magnetUI_S;
-        private GameObject[] players;
+        public GameObject[] players;
         private GameObject myUI;
         public float minDis=3;
         public float maxDis=15;
