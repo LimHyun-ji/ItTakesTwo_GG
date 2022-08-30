@@ -17,6 +17,7 @@ namespace ItTakesTwo
         public override void Enter()
         {
             base.Enter();
+            value=0f;
             stateMachine.Player.animator.SetBool("IsRiding", true);
             stateMachine.Player.animator.SetTrigger("Riding");
             stateMachine.Player.velocity.y=-1f;

@@ -11,6 +11,7 @@ namespace ItTakesTwo
         #region collider && direction
         public GameObject col;
         protected Collider detectCol;
+        Collider ceilingCol;
         private Vector3 dir;
         public Vector3 rayDir;
         #endregion
@@ -22,6 +23,8 @@ namespace ItTakesTwo
         public bool bSideInput;
         private bool isJump;
         private bool isSide;
+        bool bCeilingInput;
+        bool isCeiling;
         #endregion
 
         #region magnet
@@ -62,6 +65,8 @@ namespace ItTakesTwo
             ButtonDetect(other);
             JumpDetect(other);
             SideDetect(other);
+
+            CeilingDetect(other);
         }
 
         protected void Update()
@@ -76,6 +81,13 @@ namespace ItTakesTwo
             }
             if(isJump)
                 JumpPadMove();
+
+            if (bCeilingInput && button.once)
+            {
+                isCeiling = true;
+            }
+            if(isCeiling)
+                CeilingPadMove();
 
             if (bSideInput && button.once)
             {
@@ -198,6 +210,41 @@ namespace ItTakesTwo
                             bSideInput = true;
                             // print("bSideInput" + bSideInput);
                         }
+                    }
+                }
+            }
+        }
+
+        private void CeilingPadMove()
+        {
+
+            print("ceilingCol: " + ceilingCol);
+            player.velocity.y = 30;
+
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) ||
+                Input.GetKeyDown(KeyCode.D))
+            {
+                bCeilingInput = false;
+                isCeiling = false;
+            }
+        }
+        private void CeilingDetect(Collider other)
+        {
+            rayDir = other.transform.position - transform.position;
+            Ray ray = new Ray(transform.position, rayDir);
+            RaycastHit hitInfo;
+
+            if (magnetNearby)
+            {
+                if (Physics.Raycast(ray, out hitInfo, 100, 1 << LayerMask.NameToLayer("Magnet")))
+                {
+                    Debug.Log("Cieling");
+                    Debug.DrawRay(ray.origin, ray.direction * 2f, Color.blue, 100f, false);
+
+                    if (hitInfo.transform.name.Contains("CeilingPad"))
+                    {
+                        bCeilingInput = true;
+                        ceilingCol = other;
                     }
                 }
             }
